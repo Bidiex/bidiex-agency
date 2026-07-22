@@ -477,8 +477,11 @@ section:last-of-type {
 }
 
 /* ==========================================================================
-   9. Projects (Carousel)
+   9. Projects (Carousel) — Fixed
    ========================================================================== */
+
+/* === PROJECTS CAROUSEL === */
+
 .projects-header {
     display: flex;
     justify-content: space-between;
@@ -516,38 +519,77 @@ section:last-of-type {
     transform: translateY(-2px);
 }
 
+/*
+  KEY INSIGHT:
+  The .container parent has padding (e.g. 24px each side).
+  We need to escape that container to go full-width,
+  then manually re-introduce the left padding as 
+  scroll offset, and mirror it at the end with ::after.
+*/
+
 .projects-carousel-wrapper {
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    overflow: hidden;
-    padding: 8px 0;
+    /* Escape the .container padding */
+    margin-left: -24px;
+    margin-right: -24px;
+    overflow: hidden; /* clips the track edges cleanly */
 }
 
 .projects-carousel {
     display: flex;
-    gap: 24px;
-    overflow-x: auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 16px;
+
+    overflow-x: scroll;
     scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    padding-bottom: 8px;
-    padding-left: max(24px, calc((100vw - var(--container-width)) / 2 + 24px));
-    padding-right: max(24px, calc((100vw - var(--container-width)) / 2 + 24px));
+
+    /* 
+      Left padding = container padding we removed (24px)
+      This is the breathing room before the first card.
+    */
+    padding-left: 24px;
+    padding-right: 0;
+    padding-top: 8px;
+    padding-bottom: 24px;
+
+    cursor: grab;
+    align-items: stretch;
+}
+
+.projects-carousel:active {
+    cursor: grabbing;
 }
 
 .projects-carousel::-webkit-scrollbar {
     display: none;
 }
 
+/* 
+  This spacer IS the right padding.
+  It sits after the last card inside the flex row.
+  Same value as padding-left so the last card 
+  has identical breathing room on the right.
+*/
+.projects-carousel::after {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: 24px;
+    min-width: 24px;
+}
+
 .project-card {
-    flex: 0 0 calc(50% - 12px);
+    flex-shrink: 0;
     scroll-snap-align: start;
     padding: 24px 28px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: auto;
+
+    /* Mobile: 1 card visible + right peek showing ~50px of next card */
+    width: calc(100vw - 24px - 24px - 50px);
 }
 
 .project-card h3 {
@@ -573,6 +615,92 @@ section:last-of-type {
     padding: 3px 8px;
     border-radius: 4px;
 }
+
+/* Tablet: 2 cards + peek */
+@media (min-width: 640px) {
+    .projects-carousel-wrapper {
+        margin-left: -24px;
+        margin-right: -24px;
+    }
+
+    .projects-carousel {
+        padding-left: 24px;
+    }
+
+    .projects-carousel::after {
+        width: 24px;
+        min-width: 24px;
+    }
+
+    .project-card {
+        width: calc(50vw - 24px - 16px - 30px);
+    }
+}
+
+/* Laptop: 3 cards + peek */
+@media (min-width: 1024px) {
+    .projects-carousel-wrapper {
+        margin-left: -40px;
+        margin-right: -40px;
+    }
+
+    .projects-carousel {
+        padding-left: 40px;
+    }
+
+    .projects-carousel::after {
+        width: 40px;
+        min-width: 40px;
+    }
+
+    .project-card {
+        width: calc(33vw - 40px - 16px - 20px);
+    }
+
+    .carousel-controls {
+        display: flex;
+    }
+}
+
+/* Desktop wide: grid, no carousel */
+@media (min-width: 1440px) {
+    .projects-carousel-wrapper {
+        margin-left: 0;
+        margin-right: 0;
+        overflow: visible;
+    }
+
+    .projects-carousel {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        overflow: visible;
+        padding: 8px 0;
+        scroll-snap-type: none;
+        cursor: default;
+        gap: 16px;
+    }
+
+    .projects-carousel::after {
+        display: none;
+    }
+
+    .project-card {
+        width: auto;
+    }
+
+    .carousel-controls {
+        display: none;
+    }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+    .project-card {
+        width: calc(100vw - 24px - 24px - 30px);
+    }
+}
+
+/* === END PROJECTS CAROUSEL === */
 
 /* ==========================================================================
    10. Services
@@ -771,7 +899,7 @@ section:last-of-type {
     justify-content: center;
     font-weight: 700;
     font-size: 16px;
-    color: var(--text-secondary);
+    color: #ffffff;
     position: relative;
     z-index: 2;
     flex-shrink: 0;
@@ -1097,10 +1225,6 @@ section:last-of-type {
     
     .why-title h2 {
         position: static;
-    }
-
-    .project-card {
-        flex: 0 0 85%;
     }
 }
 

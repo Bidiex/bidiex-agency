@@ -633,23 +633,61 @@
         const prevBtn = document.getElementById('projectsPrev');
         const nextBtn = document.getElementById('projectsNext');
 
-        const init = () => {
+        const updateButtonState = () => {
             if (!carousel || !prevBtn || !nextBtn) return;
+            prevBtn.disabled = carousel.scrollLeft <= 0;
+            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+            // Use Math.ceil to avoid floating point issues
+            nextBtn.disabled = Math.ceil(carousel.scrollLeft) >= maxScroll;
+        };
 
-            prevBtn.addEventListener('click', () => {
-                const card = carousel.querySelector('.project-card');
-                if (card) {
-                    const scrollAmount = card.offsetWidth + 24;
-                    carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-                }
+        const scrollByCard = (direction) => {
+            const card = carousel.querySelector('.project-card');
+            if (card) {
+                const gap = 16;
+                const amount = (card.offsetWidth + gap) * direction;
+                carousel.scrollBy({ left: amount, behavior: 'smooth' });
+            }
+        };
+
+        const init = () => {
+            if (!carousel) return;
+
+            if (prevBtn && nextBtn) {
+                prevBtn.addEventListener('click', () => scrollByCard(-1));
+                nextBtn.addEventListener('click', () => scrollByCard(1));
+                carousel.addEventListener('scroll', updateButtonState);
+                window.addEventListener('resize', updateButtonState);
+                setTimeout(updateButtonState, 100);
+            }
+
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            carousel.addEventListener('mousedown', (e) => {
+                isDown = true;
+                carousel.style.cursor = 'grabbing';
+                startX = e.pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
             });
 
-            nextBtn.addEventListener('click', () => {
-                const card = carousel.querySelector('.project-card');
-                if (card) {
-                    const scrollAmount = card.offsetWidth + 24;
-                    carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                }
+            carousel.addEventListener('mouseleave', () => {
+                isDown = false;
+                carousel.style.cursor = 'grab';
+            });
+
+            carousel.addEventListener('mouseup', () => {
+                isDown = false;
+                carousel.style.cursor = 'grab';
+            });
+
+            carousel.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                carousel.scrollLeft = scrollLeft - walk;
             });
         };
 
