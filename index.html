@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Core SEO -->
+    <title>Bidiex — Software Studio</title>
+    <meta name="description" content="Bidiex es un estudio independiente de productos digitales enfocado en crear software, automatizaciones, experiencias digitales y herramientas escalables para emprendedores y empresas.">
+    <meta name="keywords" content="software studio, estudio de software, digital product, desarrollo web, automatización, Bidiex">
+    <link rel="canonical" href="https://bidiex.com/">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Bidiex — Software Studio">
+    <meta property="og:description" content="Bidiex es un estudio independiente de productos digitales enfocado en crear software y soluciones de automatización.">
+    <meta property="og:image" content="https://bidiex.com/og-image.jpg">
+    <meta property="og:url" content="https://bidiex.com/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bidiex — Software Studio">
+    <meta name="twitter:description" content="Bidiex es un estudio independiente de productos digitales enfocado en crear software y soluciones de automatización.">
+    
+    <!-- PWA & Icons -->
+    <meta name="theme-color" content="#050608">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- Typography & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- Loading Animation -->
+    <div class="loader" id="loader">
+        <div class="loader-inner"></div>
+    </div>
+
+    <!-- Background Layers -->
+    <div class="bg-layers" aria-hidden="true" id="parallaxBg">
+        <div class="bg-glow blue-glow"></div>
+        <div class="bg-glow purple-glow"></div>
+        <div class="bg-noise"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="brand-logo" aria-label="Bidiex Home">Bidiex</a>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about" class="nav-link" data-i18n="nav.about">Nosotros</a></li>
+                <li><a href="#projects" class="nav-link" data-i18n="nav.projects">Proyectos</a></li>
+                <li><a href="#services" class="nav-link" data-i18n="nav.services">Servicios</a></li>
+                <li><a href="#founder" class="nav-link" data-i18n="nav.founder">Fundador</a></li>
+                
+                <!-- Mobile Language Toggle (Visible only on mobile in the menu) -->
+                <li class="mobile-lang-toggle">
+                    <div class="lang-toggle">
+                        <button class="lang-btn active" data-lang="es" data-i18n-aria="lang.es" aria-label="Cambiar a Español" title="Español" tabindex="0">
+                            <svg viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg"><rect width="22" height="16" rx="2" fill="#CE1126"/><rect width="22" height="10.6" rx="2" fill="#003087"/><rect width="22" height="5.3" rx="2" fill="#FCD116"/></svg>
+                        </button>
+                        <button class="lang-btn" data-lang="en" data-i18n-aria="lang.en" aria-label="Switch to English" title="English" tabindex="0">
+                            <svg viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg"><rect width="22" height="16" rx="2" fill="#B22234"/><g fill="#FFF"><rect y="1.5" width="22" height="1.3"/><rect y="4.1" width="22" height="1.3"/><rect y="6.7" width="22" height="1.3"/><rect y="9.3" width="22" height="1.3"/><rect y="11.9" width="22" height="1.3"/><rect y="14.5" width="22" height="1.3"/></g><rect width="8.8" height="8.5" rx="2" fill="#3C3B6E"/></svg>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+            
+            <div class="nav-right">
+                <!-- Desktop Language Toggle -->
+                <div class="lang-toggle desktop-lang">
+                    <button class="lang-btn active" data-lang="es" data-i18n-aria="lang.es" aria-label="Cambiar a Español" title="Español" tabindex="0">
+                        <svg viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg"><rect width="22" height="16" rx="2" fill="#CE1126"/><rect width="22" height="10.6" rx="2" fill="#003087"/><rect width="22" height="5.3" rx="2" fill="#FCD116"/></svg>
+                    </button>
+                    <button class="lang-btn" data-lang="en" data-i18n-aria="lang.en" aria-label="Switch to English" title="English" tabindex="0">
+                        <svg viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg"><rect width="22" height="16" rx="2" fill="#B22234"/><g fill="#FFF"><rect y="1.5" width="22" height="1.3"/><rect y="4.1" width="22" height="1.3"/><rect y="6.7" width="22" height="1.3"/><rect y="9.3" width="22" height="1.3"/><rect y="11.9" width="22" height="1.3"/><rect y="14.5" width="22" height="1.3"/></g><rect width="8.8" height="8.5" rx="2" fill="#3C3B6E"/></svg>
+                    </button>
+                </div>
+                <a href="#contact" class="btn btn-primary nav-cta"><img src="https://cdn.simpleicons.org/whatsapp/white" style="width: 1.2em; height: 1.2em; vertical-align: text-bottom;" alt=""> <span data-i18n="nav.cta">Iniciar Proyecto</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- 1. HERO SECTION -->
+        <section class="hero" id="hero">
+            <div class="container hero-content">
+                <div class="hero-text reveal">
+                    <h1 data-i18n="hero.title">Construyendo Productos Digitales que Ayudan a las Empresas a Crecer.</h1>
+                    <p class="subtitle" data-i18n="hero.subtitle">Ingeniería de precisión y diseño premium combinados para construir software, soluciones de automatización y herramientas escalables.</p>
+                    
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn btn-primary ripple"><span data-i18n="hero.ctaPrimary">Ver Proyectos</span></a>
+                        <a href="#contact" class="btn btn-secondary ripple"><img src="https://cdn.simpleicons.org/whatsapp/white" style="width: 1.2em; height: 1.2em; vertical-align: text-bottom;" alt=""> <span data-i18n="hero.ctaSecondary">Contáctanos</span></a>
+                    </div>
+                </div>
+                
+                <!-- Hero visual removed per user request -->
+            </div>
+        </section>
+
+
+        <!-- 3. ABOUT BIDIEX -->
+        <section class="about" id="about">
+            <div class="container">
+                <span class="section-label reveal" data-i18n="about.label">[ Nosotros ]</span>
+                <div class="about-grid">
+                    <h2 class="reveal" data-i18n="about.title">Quiénes somos</h2>
+                    <div class="about-text reveal-delay">
+                        <p class="large-body" data-i18n="about.p1">Bidiex es un estudio independiente de productos digitales enfocado en crear software, soluciones de automatización, experiencias digitales y herramientas escalables para emprendedores y empresas.</p>
+                        <p data-i18n="about.p2">Creemos en la precisión por encima de la decoración. Cada producto que construimos está diseñado para ser funcional, hermoso y fundamentalmente robusto.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PROJECTS -->
+        <section class="projects" id="projects">
+            <div class="container">
+                <div class="projects-header reveal">
+                    <div>
+                        <span class="section-label" data-i18n="projects.label">[ Proyectos ]</span>
+                        <h2 class="section-title" data-i18n="projects.title">Trabajo Seleccionado</h2>
+                    </div>
+                    <div class="carousel-controls">
+                        <button class="carousel-btn" id="projectsPrev" aria-label="Anterior" title="Anterior">←</button>
+                        <button class="carousel-btn" id="projectsNext" aria-label="Siguiente" title="Siguiente">→</button>
+                    </div>
+                </div>
+                
+                <div class="projects-carousel-wrapper reveal-delay">
+                    <div class="projects-carousel" id="projectsCarousel">
+                        <!-- Project 1 -->
+                        <article class="project-card card-hover">
+                            <div class="card-content">
+                                <h3>TraeGo</h3>
+                                <p data-i18n="project.traego.desc">Plataforma digital enfocada en la optimización de procesos empresariales.</p>
+                                <ul class="tech-tags">
+                                    <li data-i18n="tag.webapp">Web App</li>
+                                    <li data-i18n="tag.optimization">Optimización</li>
+                                </ul>
+                                <a href="#" class="btn btn-secondary ripple" data-i18n-aria="project.traego.aria" aria-label="Ver proyecto TraeGo"><span data-i18n="project.explore">Explorar →</span></a>
+                            </div>
+                        </article>
+
+                        <!-- Project 2 -->
+                        <article class="project-card card-hover">
+                            <div class="card-content">
+                                <h3>CarCopilot</h3>
+                                <p data-i18n="project.carcopilot.desc">Plataforma de gestión de gastos para vehículos.</p>
+                                <ul class="tech-tags">
+                                    <li data-i18n="tag.mobileapp">Mobile App</li>
+                                    <li data-i18n="tag.management">Gestión</li>
+                                </ul>
+                                <a href="#" class="btn btn-secondary ripple" data-i18n-aria="project.carcopilot.aria" aria-label="Ver proyecto CarCopilot"><span data-i18n="project.explore">Explorar →</span></a>
+                            </div>
+                        </article>
+
+                        <!-- Project 3 -->
+                        <article class="project-card card-hover">
+                            <div class="card-content">
+                                <h3>Invio</h3>
+                                <p data-i18n="project.invio.desc">Plataforma de invitaciones digitales.</p>
+                                <ul class="tech-tags">
+                                    <li data-i18n="tag.platform">Plataforma</li>
+                                    <li data-i18n="tag.events">Eventos</li>
+                                </ul>
+                                <a href="#" class="btn btn-secondary ripple" data-i18n-aria="project.invio.aria" aria-label="Ver proyecto Invio"><span data-i18n="project.explore">Explorar →</span></a>
+                            </div>
+                        </article>
+
+                        <!-- Project 4 -->
+                        <article class="project-card card-hover">
+                            <div class="card-content">
+                                <h3>SelloGo</h3>
+                                <p data-i18n="project.sellogo.desc">Plataforma de lealtad digital para negocios locales.</p>
+                                <ul class="tech-tags">
+                                    <li data-i18n="tag.loyalty">Lealtad</li>
+                                    <li data-i18n="tag.localbiz">Negocio Local</li>
+                                </ul>
+                                <a href="#" class="btn btn-secondary ripple" data-i18n-aria="project.sellogo.aria" aria-label="Ver proyecto SelloGo"><span data-i18n="project.explore">Explorar →</span></a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SERVICES -->
+        <section class="services" id="services">
+            <div class="container">
+                <span class="section-label reveal" data-i18n="services.label">[ Estudio ]</span>
+                <h2 class="section-title reveal" data-i18n="services.title">Nuestras Capacidades</h2>
+                
+                <div class="services-layout">
+                    <div class="services-featured reveal card-hover">
+                        <div class="service-icon"><span aria-hidden="true">{" "}</span></div>
+                        <h3 data-i18n="srv.dev.title">Desarrollo de Software</h3>
+                        <p data-i18n="srv.dev.desc">Construimos aplicaciones robustas y escalables adaptadas para resolver problemas empresariales complejos con arquitecturas modernas.</p>
+                    </div>
+                    
+                    <div class="services-list">
+                        <div class="service-item reveal card-hover">
+                            <div class="service-icon line-icon"><span aria-hidden="true">⌘</span></div>
+                            <h4 data-i18n="srv.design.title">Diseño UI/UX</h4>
+                        </div>
+                        <div class="service-item reveal card-hover">
+                            <div class="service-icon line-icon"><span aria-hidden="true">⚡</span></div>
+                            <h4 data-i18n="srv.web.title">Aplicaciones Web</h4>
+                        </div>
+                        <div class="service-item reveal card-hover">
+                            <div class="service-icon line-icon"><span aria-hidden="true">∞</span></div>
+                            <h4 data-i18n="srv.auto.title">Automatización</h4>
+                        </div>
+                        <div class="service-item reveal card-hover">
+                            <div class="service-icon line-icon"><span aria-hidden="true">❖</span></div>
+                            <h4 data-i18n="srv.brand.title">Identidad de Marca</h4>
+                        </div>
+                        <div class="service-item reveal card-hover">
+                            <div class="service-icon line-icon"><span aria-hidden="true">◱</span></div>
+                            <h4 data-i18n="srv.landing.title">Landing Pages</h4>
+                        </div>
+                        <div class="service-item reveal card-hover">
+                            <div class="service-icon line-icon"><span aria-hidden="true">⌥</span></div>
+                            <h4 data-i18n="srv.consulting.title">Consultoría Técnica</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. FOUNDER -->
+        <section class="founder" id="founder">
+            <div class="container">
+                <span class="section-label reveal" data-i18n="founder.label">[ Fundador ]</span>
+                <div class="founder-card reveal card-hover">
+                    <div class="founder-visual reveal">
+                        <div class="avatar-container">
+                            <div class="avatar-ring"></div>
+                            <img src="Photo founder.webp" alt="Álvaro de Alba" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 1;">
+                        </div>
+                    </div>
+                    <div class="founder-info">
+                        <h3>Andrés Anillo</h3>
+                        <div class="role-pills">
+                            <span class="pill" data-i18n="founder.role1">Desarrollador de Software</span>
+                            <span class="pill" data-i18n="founder.role2">Diseñador</span>
+                            <span class="pill" data-i18n="founder.role3">Creador de Productos Digitales</span>
+                        </div>
+                        <p data-i18n="founder.bio">Tengo una profunda pasión por construir software útil y bellamente diseñado. Me enfoco en cerrar la brecha entre una experiencia de usuario excepcional y una arquitectura técnica robusta.</p>
+                        
+                        <div class="skills-list">
+                            <span class="skill-pill">Frontend</span>
+                            <span class="skill-pill">Backend</span>
+                            <span class="skill-pill" data-i18n="founder.skill3">Diseño UI</span>
+                            <span class="skill-pill" data-i18n="founder.skill4">Branding</span>
+                            <span class="skill-pill" data-i18n="founder.skill5">Estrategia de Producto</span>
+                            <span class="skill-pill" data-i18n="founder.skill6">Automatización IA</span>
+                        </div>
+                        
+                        <div class="tech-icons" style="display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
+                            <img src="https://cdn.simpleicons.org/javascript/white" width="24" height="24" title="JavaScript" alt="JavaScript">
+                            <img src="https://cdn.simpleicons.org/html5/white" width="24" height="24" title="HTML5" alt="HTML5">
+                            <img src="https://cdn.simpleicons.org/css/white" width="24" height="24" title="CSS3" alt="CSS3">
+                            <img src="https://cdn.simpleicons.org/react/white" width="24" height="24" title="React Native" alt="React Native">
+                            <img src="https://cdn.simpleicons.org/supabase/white" width="24" height="24" title="Supabase" alt="Supabase">
+                            <img src="https://cdn.simpleicons.org/expo/white" width="24" height="24" title="Expo" alt="Expo">
+                            <img src="https://cdn.simpleicons.org/vite/white" width="24" height="24" title="Vite" alt="Vite">
+                            <img src="https://cdn.simpleicons.org/nodedotjs/white" width="24" height="24" title="Node.js" alt="Node.js">
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. PROCESS -->
+        <section class="process" id="process">
+            <div class="container">
+                <span class="section-label reveal" data-i18n="process.label">[ Proceso ]</span>
+                <h2 class="section-title reveal" data-i18n="process.title">Cómo Construimos</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-step reveal">
+                        <div class="step-marker">01</div>
+                        <div class="step-content card-hover">
+                            <h4 data-i18n="process.s1.title">Descubrimiento</h4>
+                            <p data-i18n="process.s1.desc">Entender tu negocio, tus objetivos y el espacio del problema antes de escribir una sola línea de código.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step reveal">
+                        <div class="step-marker">02</div>
+                        <div class="step-content card-hover">
+                            <h4 data-i18n="process.s2.title">Planificación</h4>
+                            <p data-i18n="process.s2.desc">Arquitectar la solución, definir el stack tecnológico y trazar el recorrido del usuario.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step reveal">
+                        <div class="step-marker">03</div>
+                        <div class="step-content card-hover">
+                            <h4 data-i18n="process.s3.title">Diseño</h4>
+                            <p data-i18n="process.s3.desc">Crear una interfaz y experiencia de usuario premium que se alinee con tu identidad de marca.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step reveal">
+                        <div class="step-marker">04</div>
+                        <div class="step-content card-hover">
+                            <h4 data-i18n="process.s4.title">Desarrollo</h4>
+                            <p data-i18n="process.s4.desc">Construir el producto con código escalable, mantenible y de alto rendimiento.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step reveal">
+                        <div class="step-marker">05</div>
+                        <div class="step-content card-hover">
+                            <h4 data-i18n="process.s5.title">Lanzamiento</h4>
+                            <p data-i18n="process.s5.desc">Desplegar el software, asegurar métricas de rendimiento y gestionar la salida a producción.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-step reveal">
+                        <div class="step-marker">06</div>
+                        <div class="step-content card-hover">
+                            <h4 data-i18n="process.s6.title">Soporte</h4>
+                            <p data-i18n="process.s6.desc">Proveer mantenimiento continuo, optimizaciones y escalar la infraestructura a medida que creces.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. WHY BIDIEX -->
+        <section class="why-us" id="why-us">
+            <div class="container">
+                <span class="section-label reveal" data-i18n="why.label">[ Ventaja ]</span>
+                <div class="why-grid">
+                    <div class="why-title reveal">
+                        <h2 data-i18n="why.title">Por qué elegirnos.</h2>
+                    </div>
+                    <div class="why-cards">
+                        <div class="advantage-card reveal card-hover">
+                            <h4 data-i18n="why.c1.title">Tecnologías Modernas</h4>
+                            <p data-i18n="why.c1.desc">Aprovechamos los stacks tecnológicos más resilientes y actuales.</p>
+                        </div>
+                        <div class="advantage-card reveal card-hover">
+                            <h4 data-i18n="why.c2.title">Arquitectura Escalable</h4>
+                            <p data-i18n="why.c2.desc">Construido para manejar el crecimiento desde el primer día.</p>
+                        </div>
+                        <div class="advantage-card reveal card-hover">
+                            <h4 data-i18n="why.c3.title">Comunicación Rápida</h4>
+                            <p data-i18n="why.c3.desc">Acceso directo, sin burocracia corporativa.</p>
+                        </div>
+                        <div class="advantage-card reveal card-hover">
+                            <h4 data-i18n="why.c4.title">Atención al Detalle</h4>
+                            <p data-i18n="why.c4.desc">Ejecución de diseño perfecta al pixel.</p>
+                        </div>
+                        <div class="advantage-card reveal card-hover">
+                            <h4 data-i18n="why.c5.title">Visión a Largo Plazo</h4>
+                            <p data-i18n="why.c5.desc">Hacemos ingeniería pensada para el futuro.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. CONTACT -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="contact-card reveal card-hover">
+                    <span class="section-label" data-i18n="contact.label">[ Consultas ]</span>
+                    <h2 data-i18n="contact.title">Construyamos algo.</h2>
+                    <p data-i18n="contact.subtitle">Inicia una conversación directamente vía WhatsApp.</p>
+                    
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="name" data-i18n="contact.name">Nombre</label>
+                            <input type="text" id="name" name="name" data-i18n-placeholder="contact.name.placeholder" placeholder="Juan Pérez" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company" data-i18n="contact.company">Empresa</label>
+                            <input type="text" id="company" name="company" data-i18n-placeholder="contact.company.placeholder" placeholder="Acme Corp" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectType" data-i18n="contact.projectType">Tipo de Proyecto</label>
+                            <select id="projectType" name="projectType" required>
+                                <option value="" disabled selected data-i18n="contact.select.default">Selecciona una opción</option>
+                                <option value="Web Application" data-i18n="contact.select.opt1">Aplicación Web</option>
+                                <option value="Mobile App" data-i18n="contact.select.opt2">Aplicación Móvil</option>
+                                <option value="Landing Page" data-i18n="contact.select.opt3">Landing Page</option>
+                                <option value="UI/UX Design" data-i18n="contact.select.opt4">Diseño UI/UX</option>
+                                <option value="Automation" data-i18n="contact.select.opt5">Automatización</option>
+                                <option value="Other" data-i18n="contact.select.opt6">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="message" data-i18n="contact.message">Mensaje</label>
+                            <textarea id="message" name="message" rows="4" data-i18n-placeholder="contact.message.placeholder" placeholder="Cuéntanos sobre tu proyecto..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary ripple form-submit"><img src="https://cdn.simpleicons.org/whatsapp/white" style="width: 1.2em; height: 1.2em; vertical-align: text-bottom;" alt=""> <span data-i18n="contact.submit">Iniciar Conversación →</span></button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 10. FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">Bidiex</span>
+                <span class="footer-tag" data-i18n="footer.tag">Agencia Digital</span>
+            </div>
+            <div class="footer-links">
+                <a href="#contact" style="display: inline-flex; align-items: center; gap: 6px;"><img src="https://cdn.simpleicons.org/whatsapp/white" style="width: 1.4em; height: 1.4em; vertical-align: middle;" alt=""> <span data-i18n="footer.contact">Contacto</span></a>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; <span id="currentYear"></span> Bidiex. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top ripple" data-i18n-aria="btn.totop" aria-label="Volver arriba">
+        ↑
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Página No Encontrada | Bidiex</title>
+    <meta name="theme-color" content="#050608">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+        }
+        
+        .error-content {
+            max-width: 500px;
+        }
+        
+        .error-code {
+            font-size: clamp(80px, 15vw, 150px);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.04em;
+        }
+        
+        .error-content h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .error-content p {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Background Layers -->
+    <div class="bg-layers" aria-hidden="true">
+        <div class="bg-glow blue-glow" style="top: 30%; left: 30%; opacity: 0.1;"></div>
+        <div class="bg-noise"></div>
+    </div>
+
+    <div class="error-page">
+        <div class="error-content">
+            <div class="error-code">404</div>
+            <h1 data-i18n="404.title">Página no encontrada</h1>
+            <p data-i18n="404.desc">La página que estás buscando no existe o ha sido movida.</p>
+            <a href="/" class="btn btn-primary ripple" data-i18n="404.btn">Volver al Inicio</a>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+    <script>
+        // Simple ripple effect for 404 page
+        const btn = document.querySelector('.ripple');
+        if (btn) {
+            btn.addEventListener('mousedown', function(e) {
+                const rect = this.getBoundingClientRect();
+                const circle = document.createElement('span');
+                circle.classList.add('ripple-effect');
+                circle.style.left = `${e.clientX - rect.left}px`;
+                circle.style.top = `${e.clientY - rect.top}px`;
+                this.appendChild(circle);
+                setTimeout(() => circle.remove(), 600);
+            });
+        }
+    </script>
+</body>
+</html>
