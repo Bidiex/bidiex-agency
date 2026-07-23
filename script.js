@@ -26,8 +26,8 @@
                 
                 // Hero
                 "hero.badge": "✦ Estudio Independiente de Software",
-                "hero.title": "Construyendo Productos Digitales que Ayudan a las Empresas a Crecer.",
-                "hero.subtitle": "Ingeniería de precisión y diseño premium combinados para construir software, soluciones de automatización y herramientas escalables.",
+                "hero.title": "Construimos Productos Digitales que Impulsan Negocios.",
+                "hero.subtitle": "Ingeniería de software, diseño de producto y automatización combinados para crear soluciones digitales escalables que resuelven problemas reales y generan valor a largo plazo.",
                 "hero.ctaPrimary": "Ver Proyectos",
                 "hero.ctaSecondary": "Contáctanos",
                 
@@ -46,28 +46,17 @@
                 
                 // Projects
                 "projects.label": "[ Proyectos ]",
-                "projects.title": "Trabajo Seleccionado",
-                "status.active": "Activo",
-                "status.development": "En Desarrollo",
-                "status.planning": "En Planificación",
-                "status.research": "Investigación",
-                "project.explore": "Explorar →",
-                "project.traego.desc": "Plataforma digital enfocada en la optimización de procesos empresariales.",
-                "project.traego.aria": "Ver proyecto TraeGo",
-                "project.carcopilot.desc": "Plataforma de gestión de gastos para vehículos.",
-                "project.carcopilot.aria": "Ver proyecto CarCopilot",
-                "project.invio.desc": "Plataforma de invitaciones digitales.",
-                "project.invio.aria": "Ver proyecto Invio",
-                "project.sellogo.desc": "Plataforma de lealtad digital para negocios locales.",
-                "project.sellogo.aria": "Ver proyecto SelloGo",
-                "tag.webapp": "Web App",
-                "tag.optimization": "Optimización",
-                "tag.mobileapp": "Mobile App",
-                "tag.management": "Gestión",
-                "tag.platform": "Plataforma",
-                "tag.events": "Eventos",
-                "tag.loyalty": "Lealtad",
-                "tag.localbiz": "Negocio Local",
+                "projects.title": "Nuestros Proyectos",
+                "status.active": "En producción",
+                "status.dev": "En desarrollo",
+                "project.traego.tagline": "Plataforma SaaS B2B2C de gestión integral de gastronegocios",
+                "project.albumcorp.tagline": "Plataforma SaaS B2B de álbumes de colección estilo Panini para empresas",
+                "project.invio.tagline": "Servicio B2C de invitaciones digitales para todo tipo de eventos",
+                "project.sellogo.tagline": "Plataforma SaaS B2B2C de tarjetas de fidelización digitales",
+                "project.carcopilot.tagline": "App B2C de gestión inteligente de gastos vehiculares potenciada con IA",
+                "project.visit": "Visitar sitio",
+                "project.view": "Ver proyecto",
+                "project.soon": "Próximamente",
                 
                 // Services
                 "services.label": "[ Estudio ]",
@@ -81,18 +70,18 @@
                 "srv.landing.title": "Landing Pages",
                 "srv.consulting.title": "Consultoría Técnica",
                 
-                // Founder
-                "founder.label": "[ Fundador ]",
-                "founder.role1": "Desarrollador de Software",
-                "founder.role2": "Diseñador",
-                "founder.role3": "Creador de Productos Digitales",
-                "founder.bio": "Tengo una profunda pasión por construir software útil y bellamente diseñado. Me enfoco en cerrar la brecha entre una experiencia de usuario excepcional y una arquitectura técnica robusta.",
-                "founder.skill3": "Diseño UI",
-                "founder.skill4": "Branding",
-                "founder.skill5": "Estrategia de Producto",
-                "founder.skill6": "Automatización IA",
-                "founder.email": "Correo",
-                "founder.social.email": "Correo Electrónico",
+                // Stack
+                "stack.label":   "[ Stack ]",
+                "stack.title":   "Construido con las herramientas correctas",
+                "stack.subtitle":"Cada proyecto se desarrolla sobre una base tecnológica moderna, escalable y probada en producción.",
+                "stack.js":      "Lenguaje principal del ecosistema. Usado tanto en frontend como en lógica de negocio del lado del servidor.",
+                "stack.html":    "Estructura semántica, accesible y optimizada para SEO en cada interfaz que construimos.",
+                "stack.css":     "Diseño visual preciso, animaciones fluidas y experiencias responsivas sin depender de frameworks pesados.",
+                "stack.react":   "Desarrollo de aplicaciones móviles nativas para iOS y Android desde una sola base de código.",
+                "stack.supabase":"Backend como servicio: base de datos PostgreSQL, autenticación, almacenamiento y Edge Functions en un solo lugar.",
+                "stack.expo":    "Plataforma que acelera el desarrollo móvil con React Native, simplificando builds y distribución.",
+                "stack.vite":    "Herramienta de build ultrarrápida. Arquitectura MPA que estructura proyectos web modernos y escalables.",
+                "stack.node":    "Entorno de ejecución para servicios backend, scripts de automatización y Edge Functions serverless.",
                 
                 // Process
                 "process.label": "[ Proceso ]",
@@ -128,21 +117,29 @@
                 "contact.label": "[ Consultas ]",
                 "contact.title": "Construyamos algo.",
                 "contact.subtitle": "Inicia una conversación directamente vía WhatsApp.",
-                "contact.name": "Nombre",
-                "contact.name.placeholder": "Juan Pérez",
-                "contact.company": "Empresa",
-                "contact.company.placeholder": "Acme Corp",
-                "contact.projectType": "Tipo de Proyecto",
-                "contact.select.default": "Selecciona una opción",
-                "contact.select.opt1": "Aplicación Web",
-                "contact.select.opt2": "Aplicación Móvil",
-                "contact.select.opt3": "Landing Page",
-                "contact.select.opt4": "Diseño UI/UX",
-                "contact.select.opt5": "Automatización",
-                "contact.select.opt6": "Otro",
-                "contact.message": "Mensaje",
-                "contact.message.placeholder": "Cuéntanos sobre tu proyecto...",
-                "contact.submit": "Iniciar Conversación →",
+                "contact.service": "¿Qué servicio te interesa?*",
+                "contact.service.opt1": "Tecnología",
+                "contact.service.opt2": "Marketing Digital",
+                "contact.service.opt3": "Diseño",
+                "contact.budget": "Presupuesto mensual*",
+                "contact.budget.opt1": "200.000 COP - 400.000 COP",
+                "contact.budget.opt2": "400.000 COP - 800.000 COP",
+                "contact.budget.opt3": "800.000 COP - 1.000.000 COP",
+                "contact.budget.opt4": ">1.000.000 COP",
+                "contact.name": "Nombre*",
+                "contact.name.placeholder": "Ej. Juan Pérez",
+                "contact.company": "Compañía",
+                "contact.company.placeholder": "Ej. Acme Corp",
+                "contact.email": "Correo*",
+                "contact.email.placeholder": "juan@ejemplo.com",
+                "contact.phone": "Teléfono*",
+                "contact.project": "Cuéntanos sobre tu proyecto",
+                "contact.project.placeholder": "Describe brevemente lo que quieres construir...",
+                "contact.source": "¿Donde escuchaste sobre nosotros?",
+                "contact.source.placeholder": "Ej. Google, LinkedIn, Referencia",
+                "contact.terms": "He leído y acepto la ",
+                "contact.terms.link": "Política de Tratamiento de Datos Personales",
+                "contact.submit": "Enviar",
                 
                 // Footer & Utils
                 "footer.tag": "Agencia Digital",
@@ -169,8 +166,8 @@
                 
                 // Hero
                 "hero.badge": "✦ Independent Software Studio",
-                "hero.title": "Building Digital Products That Help Businesses Grow.",
-                "hero.subtitle": "Precision engineering and premium design combined to build software, automation solutions, and scalable tools.",
+                "hero.title": "We Build Digital Products that Drive Businesses.",
+                "hero.subtitle": "Software engineering, product design, and automation combined to create scalable digital solutions that solve real problems and generate long-term value.",
                 "hero.ctaPrimary": "View Projects",
                 "hero.ctaSecondary": "Contact Us",
                 
@@ -189,28 +186,17 @@
                 
                 // Projects
                 "projects.label": "[ Projects ]",
-                "projects.title": "Selected Work",
-                "status.active": "Active",
-                "status.development": "Development",
-                "status.planning": "Planning",
-                "status.research": "Research",
-                "project.explore": "Explore →",
-                "project.traego.desc": "Digital platform focused on business process optimization.",
-                "project.traego.aria": "View TraeGo project",
-                "project.carcopilot.desc": "Vehicle expense management platform.",
-                "project.carcopilot.aria": "View CarCopilot project",
-                "project.invio.desc": "Digital invitation platform.",
-                "project.invio.aria": "View Invio project",
-                "project.sellogo.desc": "Digital loyalty platform for local businesses.",
-                "project.sellogo.aria": "View SelloGo project",
-                "tag.webapp": "Web App",
-                "tag.optimization": "Optimization",
-                "tag.mobileapp": "Mobile App",
-                "tag.management": "Management",
-                "tag.platform": "Platform",
-                "tag.events": "Events",
-                "tag.loyalty": "Loyalty",
-                "tag.localbiz": "Local Biz",
+                "projects.title": "Our projects",
+                "status.active": "Live",
+                "status.dev": "In development",
+                "project.traego.tagline": "B2B2C SaaS platform for full restaurant business management",
+                "project.albumcorp.tagline": "B2B SaaS platform for Panini-style corporate sticker albums",
+                "project.invio.tagline": "B2C digital invitation service for all types of events",
+                "project.sellogo.tagline": "B2B2C SaaS platform for digital loyalty cards",
+                "project.carcopilot.tagline": "AI-powered B2C app for intelligent vehicle expense tracking",
+                "project.visit": "Visit site",
+                "project.view": "View project",
+                "project.soon": "Coming soon",
                 
                 // Services
                 "services.label": "[ Studio ]",
@@ -224,18 +210,18 @@
                 "srv.landing.title": "Landing Pages",
                 "srv.consulting.title": "Technical Consulting",
                 
-                // Founder
-                "founder.label": "[ Founder ]",
-                "founder.role1": "Software Developer",
-                "founder.role2": "Designer",
-                "founder.role3": "Digital Product Builder",
-                "founder.bio": "I have a deep passion for building useful, beautifully designed software. I focus on bridging the gap between exceptional user experience and robust technical architecture.",
-                "founder.skill3": "UI Design",
-                "founder.skill4": "Branding",
-                "founder.skill5": "Product Strategy",
-                "founder.skill6": "AI Automation",
-                "founder.email": "Email",
-                "founder.social.email": "Email",
+                // Stack
+                "stack.label":   "[ Stack ]",
+                "stack.title":   "Built with the right tools",
+                "stack.subtitle":"Every project is built on a modern, scalable technology foundation proven in production.",
+                "stack.js":      "Core language of the ecosystem. Used in both frontend interfaces and server-side business logic.",
+                "stack.html":    "Semantic, accessible, SEO-optimized structure in every interface we build.",
+                "stack.css":     "Precise visual design, fluid animations and responsive experiences without heavy frameworks.",
+                "stack.react":   "Native mobile app development for iOS and Android from a single codebase.",
+                "stack.supabase":"Backend as a service: PostgreSQL database, authentication, storage and Edge Functions in one place.",
+                "stack.expo":    "Platform that accelerates React Native mobile development, simplifying builds and distribution.",
+                "stack.vite":    "Ultra-fast build tool. MPA architecture that structures modern, scalable web projects.",
+                "stack.node":    "Runtime for backend services, automation scripts and serverless Edge Functions.",
                 
                 // Process
                 "process.label": "[ Process ]",
@@ -271,21 +257,29 @@
                 "contact.label": "[ Inquiries ]",
                 "contact.title": "Let's build something.",
                 "contact.subtitle": "Start a conversation directly via WhatsApp.",
-                "contact.name": "Name",
-                "contact.name.placeholder": "John Doe",
+                "contact.service": "What service are you interested in?*",
+                "contact.service.opt1": "Technology",
+                "contact.service.opt2": "Digital Marketing",
+                "contact.service.opt3": "Design",
+                "contact.budget": "Monthly budget*",
+                "contact.budget.opt1": "200.000 COP - 400.000 COP",
+                "contact.budget.opt2": "400.000 COP - 800.000 COP",
+                "contact.budget.opt3": "800.000 COP - 1.000.000 COP",
+                "contact.budget.opt4": ">1.000.000 COP",
+                "contact.name": "Name*",
+                "contact.name.placeholder": "e.g. John Doe",
                 "contact.company": "Company",
-                "contact.company.placeholder": "Acme Corp",
-                "contact.projectType": "Project Type",
-                "contact.select.default": "Select an option",
-                "contact.select.opt1": "Web Application",
-                "contact.select.opt2": "Mobile App",
-                "contact.select.opt3": "Landing Page",
-                "contact.select.opt4": "UI/UX Design",
-                "contact.select.opt5": "Automation",
-                "contact.select.opt6": "Other",
-                "contact.message": "Message",
-                "contact.message.placeholder": "Tell us about your project...",
-                "contact.submit": "Start Conversation →",
+                "contact.company.placeholder": "e.g. Acme Corp",
+                "contact.email": "Email*",
+                "contact.email.placeholder": "john@example.com",
+                "contact.phone": "Phone*",
+                "contact.project": "Tell us about your project",
+                "contact.project.placeholder": "Briefly describe what you want to build...",
+                "contact.source": "Where did you hear about us?",
+                "contact.source.placeholder": "e.g. Google, LinkedIn, Referral",
+                "contact.terms": "I have read and accept the ",
+                "contact.terms.link": "Personal Data Processing Policy",
+                "contact.submit": "Submit",
                 
                 // Footer & Utils
                 "footer.tag": "Digital Agency",
@@ -592,7 +586,7 @@
     // 8. Contact — WhatsApp URL builder
     const Contact = (function() {
         const form = document.getElementById('contactForm');
-        const phone = '573180779665';
+        const phone = '573123174919';
 
         const init = () => {
             if (!form) return;
@@ -602,23 +596,42 @@
                 
                 const name = document.getElementById('name').value.trim();
                 const company = document.getElementById('company').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const userPhone = document.getElementById('phone').value.trim();
+                const project = document.getElementById('project').value.trim();
+                const source = document.getElementById('source').value.trim();
                 
-                // Get the display text of the selected option, not the value, so it matches the language
-                const selectEl = document.getElementById('projectType');
-                const projectType = selectEl.options[selectEl.selectedIndex].text;
+                // Get selected radios
+                const serviceElement = document.querySelector('input[name="service"]:checked');
+                const budgetElement = document.querySelector('input[name="budget"]:checked');
                 
-                const message = document.getElementById('message').value.trim();
+                const service = serviceElement ? serviceElement.value : 'No especificado';
+                const budget = budgetElement ? budgetElement.value : 'No especificado';
 
                 let text = '';
                 
                 if (currentLang === 'es') {
-                    text = `Hola Andrés,\n\nMi nombre es ${name}.\n\nEmpresa: ${company}\nProyecto: ${projectType}\n\nMensaje:\n${message}\n\nEncontré Bidiex a través de su sitio web y me gustaría hablar sobre un proyecto.`;
+                    text = `Hola, mi nombre es ${name}.\n\n` +
+                           (company ? `🏢 *Compañía:* ${company}\n` : '') +
+                           `✉️ *Correo:* ${email}\n` +
+                           `📱 *Teléfono:* ${userPhone}\n\n` +
+                           `✨ *Servicio de interés:* ${service}\n` +
+                           `💰 *Presupuesto mensual:* ${budget}\n\n` +
+                           (project ? `📝 *Sobre el proyecto:*\n${project}\n\n` : '') +
+                           (source ? `🔍 *Nos encontró por:* ${source}` : '');
                 } else {
-                    text = `Hello Andrés,\n\nMy name is ${name}.\n\nCompany: ${company}\nProject: ${projectType}\n\nMessage:\n${message}\n\nI found Bidiex through your website and would like to discuss a project.`;
+                    text = `Hello, my name is ${name}.\n\n` +
+                           (company ? `🏢 *Company:* ${company}\n` : '') +
+                           `✉️ *Email:* ${email}\n` +
+                           `📱 *Phone:* ${userPhone}\n\n` +
+                           `✨ *Service of interest:* ${service}\n` +
+                           `💰 *Monthly budget:* ${budget}\n\n` +
+                           (project ? `📝 *About the project:*\n${project}\n\n` : '') +
+                           (source ? `🔍 *Found us through:* ${source}` : '');
                 }
                 
                 const encodedText = encodeURIComponent(text);
-                const url = `https://wa.me/${phone}?text=${encodedText}`;
+                const url = `https://api.whatsapp.com/send/?phone=${phone}&text=${encodedText}`;
                 
                 window.open(url, '_blank');
             });
@@ -627,74 +640,342 @@
         return { init };
     })();
 
-    // 9. Projects Carousel Controls
-    const ProjectsCarousel = (function() {
-        const carousel = document.getElementById('projectsCarousel');
-        const prevBtn = document.getElementById('projectsPrev');
-        const nextBtn = document.getElementById('projectsNext');
-
-        const updateButtonState = () => {
-            if (!carousel || !prevBtn || !nextBtn) return;
-            prevBtn.disabled = carousel.scrollLeft <= 0;
-            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-            // Use Math.ceil to avoid floating point issues
-            nextBtn.disabled = Math.ceil(carousel.scrollLeft) >= maxScroll;
-        };
-
-        const scrollByCard = (direction) => {
-            const card = carousel.querySelector('.project-card');
-            if (card) {
-                const gap = 16;
-                const amount = (card.offsetWidth + gap) * direction;
-                carousel.scrollBy({ left: amount, behavior: 'smooth' });
-            }
+    // 9. Motion Library
+    const MotionLibrary = (function() {
+        const softwareContainer = document.getElementById('motion-software');
+        
+        let softwareTimer;
+        
+        const runSoftwareSequence = () => {
+            if (!softwareContainer) return;
+            
+            // Clean up old classes
+            softwareContainer.classList.remove('step-1', 'step-2', 'step-3', 'step-4', 'step-5');
+            
+            // Step 1: Fade in editor and lines (0.5s)
+            setTimeout(() => {
+                softwareContainer.classList.add('step-1');
+            }, 500);
+            
+            // Step 2: Cursor appears and blinks (2.5s)
+            setTimeout(() => {
+                softwareContainer.classList.add('step-2');
+            }, 2500);
+            
+            // Step 3: Type new block (3.5s)
+            setTimeout(() => {
+                softwareContainer.classList.add('step-3');
+            }, 3500);
+            
+            // Step 4: Highlight sweeps (5.5s)
+            setTimeout(() => {
+                softwareContainer.classList.add('step-4');
+            }, 5500);
+            
+            // Step 5: Check pops in, glow increases (6.5s)
+            setTimeout(() => {
+                softwareContainer.classList.add('step-5');
+            }, 6500);
+            
+            // Reset (9s)
+            setTimeout(() => {
+                softwareContainer.classList.remove('step-1', 'step-2', 'step-3', 'step-4', 'step-5');
+            }, 9000);
         };
 
         const init = () => {
-            if (!carousel) return;
-
-            if (prevBtn && nextBtn) {
-                prevBtn.addEventListener('click', () => scrollByCard(-1));
-                nextBtn.addEventListener('click', () => scrollByCard(1));
-                carousel.addEventListener('scroll', updateButtonState);
-                window.addEventListener('resize', updateButtonState);
-                setTimeout(updateButtonState, 100);
+            // Check for reduced motion
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReduced) return;
+            
+            if (softwareContainer) {
+                runSoftwareSequence();
+                setInterval(runSoftwareSequence, 10000); // 10s loop
             }
-
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-
-            carousel.addEventListener('mousedown', (e) => {
-                isDown = true;
-                carousel.style.cursor = 'grabbing';
-                startX = e.pageX - carousel.offsetLeft;
-                scrollLeft = carousel.scrollLeft;
-            });
-
-            carousel.addEventListener('mouseleave', () => {
-                isDown = false;
-                carousel.style.cursor = 'grab';
-            });
-
-            carousel.addEventListener('mouseup', () => {
-                isDown = false;
-                carousel.style.cursor = 'grab';
-            });
-
-            carousel.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - carousel.offsetLeft;
-                const walk = (x - startX) * 1.5;
-                carousel.scrollLeft = scrollLeft - walk;
-            });
         };
 
         return { init };
     })();
 
-    // 10. Footer — dynamic year
+    // 9. Projects Module
+    const Projects = (() => {
+
+      // ── Project data ──────────────────────────────
+      const data = {
+        traego: {
+          name: 'TraeGo',
+          status: 'active',
+          statusLabel: 'En producción',
+          tagline: 'Plataforma SaaS B2B2C de gestión integral de gastronegocios',
+          tags: ['Web App', 'Gestión de gastronegocios'],
+          features: [
+            'Catálogo / Menú digital',
+            'Módulo de domiciliarios',
+            'Facturación',
+            'Seguimiento de comanda',
+            'Personalización de marca',
+            'Página de enlaces',
+            'KPIs'
+          ],
+          url: 'https://www.traego.app',
+          hasUrl: true
+        },
+        albumcorp: {
+          name: 'AlbumCorp',
+          status: 'active',
+          statusLabel: 'En producción',
+          tagline: 'Plataforma SaaS B2B de álbumes de colección estilo Panini para empresas',
+          tags: ['Web App', 'Entretenimiento', 'Cultura organizacional'],
+          features: [
+            'Creación personalizada de álbum',
+            'Intercambio de laminitas',
+            'Obtención de medallas y logros',
+            'Ranking de coleccionistas',
+            'Parametrización de entrega de sobres',
+            '3 tipos de láminas',
+            'Autenticación por usuario'
+          ],
+          url: 'https://albumcorp.vercel.app',
+          hasUrl: true
+        },
+        invio: {
+          name: 'Invio',
+          status: 'dev',
+          statusLabel: 'En desarrollo',
+          tagline: 'Servicio B2C de invitaciones digitales para todo tipo de eventos',
+          tags: ['Web', 'Eventos'],
+          features: [
+            'Confirmación de asistentes',
+            'Galería de fotos',
+            'Dress code',
+            'Música personalizada',
+            'Invitación animada',
+            'Ubicación en Google Maps',
+            'Cuenta regresiva al evento'
+          ],
+          url: null,
+          hasUrl: false
+        },
+        sellogo: {
+          name: 'SelloGo',
+          status: 'dev',
+          statusLabel: 'En desarrollo',
+          tagline: 'Plataforma SaaS B2B2C de tarjetas de fidelización digitales',
+          tags: ['Web App', 'Fidelización de clientes'],
+          features: [
+            'Escaneo por NFC o QR en punto de atención',
+            'Multitarjetas de fidelización',
+            'Registro de usuarios',
+            'Activación antifraude de ventana de escaneo'
+          ],
+          url: null,
+          hasUrl: false
+        },
+        carcopilot: {
+          name: 'CarCopilot',
+          status: 'dev',
+          statusLabel: 'En desarrollo',
+          tagline: 'App B2C de gestión inteligente de gastos vehiculares potenciada con IA',
+          tags: ['App', 'Seguimiento de gastos'],
+          features: [
+            'Asistente activo de IA',
+            'Historial y seguimiento de gastos',
+            'Seguimiento del estado del vehículo',
+            'Alertas de vencimiento de impuestos',
+            'Indicadores de rendimiento',
+            'Soporte para vehículos de combustión y eléctricos'
+          ],
+          url: null,
+          hasUrl: false
+        }
+      };
+
+      // ── DOM refs ──────────────────────────────────
+      const track    = document.getElementById('projectsCarousel');
+      const prevBtn  = document.getElementById('projectsPrev');
+      const nextBtn  = document.getElementById('projectsNext');
+      const modal    = document.getElementById('projectModal');
+      const overlay  = document.getElementById('modalOverlay');
+      const closeBtn = document.getElementById('modalClose');
+
+      // ── Carousel ──────────────────────────────────
+      const getStep = () => {
+        const card = track?.querySelector('.project-card');
+        if (!card) return 580;
+        return card.offsetWidth + 20;
+      };
+
+      const updateArrows = () => {
+        if (!track || !prevBtn || !nextBtn) return;
+        const max = track.scrollWidth - track.clientWidth;
+        prevBtn.disabled = track.scrollLeft <= 1;
+        nextBtn.disabled = track.scrollLeft >= max - 1;
+      };
+
+      const initCarousel = () => {
+        if (!track) return;
+
+        prevBtn?.addEventListener('click', () => {
+          track.scrollBy({ left: -getStep(), behavior: 'smooth' });
+        });
+
+        nextBtn?.addEventListener('click', () => {
+          track.scrollBy({ left: getStep(), behavior: 'smooth' });
+        });
+
+        track.addEventListener('scroll', updateArrows, { passive: true });
+        updateArrows();
+
+        // Drag to scroll on desktop
+        let isDown = false, startX = 0, scrollStart = 0;
+
+        track.addEventListener('mousedown', e => {
+          isDown = true;
+          track.style.cursor = 'grabbing';
+          startX = e.pageX - track.offsetLeft;
+          scrollStart = track.scrollLeft;
+        });
+
+        ['mouseleave','mouseup'].forEach(evt => {
+          track.addEventListener(evt, () => {
+            isDown = false;
+            track.style.cursor = 'grab';
+          });
+        });
+
+        track.addEventListener('mousemove', e => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x    = e.pageX - track.offsetLeft;
+          const walk = (x - startX) * 1.5;
+          track.scrollLeft = scrollStart - walk;
+        });
+      };
+
+      // ── Modal ──────────────────────────────────────
+      const openModal = (key) => {
+        const p = data[key];
+        if (!p || !modal) return;
+
+        document.getElementById('modalStatus').className =
+          `status-badge status-${p.status}`;
+        document.getElementById('modalStatus').textContent = p.statusLabel;
+        document.getElementById('modalProjectName').textContent = p.name;
+        document.getElementById('modalTagline').textContent    = p.tagline;
+
+        const tagsEl = document.getElementById('modalTags');
+        tagsEl.innerHTML = p.tags
+          .map(t => `<span class="project-modal__tag">${t}</span>`)
+          .join('');
+
+        const featuresEl = document.getElementById('modalFeatures');
+        featuresEl.innerHTML = p.features
+          .map(f => `<li>${f}</li>`)
+          .join('');
+
+        const ctaEl = document.getElementById('modalCta');
+        const ctaTextEl = document.getElementById('modalCtaText');
+        if (p.hasUrl) {
+          ctaEl.href = p.url;
+          if(ctaTextEl) {
+            ctaTextEl.setAttribute('data-i18n', 'project.visit');
+            ctaTextEl.textContent = currentLang === 'en' ? 'Visit site' : 'Visitar sitio';
+          }
+          ctaEl.classList.remove('disabled');
+        } else {
+          ctaEl.removeAttribute('href');
+          if(ctaTextEl) {
+            ctaTextEl.setAttribute('data-i18n', 'project.soon');
+            ctaTextEl.textContent = currentLang === 'en' ? 'Coming soon' : 'Próximamente';
+          }
+          ctaEl.classList.add('disabled');
+        }
+
+        modal.removeAttribute('hidden');
+        document.body.style.overflow = 'hidden';
+        closeBtn?.focus();
+      };
+
+      const closeModal = () => {
+        if (!modal) return;
+        modal.setAttribute('hidden', '');
+        document.body.style.overflow = '';
+      };
+
+      const initModal = () => {
+        // Open on card click or Enter/Space
+        document.querySelectorAll('.project-card').forEach(card => {
+          card.addEventListener('click', () => {
+            openModal(card.dataset.project);
+          });
+          card.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openModal(card.dataset.project);
+            }
+          });
+        });
+
+        // Close
+        closeBtn?.addEventListener('click', closeModal);
+        overlay?.addEventListener('click', closeModal);
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape') closeModal();
+        });
+      };
+
+      // ── Init ──────────────────────────────────────
+      const init = () => {
+        initCarousel();
+        initModal();
+      };
+
+      return { init };
+    })();
+
+    // 10. Stack Carousel
+    const Stack = (function() {
+      const init = () => {
+        const stackGrid = document.querySelector('.stack-grid');
+        const stackCards = document.querySelectorAll('.stack-card');
+        
+        if (!stackGrid || stackCards.length === 0) return;
+
+        const observerOptions = {
+          root: stackGrid,
+          rootMargin: '0px',
+          threshold: 0.6
+        };
+
+        const cardObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-active');
+            } else {
+              entry.target.classList.remove('is-active');
+            }
+          });
+        }, observerOptions);
+
+        const checkObserver = () => {
+          if (window.innerWidth <= 991) {
+            stackCards.forEach(card => cardObserver.observe(card));
+          } else {
+            stackCards.forEach(card => {
+              cardObserver.unobserve(card);
+              card.classList.remove('is-active');
+            });
+          }
+        };
+
+        window.addEventListener('resize', checkObserver, { passive: true });
+        checkObserver();
+      };
+      
+      return { init };
+    })();
+
+    // 11. Footer — dynamic year
     const FooterYear = (function() {
         const yearSpan = document.getElementById('currentYear');
         
@@ -717,8 +998,10 @@
         Ripple.init();
         ScrollProgress.init();
         BackToTop.init();
-        ProjectsCarousel.init();
+        Projects.init();
         Contact.init();
+        MotionLibrary.init();
+        Stack.init();
         FooterYear.init();
     });
 
