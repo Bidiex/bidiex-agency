@@ -1,0 +1,78 @@
+---
+/**
+ * Software Development — the original code-editor illustration, kept intact
+ * visually but re-driven by CSS keyframes instead of JS step classes: a block
+ * is typed in, the highlight sweeps it, the build logs land and the check pops.
+ *
+ * The canvas is 520 wide (not the 400 of the narrow cards) so the editor fills
+ * a span-7 card instead of floating in the middle of it.
+ */
+---
+<svg class="motion-svg mv mv--dev" viewBox="0 0 520 250"
+     preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="mv-dev-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+    </radialGradient>
+    <clipPath id="mv-dev-typing">
+      <rect class="mv-a mv-dev__mask" x="0" y="48" width="0" height="40" />
+    </clipPath>
+  </defs>
+
+  <circle class="mv-a mv-glow" cx="260" cy="140" r="130" fill="url(#mv-dev-glow)" />
+
+  <g transform="translate(40, 34)">
+    <g class="mv-a mv-float">
+      <rect width="440" height="208" rx="10" fill="#0A0A0A" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+
+      <!-- Toolbar -->
+      <path d="M0 24 L440 24" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+      <circle cx="16" cy="12" r="3" fill="#FF5F56" />
+      <circle cx="28" cy="12" r="3" fill="#FFBD2E" />
+      <circle cx="40" cy="12" r="3" fill="#27C93F" />
+
+      <!-- Sidebar -->
+      <rect x="0" y="24" width="60" height="184" fill="rgba(255,255,255,0.02)" />
+      <rect class="mv-a mv-dev__pulse" x="12" y="40" width="36" height="4" rx="2" fill="rgba(255,255,255,0.1)" />
+      <rect x="12" y="52" width="24" height="4" rx="2" fill="rgba(255,255,255,0.05)" />
+      <rect x="12" y="64" width="30" height="4" rx="2" fill="rgba(255,255,255,0.05)" />
+      <rect x="12" y="76" width="26" height="4" rx="2" fill="rgba(255,255,255,0.05)" />
+
+      <!-- Code lines -->
+      <g transform="translate(80, 40)">
+        <rect x="0" y="0" width="180" height="6" rx="3" fill="rgba(255,255,255,0.2)" />
+        <rect x="0" y="16" width="130" height="6" rx="3" fill="var(--accent)" opacity="0.8" />
+        <rect x="0" y="32" width="240" height="6" rx="3" fill="rgba(255,255,255,0.1)" />
+
+        <!-- Highlight sweeper -->
+        <rect class="mv-a mv-dev__highlight" x="-10" y="44" width="260" height="30" rx="4" fill="var(--accent)" />
+
+        <!-- Typed block, revealed through the clip mask -->
+        <g clip-path="url(#mv-dev-typing)">
+          <rect x="0" y="48" width="210" height="6" rx="3" fill="rgba(255,255,255,0.2)" />
+          <rect x="16" y="64" width="140" height="6" rx="3" fill="rgba(255,255,255,0.15)" />
+          <rect x="0" y="80" width="95" height="6" rx="3" fill="rgba(255,255,255,0.1)" />
+        </g>
+
+        <!-- Caret -->
+        <rect class="mv-a mv-dev__cursor" x="0" y="48" width="6" height="12" fill="var(--accent)" />
+      </g>
+
+      <!-- Terminal panel -->
+      <path d="M60 158 L440 158" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+      <rect class="mv-a mv-dev__log mv-dev__log--1" x="80" y="172" width="60" height="4" rx="2" fill="rgba(255,255,255,0.3)" />
+      <rect class="mv-a mv-dev__log mv-dev__log--2" x="80" y="184" width="160" height="4" rx="2" fill="rgba(255,255,255,0.1)" />
+
+      <!-- Build passed -->
+      <g transform="translate(396, 166)">
+        <g class="mv-a mv-dev__check">
+          <circle cx="12" cy="12" r="11" fill="var(--accent)" fill-opacity="0.12" stroke="var(--accent)" stroke-opacity="0.35" stroke-width="1" />
+          <path d="M7 12 L10.5 15.5 L17 8.5" fill="none" stroke="var(--accent)" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

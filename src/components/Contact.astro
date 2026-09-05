@@ -1,0 +1,89 @@
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="contact-card reveal card-hover">
+            <h2 data-i18n="contact.title">Construyamos algo.</h2>
+            <p data-i18n="contact.subtitle">Inicia una conversación directamente vía WhatsApp.</p>
+            
+            <form id="contactForm" class="contact-form new-contact-form">
+                <div class="form-group full-width">
+                    <label data-i18n="contact.service">¿Qué servicio te interesa?*</label>
+                    <div class="radio-chips">
+                        <label class="radio-chip">
+                            <input type="radio" name="service" value="Tecnología" required>
+                            <span data-i18n="contact.service.opt1">Tecnología</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="service" value="Marketing Digital">
+                            <span data-i18n="contact.service.opt2">Marketing Digital</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="service" value="Diseño">
+                            <span data-i18n="contact.service.opt3">Diseño</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group full-width" style="margin-top: 16px;">
+                    <label data-i18n="contact.budget">Presupuesto mensual*</label>
+                    <div class="radio-chips">
+                        <label class="radio-chip">
+                            <input type="radio" name="budget" value="200k-400k" required>
+                            <span data-i18n="contact.budget.opt1">200.000 COP - 400.000 COP</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="budget" value="400k-800k">
+                            <span data-i18n="contact.budget.opt2">400.000 COP - 800.000 COP</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="budget" value="800k-1m">
+                            <span data-i18n="contact.budget.opt3">800.000 COP - 1.000.000 COP</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="budget" value="1m+">
+                            <span data-i18n="contact.budget.opt4">&gt;1.000.000 COP</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" data-i18n="contact.name">Nombre*</label>
+                    <input type="text" id="name" name="name" class="line-input" placeholder="Ej. Juan Pérez" data-i18n-placeholder="contact.name.placeholder" required>
+                </div>
+                <div class="form-group">
+                    <label for="company" data-i18n="contact.company">Compañía</label>
+                    <input type="text" id="company" name="company" class="line-input" placeholder="Ej. Acme Corp" data-i18n-placeholder="contact.company.placeholder">
+                </div>
+
+                <div class="form-group">
+                    <label for="email" data-i18n="contact.email">Correo*</label>
+                    <input type="email" id="email" name="email" class="line-input" placeholder="juan@ejemplo.com" data-i18n-placeholder="contact.email.placeholder" required>
+                </div>
+                <div class="form-group phone-group">
+                    <label for="phone" data-i18n="contact.phone">Teléfono*</label>
+                    <input type="tel" id="phone" name="phone" class="line-input" placeholder="3211234567" pattern="^3[0-9]{9}$" title="El teléfono debe tener 10 dígitos y empezar por 3" maxlength="10" minlength="10" required>
+                </div>
+
+                <div class="form-group full-width" style="margin-top: 16px;">
+                    <label for="project" data-i18n="contact.project">Cuéntanos sobre tu proyecto</label>
+                    <textarea id="project" name="project" class="line-input" rows="3" style="resize: none;" placeholder="Describe brevemente lo que quieres construir..." data-i18n-placeholder="contact.project.placeholder"></textarea>
+                </div>
+
+                <div class="form-group full-width" style="margin-top: 16px;">
+                    <label for="source" data-i18n="contact.source">¿Donde escuchaste sobre nosotros?</label>
+                    <input type="text" id="source" name="source" class="line-input" placeholder="Ej. Google, LinkedIn, Referencia" data-i18n-placeholder="contact.source.placeholder">
+                </div>
+
+                <div class="form-group full-width checkbox-group" style="margin-top: 24px;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="terms" required>
+                        <span><span data-i18n="contact.terms">He leído y acepto la</span> <a href="#" style="text-decoration: underline;" data-i18n="contact.terms.link">Política de Tratamiento de Datos Personales</a>.</span>
+                    </label>
+                </div>
+                
+                <div class="form-group full-width" style="margin-top: 32px; text-align: center;">
+                    <button type="submit" class="btn ripple form-submit" style="background: white; color: black; border: 1px solid black; padding: 12px 48px; border-radius: 50px; font-weight: 500;"><span data-i18n="contact.submit">Enviar</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,85 @@
+---
+/**
+ * Landing Pages — a page preview scrolling through hero → features → CTA
+ * while the performance score ring fills alongside it.
+ */
+---
+<svg class="motion-svg mv mv--landing" viewBox="0 0 400 250"
+     preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="mv-landing-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+    </radialGradient>
+    <clipPath id="mv-landing-viewport">
+      <rect x="34" y="66" width="228" height="164" />
+    </clipPath>
+  </defs>
+
+  <circle class="mv-a mv-glow" cx="190" cy="140" r="108" fill="url(#mv-landing-glow)" />
+
+  <g transform="translate(34, 40)">
+    <g class="mv-landing__frame">
+      <rect width="228" height="190" rx="10" fill="#0A0A0A" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+      <path d="M0 26 L228 26" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+      <circle cx="14" cy="13" r="3" fill="rgba(255,255,255,0.14)" />
+      <circle cx="25" cy="13" r="3" fill="rgba(255,255,255,0.10)" />
+      <rect x="42" y="8" width="96" height="10" rx="5" fill="rgba(255,255,255,0.05)" />
+    </g>
+  </g>
+
+  <!-- The page itself, taller than the frame and scrolled through it -->
+  <g clip-path="url(#mv-landing-viewport)">
+    <g transform="translate(34, 66)">
+    <g class="mv-a mv-landing__page">
+      <!-- Hero -->
+      <rect x="26" y="16"  width="130" height="11" rx="5.5" fill="rgba(255,255,255,0.22)" />
+      <rect x="26" y="35"  width="176" height="7"  rx="3.5" fill="rgba(255,255,255,0.10)" />
+      <rect x="26" y="48"  width="140" height="7"  rx="3.5" fill="rgba(255,255,255,0.10)" />
+      <rect x="26" y="70"  width="76"  height="24" rx="12"
+            fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-opacity="0.5" stroke-width="1" />
+      <rect x="112" y="70" width="58"  height="24" rx="12" fill="rgba(255,255,255,0.05)" />
+
+      <!-- Features -->
+      <rect x="26"  y="126" width="56" height="62" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+      <rect x="92"  y="126" width="56" height="62" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+      <rect x="158" y="126" width="56" height="62" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+      <circle cx="42"  cy="144" r="7" fill="var(--accent)" fill-opacity="0.4" />
+      <circle cx="108" cy="144" r="7" fill="rgba(255,255,255,0.16)" />
+      <circle cx="174" cy="144" r="7" fill="rgba(255,255,255,0.16)" />
+      <g fill="rgba(255,255,255,0.10)">
+        <rect x="36" y="162" width="36" height="5" rx="2.5" />
+        <rect x="36" y="172" width="24" height="5" rx="2.5" />
+        <rect x="102" y="162" width="36" height="5" rx="2.5" />
+        <rect x="102" y="172" width="28" height="5" rx="2.5" />
+        <rect x="168" y="162" width="32" height="5" rx="2.5" />
+        <rect x="168" y="172" width="20" height="5" rx="2.5" />
+      </g>
+
+      <!-- Closing CTA -->
+      <rect x="26" y="222" width="188" height="72" rx="10"
+            fill="var(--accent)" fill-opacity="0.07" stroke="var(--accent)" stroke-opacity="0.25" stroke-width="1" />
+      <rect x="46" y="242" width="118" height="9" rx="4.5" fill="rgba(255,255,255,0.20)" />
+      <rect x="74" y="262" width="62"  height="22" rx="11" fill="var(--accent)" fill-opacity="0.7" />
+    </g>
+    </g>
+  </g>
+
+  <!-- Performance score -->
+  <g transform="translate(330, 116)">
+    <circle r="34" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="6" />
+    <g transform="rotate(-90)">
+      <circle class="mv-a mv-landing__ring" r="34" fill="none" stroke="var(--accent)" stroke-width="6"
+              stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6" />
+    </g>
+    <g class="mv-a mv-landing__score">
+      <path d="M-9 1 L-2.5 7.5 L9.5 -5" fill="none" stroke="var(--accent)" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g transform="translate(0, 54)">
+      <rect class="mv-a mv-landing__stat mv-landing__stat--1" x="-30" y="0"  width="60" height="6" rx="3" fill="rgba(255,255,255,0.16)" />
+      <rect class="mv-a mv-landing__stat mv-landing__stat--2" x="-30" y="14" width="60" height="6" rx="3" fill="rgba(255,255,255,0.10)" />
+    </g>
+  </g>
+</svg>

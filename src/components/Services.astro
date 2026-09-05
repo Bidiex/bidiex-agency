@@ -1,0 +1,43 @@
+---
+import { services } from '../data/services.js';
+import MotionDesign from './motion/MotionDesign.astro';
+import MotionDev from './motion/MotionDev.astro';
+import MotionWeb from './motion/MotionWeb.astro';
+import MotionAuto from './motion/MotionAuto.astro';
+import MotionBrand from './motion/MotionBrand.astro';
+import MotionLanding from './motion/MotionLanding.astro';
+import MotionConsulting from './motion/MotionConsulting.astro';
+
+const visuals = {
+    design: MotionDesign,
+    dev: MotionDev,
+    web: MotionWeb,
+    auto: MotionAuto,
+    brand: MotionBrand,
+    landing: MotionLanding,
+    consulting: MotionConsulting,
+};
+---
+<section class="services" id="services">
+    <div class="container">
+        <h2 class="section-title reveal" data-i18n="services.title">Nuestras Capacidades</h2>
+
+        <div class="bento-grid">
+            {services.map((service) => {
+                const Visual = visuals[service.id];
+                return (
+                    <div class={`bento-card bento-span-${service.span} reveal card-hover`} id={`card-${service.id}`}>
+                        <div class="bento-header">
+                            <div class="bento-icon"><i data-lucide={service.icon}></i></div>
+                            <h3 class="bento-title" data-i18n={`srv.${service.id}.title`}>{service.title}</h3>
+                        </div>
+                        <p class="bento-desc" data-i18n={`srv.${service.id}.desc`}>{service.desc}</p>
+                        <div class="bento-visual motion-lib-container" id={`motion-${service.id}`}>
+                            <Visual />
+                        </div>
+                    </div>
+                );
+            })}
+        </div>
+    </div>
+</section>

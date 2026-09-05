@@ -1,0 +1,76 @@
+---
+/**
+ * Web Applications — a product dashboard alive with data: the nav indicator
+ * travels through the sidebar, the KPI meters breathe, the chart re-reads
+ * itself and a live dot pings in the corner.
+ */
+---
+<svg class="motion-svg mv mv--web" viewBox="0 0 400 250"
+     preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="mv-web-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle class="mv-a mv-glow" cx="200" cy="140" r="108" fill="url(#mv-web-glow)" />
+
+  <g transform="translate(50, 38)">
+    <g class="mv-a mv-float">
+      <rect width="300" height="198" rx="10" fill="#0A0A0A" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+
+      <!-- Chrome -->
+      <path d="M0 26 L300 26" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+      <circle cx="14" cy="13" r="3" fill="rgba(255,255,255,0.14)" />
+      <circle cx="25" cy="13" r="3" fill="rgba(255,255,255,0.10)" />
+      <circle cx="36" cy="13" r="3" fill="rgba(255,255,255,0.10)" />
+      <rect x="52" y="8" width="120" height="10" rx="5" fill="rgba(255,255,255,0.05)" />
+
+      <!-- Live indicator -->
+      <g transform="translate(272, 13)">
+        <circle class="mv-a mv-web__ping" r="4" fill="none" stroke="var(--accent)" stroke-width="1.5" />
+        <circle r="3" fill="var(--accent)" />
+      </g>
+
+      <!-- Sidebar -->
+      <rect x="0" y="26" width="66" height="172" fill="rgba(255,255,255,0.02)" />
+      <path d="M66 26 L66 198" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+      <g fill="rgba(255,255,255,0.10)">
+        <rect x="16" y="46" width="34" height="5" rx="2.5" />
+        <rect x="16" y="70" width="28" height="5" rx="2.5" />
+        <rect x="16" y="94" width="34" height="5" rx="2.5" />
+        <rect x="16" y="118" width="24" height="5" rx="2.5" />
+      </g>
+      <rect class="mv-a mv-web__nav" x="0" y="42" width="3" height="13" rx="1.5" fill="var(--accent)" />
+
+      <!-- KPI tiles -->
+      <g transform="translate(82, 42)">
+        <g>
+          <rect width="96" height="48" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+          <rect x="12" y="12" width="34" height="5" rx="2.5" fill="rgba(255,255,255,0.16)" />
+          <rect x="12" y="30" width="72" height="6" rx="3" fill="rgba(255,255,255,0.06)" />
+          <rect class="mv-a mv-web__meter mv-web__meter--1" x="12" y="30" width="72" height="6" rx="3" fill="var(--accent)" />
+        </g>
+        <g transform="translate(108, 0)">
+          <rect width="96" height="48" rx="8" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+          <rect x="12" y="12" width="26" height="5" rx="2.5" fill="rgba(255,255,255,0.16)" />
+          <rect x="12" y="30" width="72" height="6" rx="3" fill="rgba(255,255,255,0.06)" />
+          <rect class="mv-a mv-web__meter mv-web__meter--2" x="12" y="30" width="72" height="6" rx="3" fill="var(--accent-alt)" />
+        </g>
+      </g>
+
+      <!-- Chart -->
+      <g transform="translate(82, 110)">
+        <path d="M0 66 L204 66" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+        <rect class="mv-a mv-web__bar mv-web__bar--1" x="4"   y="0" width="22" height="66" rx="4" fill="rgba(255,255,255,0.12)" />
+        <rect class="mv-a mv-web__bar mv-web__bar--2" x="38"  y="0" width="22" height="66" rx="4" fill="rgba(255,255,255,0.16)" />
+        <rect class="mv-a mv-web__bar mv-web__bar--3" x="72"  y="0" width="22" height="66" rx="4" fill="rgba(255,255,255,0.12)" />
+        <rect class="mv-a mv-web__bar mv-web__bar--4" x="106" y="0" width="22" height="66" rx="4" fill="var(--accent)" />
+        <rect class="mv-a mv-web__bar mv-web__bar--5" x="140" y="0" width="22" height="66" rx="4" fill="rgba(255,255,255,0.16)" />
+        <rect class="mv-a mv-web__bar mv-web__bar--6" x="174" y="0" width="22" height="66" rx="4" fill="rgba(255,255,255,0.10)" />
+      </g>
+    </g>
+  </g>
+</svg>

@@ -998,7 +998,7 @@ section:last-of-type {
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    min-height: 320px;
+    min-height: 380px;
     transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -1086,138 +1086,513 @@ section:last-of-type {
 
 /* ==========================================================================
    10.1 Motion Library (SVG Animations)
+   ==========================================================================
+   Every capability card carries an inline SVG whose whole timeline is written
+   as CSS keyframes over one shared duration (--mv-dur), so the elements of a
+   card stay in step with each other while each card runs at its own tempo.
+
+   Elements are pinned to `paused`; src/scripts/motion.js adds .is-inview when
+   the card enters the viewport and removes it when it leaves, so off-screen
+   illustrations cost nothing. A paused animation renders its 0% frame, which
+   is also each illustration's resting state.
    ========================================================================== */
 
 .motion-lib-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    --mv-dur: 9s;
     position: absolute;
     bottom: 0;
     left: 0;
+    width: 100%;
+    height: 74%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
     z-index: 1;
+    overflow: hidden;
+    transition: filter 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Dissolve the illustration underneath the title and description. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 28%);
+}
+
+.bento-card:hover .motion-lib-container {
+    filter: brightness(1.12);
 }
 
 .motion-svg {
     width: 100%;
-    height: auto;
-    max-width: 400px;
+    height: 100%;
     display: block;
 }
 
-/* Base States */
-.svg-editor {
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22,1,0.36,1);
-}
+/* Per-card tempo — deliberately uneven so the seven cards never beat in sync. */
+#motion-design     { --mv-dur: 10s; }
+#motion-dev        { --mv-dur: 10s; }
+#motion-web        { --mv-dur: 8.5s; }
+#motion-auto       { --mv-dur: 9.5s; }
+#motion-brand      { --mv-dur: 10s; }
+#motion-landing    { --mv-dur: 11s; }
+#motion-consulting { --mv-dur: 10.5s; }
 
-.code-line {
-    opacity: 0;
-    transform: translateY(4px);
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1);
-}
-
-.type-mask-group {
-    clip-path: url(#typing-clip);
-}
-
-.type-mask {
-    transition: width 1.5s steps(15, end);
-}
-
-.code-cursor {
-    opacity: 0;
-    transition: transform 1.5s steps(15, end);
-}
-
-.code-highlight {
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity 0.4s ease, transform 1s cubic-bezier(0.22,1,0.36,1);
-}
-
-.svg-check {
-    opacity: 0;
-    transform: scale(0.8);
+/* Shared animation contract for every animated node. */
+.mv-a {
+    animation-duration: var(--mv-dur);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-play-state: paused;
+    transform-box: fill-box;
     transform-origin: center;
-    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.22,1,0.36,1);
 }
 
-.svg-glow {
-    transition: transform 2s ease, opacity 2s ease;
-    transform-origin: 200px 125px;
+.motion-lib-container.is-inview .mv-a {
+    animation-play-state: running;
 }
 
-.svg-pulse {
-    animation: pulse 4s infinite;
+/* --- Shared motifs -------------------------------------------------------- */
+
+.mv-glow {
+    animation-name: mvGlow;
+    animation-timing-function: ease-in-out;
 }
 
-@keyframes pulse {
+@keyframes mvGlow {
+    0%, 100% { opacity: 0.55; transform: scale(0.9); }
+    50%      { opacity: 1;    transform: scale(1.08); }
+}
+
+.mv-float {
+    animation-name: mvFloat;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes mvFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+}
+
+/* --- 1. UI/UX Design ------------------------------------------------------ */
+
+.mv-design__cursor  { animation-name: mvDesignCursor; }
+.mv-design__select  { animation-name: mvDesignSelect; }
+.mv-design__cta     { animation-name: mvDesignCta; }
+.mv-design__guide   { animation-name: mvDesignGuide; }
+.mv-design__chip    { animation-name: mvDesignChip; }
+
+@keyframes mvDesignCursor {
+    0%        { opacity: 0; transform: translate(346px, 240px); }
+    6%        { opacity: 1; transform: translate(338px, 232px); }
+    24%, 30%  { opacity: 1; transform: translate(262px, 208px); }
+    34%, 64%  { opacity: 1; transform: translate(256px, 202px); }
+    84%, 100% { opacity: 0; transform: translate(340px, 238px); }
+}
+
+@keyframes mvDesignSelect {
+    0%, 26%   { opacity: 0; transform: scale(0.94); }
+    33%, 72%  { opacity: 1; transform: scale(1); }
+    79%, 100% { opacity: 0; transform: scale(0.94); }
+}
+
+@keyframes mvDesignCta {
+    0%, 36%   { transform: translateX(7px); }
+    45%, 88%  { transform: translateX(0); }
+    100%      { transform: translateX(7px); }
+}
+
+@keyframes mvDesignGuide {
+    0%, 34%   { opacity: 0; }
+    41%, 56%  { opacity: 0.9; }
+    64%, 100% { opacity: 0; }
+}
+
+@keyframes mvDesignChip {
+    0%, 48%   { opacity: 0; transform: translateX(-8px) scale(0.86); }
+    56%, 70%  { opacity: 1; transform: translateX(0) scale(1); }
+    78%, 100% { opacity: 0; transform: translateX(-8px) scale(0.86); }
+}
+
+/* --- 2. Software Development ---------------------------------------------- */
+
+.mv-dev__pulse { animation-name: mvDevPulse; animation-timing-function: ease-in-out; }
+.mv-dev__mask  { animation-name: mvDevType;  animation-timing-function: steps(18, end); }
+.mv-dev__cursor {
+    animation-name: mvDevCaret, mvDevBlink;
+    animation-duration: var(--mv-dur), 0.85s;
+    animation-timing-function: steps(18, end), steps(2, end);
+}
+.mv-dev__highlight { animation-name: mvDevHighlight; }
+.mv-dev__log--1    { animation-name: mvDevLog1; }
+.mv-dev__log--2    { animation-name: mvDevLog2; }
+.mv-dev__check     { animation-name: mvDevCheck; }
+
+@keyframes mvDevPulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    50%      { opacity: 0.35; }
 }
 
-@keyframes blink {
+@keyframes mvDevType {
+    0%, 18%   { width: 0; }
+    38%, 88%  { width: 230px; }
+    96%, 100% { width: 0; }
+}
+
+@keyframes mvDevCaret {
+    0%, 18%   { transform: translateX(0); }
+    38%, 88%  { transform: translateX(230px); }
+    96%, 100% { transform: translateX(0); }
+}
+
+@keyframes mvDevBlink {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+    50%      { opacity: 0.1; }
 }
 
-/* Sequence States applied via JS */
-.motion-lib-container.step-1 .svg-editor {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    animation: floatEditor 6s ease-in-out infinite alternate;
+@keyframes mvDevHighlight {
+    0%, 40%   { opacity: 0; transform: translateX(-26px); }
+    49%, 62%  { opacity: 0.16; transform: translateX(0); }
+    72%, 100% { opacity: 0; transform: translateX(26px); }
 }
 
-@keyframes floatEditor {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-4px); }
+@keyframes mvDevLog1 {
+    0%, 56%   { opacity: 0; transform: translateX(-6px); }
+    62%, 90%  { opacity: 1; transform: translateX(0); }
+    96%, 100% { opacity: 0; transform: translateX(-6px); }
 }
 
-.motion-lib-container.step-1 .code-line.c-1 { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
-.motion-lib-container.step-1 .code-line.c-2 { opacity: 1; transform: translateY(0); transition-delay: 0.4s; }
-.motion-lib-container.step-1 .code-line.c-3 { opacity: 1; transform: translateY(0); transition-delay: 0.6s; }
-
-.motion-lib-container.step-2 .code-cursor {
-    opacity: 1;
-    animation: blink 0.6s infinite;
+@keyframes mvDevLog2 {
+    0%, 62%   { opacity: 0; transform: translateX(-6px); }
+    68%, 90%  { opacity: 1; transform: translateX(0); }
+    96%, 100% { opacity: 0; transform: translateX(-6px); }
 }
 
-.motion-lib-container.step-3 .type-mask {
-    width: 150px;
-}
-.motion-lib-container.step-3 .code-cursor {
-    transform: translateX(150px);
-}
-
-.motion-lib-container.step-4 .code-highlight {
-    opacity: 0.15;
-    transform: translateX(0);
+@keyframes mvDevCheck {
+    0%, 68%   { opacity: 0; transform: scale(0.55); }
+    76%, 90%  { opacity: 1; transform: scale(1); }
+    95%, 100% { opacity: 0; transform: scale(0.55); }
 }
 
-.motion-lib-container.step-5 .svg-check {
-    opacity: 1;
-    transform: scale(1);
+/* --- 3. Web Applications -------------------------------------------------- */
+
+.mv-web__ping {
+    animation-name: mvWebPing;
+    animation-duration: 2.4s;
+    animation-timing-function: ease-out;
+}
+.mv-web__nav       { animation-name: mvWebNav; }
+.mv-web__meter--1  { animation-name: mvWebMeter1; animation-timing-function: ease-in-out; }
+.mv-web__meter--2  { animation-name: mvWebMeter2; animation-timing-function: ease-in-out; }
+
+.mv-web__bar {
+    animation-name: mvWebBar;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: bottom;
 }
 
-.motion-lib-container.step-5 .svg-glow {
-    transform: scale(1.2);
-    opacity: 0.6;
+.mv-web__bar--1 { --mv-h0: 0.34; --mv-h1: 0.52; animation-delay: 0s; }
+.mv-web__bar--2 { --mv-h0: 0.58; --mv-h1: 0.40; animation-delay: -0.7s; }
+.mv-web__bar--3 { --mv-h0: 0.44; --mv-h1: 0.68; animation-delay: -1.4s; }
+.mv-web__bar--4 { --mv-h0: 0.72; --mv-h1: 0.95; animation-delay: -2.1s; }
+.mv-web__bar--5 { --mv-h0: 0.50; --mv-h1: 0.33; animation-delay: -2.8s; }
+.mv-web__bar--6 { --mv-h0: 0.27; --mv-h1: 0.46; animation-delay: -3.5s; }
+
+@keyframes mvWebPing {
+    0%        { r: 4; opacity: 0.85; }
+    70%, 100% { r: 12; opacity: 0; }
 }
 
-/* Hover over the card */
-.bento-card:hover .motion-lib-container .svg-glow {
-    opacity: 0.8;
-    transform: scale(1.3);
+@keyframes mvWebNav {
+    0%,  10%  { transform: translateY(0); }
+    22%, 32%  { transform: translateY(24px); }
+    44%, 54%  { transform: translateY(48px); }
+    66%, 76%  { transform: translateY(72px); }
+    90%, 100% { transform: translateY(0); }
 }
 
+@keyframes mvWebMeter1 {
+    0%, 100% { width: 26px; }
+    32%      { width: 64px; }
+    66%      { width: 46px; }
+}
+
+@keyframes mvWebMeter2 {
+    0%, 100% { width: 44px; }
+    36%      { width: 20px; }
+    72%      { width: 58px; }
+}
+
+@keyframes mvWebBar {
+    0%, 100% { transform: scaleY(var(--mv-h0)); }
+    50%      { transform: scaleY(var(--mv-h1)); }
+}
+
+/* --- 4. Automation -------------------------------------------------------- */
+
+.mv-auto__flow {
+    stroke-dasharray: 130;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mv-auto__flow--1, .mv-auto__flow--2 { animation-name: mvAutoFlowA; }
+.mv-auto__flow--3, .mv-auto__flow--4 { animation-name: mvAutoFlowB; }
+
+.mv-auto__ring--1 { animation-name: mvAutoRing1; }
+.mv-auto__ring--2,
+.mv-auto__ring--3 { animation-name: mvAutoRing2; }
+.mv-auto__ring--4 { animation-name: mvAutoRing4; }
+
+.mv-auto__check--2 { animation-name: mvAutoCheck; }
+.mv-auto__check--3 { animation-name: mvAutoCheck; animation-delay: calc(var(--mv-dur) * -0.02); }
+.mv-auto__done     { stroke-dasharray: 44; animation-name: mvAutoDone; }
+
+/* Packets ride the connector geometry; without offset-path support they would
+   collapse onto the origin, so they only exist where the feature does. */
+.mv-auto__packet { opacity: 0; }
+
+@supports (offset-path: path("M0 0 L1 1")) {
+    .mv-auto__packet--1 {
+        offset-path: path("M110 128 C140 128 138 68 168 68");
+        animation-name: mvAutoPacketA;
+    }
+    .mv-auto__packet--2 {
+        offset-path: path("M110 128 C140 128 138 188 168 188");
+        animation-name: mvAutoPacketA;
+    }
+    .mv-auto__packet--3 {
+        offset-path: path("M244 68 C274 68 272 128 302 128");
+        animation-name: mvAutoPacketB;
+    }
+    .mv-auto__packet--4 {
+        offset-path: path("M244 188 C274 188 272 128 302 128");
+        animation-name: mvAutoPacketB;
+    }
+}
+
+@keyframes mvAutoFlowA {
+    0%, 14%   { stroke-dashoffset: 130; opacity: 0; }
+    19%       { stroke-dashoffset: 118; opacity: 1; }
+    36%       { stroke-dashoffset: 0;   opacity: 1; }
+    58%       { stroke-dashoffset: 0;   opacity: 0.45; }
+    68%, 100% { stroke-dashoffset: 130; opacity: 0; }
+}
+
+@keyframes mvAutoFlowB {
+    0%, 46%   { stroke-dashoffset: 130; opacity: 0; }
+    51%       { stroke-dashoffset: 118; opacity: 1; }
+    66%       { stroke-dashoffset: 0;   opacity: 1; }
+    82%       { stroke-dashoffset: 0;   opacity: 0.45; }
+    90%, 100% { stroke-dashoffset: 130; opacity: 0; }
+}
+
+@keyframes mvAutoPacketA {
+    0%, 16%   { offset-distance: 0%;   opacity: 0; }
+    21%       { offset-distance: 12%;  opacity: 1; }
+    37%       { offset-distance: 100%; opacity: 1; }
+    43%, 100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes mvAutoPacketB {
+    0%, 48%   { offset-distance: 0%;   opacity: 0; }
+    53%       { offset-distance: 12%;  opacity: 1; }
+    67%       { offset-distance: 100%; opacity: 1; }
+    73%, 100% { offset-distance: 100%; opacity: 0; }
+}
+
+@keyframes mvAutoRing1 {
+    0%, 2%    { opacity: 0; }
+    9%, 20%   { opacity: 1; }
+    30%, 100% { opacity: 0; }
+}
+
+@keyframes mvAutoRing2 {
+    0%, 32%   { opacity: 0; }
+    39%, 52%  { opacity: 1; }
+    62%, 100% { opacity: 0; }
+}
+
+@keyframes mvAutoRing4 {
+    0%, 62%   { opacity: 0; }
+    69%, 86%  { opacity: 1; }
+    94%, 100% { opacity: 0; }
+}
+
+@keyframes mvAutoCheck {
+    0%, 44%   { opacity: 0; transform: scale(0.4); }
+    53%, 84%  { opacity: 1; transform: scale(1); }
+    91%, 100% { opacity: 0; transform: scale(0.4); }
+}
+
+@keyframes mvAutoDone {
+    0%, 68%   { stroke-dashoffset: 44; opacity: 0; }
+    72%       { stroke-dashoffset: 40; opacity: 1; }
+    82%, 90%  { stroke-dashoffset: 0;  opacity: 1; }
+    96%, 100% { stroke-dashoffset: 44; opacity: 0; }
+}
+
+/* --- 5. Brand Identity ---------------------------------------------------- */
+
+.mv-brand__mark      { animation-name: mvFloat; animation-timing-function: ease-in-out; }
+.mv-brand__piece--1  { animation-name: mvBrandPiece1; }
+.mv-brand__piece--2  { animation-name: mvBrandPiece2; }
+.mv-brand__piece--3  { stroke-dasharray: 40; animation-name: mvBrandStroke; }
+.mv-brand__type      { animation-name: mvBrandType; }
+.mv-brand__sweep     { animation-name: mvBrandSweep; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+.mv-brand__swatch    { animation-name: mvBrandSwatch; }
+.mv-brand__swatch--1 { animation-delay: calc(var(--mv-dur) * 0); }
+.mv-brand__swatch--2 { animation-delay: calc(var(--mv-dur) * 0.03); }
+.mv-brand__swatch--3 { animation-delay: calc(var(--mv-dur) * 0.06); }
+.mv-brand__swatch--4 { animation-delay: calc(var(--mv-dur) * 0.09); }
+.mv-brand__swatch--5 { animation-delay: calc(var(--mv-dur) * 0.12); }
+
+@keyframes mvBrandPiece1 {
+    0%        { opacity: 0; transform: translate(-30px, 10px) rotate(-14deg); }
+    15%, 86%  { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100%      { opacity: 0; transform: translate(-30px, 10px) rotate(-14deg); }
+}
+
+@keyframes mvBrandPiece2 {
+    0%, 6%    { opacity: 0; transform: translate(30px, -12px) rotate(16deg); }
+    22%, 86%  { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+    100%      { opacity: 0; transform: translate(30px, -12px) rotate(16deg); }
+}
+
+@keyframes mvBrandStroke {
+    0%, 18%   { stroke-dashoffset: 40; opacity: 0; }
+    23%       { stroke-dashoffset: 36; opacity: 1; }
+    36%, 88%  { stroke-dashoffset: 0;  opacity: 1; }
+    98%, 100% { stroke-dashoffset: 40; opacity: 0; }
+}
+
+@keyframes mvBrandType {
+    0%, 32%   { opacity: 0; transform: translateY(10px); }
+    43%, 88%  { opacity: 1; transform: translateY(0); }
+    98%, 100% { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes mvBrandSwatch {
+    0%, 46%   { opacity: 0; transform: scale(0.35); }
+    54%, 86%  { opacity: 1; transform: scale(1); }
+    94%, 100% { opacity: 0; transform: scale(0.35); }
+}
+
+@keyframes mvBrandSweep {
+    0%, 66%   { opacity: 0; transform: translateX(-82px); }
+    70%       { opacity: 1; transform: translateX(-70px); }
+    84%       { opacity: 1; transform: translateX(214px); }
+    88%, 100% { opacity: 0; transform: translateX(214px); }
+}
+
+/* --- 6. Landing Pages ----------------------------------------------------- */
+
+.mv-landing__page    { animation-name: mvLandingScroll; }
+.mv-landing__ring    { animation-name: mvLandingRing; animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+.mv-landing__score   { animation-name: mvLandingScore; }
+.mv-landing__stat    { animation-name: mvLandingStat; animation-timing-function: ease-in-out; transform-origin: left; }
+.mv-landing__stat--1 { --mv-w0: 0.5; --mv-w1: 0.95; }
+.mv-landing__stat--2 { --mv-w0: 0.8; --mv-w1: 0.45; }
+
+@keyframes mvLandingScroll {
+    0%,  14%  { transform: translateY(0); }
+    27%, 40%  { transform: translateY(-64px); }
+    53%, 72%  { transform: translateY(-130px); }
+    88%, 100% { transform: translateY(0); }
+}
+
+@keyframes mvLandingRing {
+    0%, 10%   { stroke-dashoffset: 213.6; }
+    46%, 86%  { stroke-dashoffset: 12; }
+    96%, 100% { stroke-dashoffset: 213.6; }
+}
+
+@keyframes mvLandingScore {
+    0%, 46%   { opacity: 0; transform: scale(0.5); }
+    55%, 86%  { opacity: 1; transform: scale(1); }
+    94%, 100% { opacity: 0; transform: scale(0.5); }
+}
+
+@keyframes mvLandingStat {
+    0%, 100% { transform: scaleX(var(--mv-w0)); }
+    50%      { transform: scaleX(var(--mv-w1)); }
+}
+
+/* --- 7. Technical Consulting ---------------------------------------------- */
+
+.mv-consulting__scan     { animation-name: mvConsultingScan; animation-timing-function: linear; }
+.mv-consulting__flag--1  { animation-name: mvConsultingFlag1; }
+.mv-consulting__flag--2  { animation-name: mvConsultingFlag2; }
+.mv-consulting__check--1 { animation-name: mvConsultingCheck; }
+.mv-consulting__check--2 { animation-name: mvConsultingCheck; animation-delay: calc(var(--mv-dur) * 0.04); }
+.mv-consulting__trend    { stroke-dasharray: 126; animation-name: mvConsultingTrend; }
+
+.mv-consulting__bar {
+    animation-name: mvConsultingBar;
+    transform-origin: bottom;
+}
+.mv-consulting__bar--1 { --mv-h: 0.45; animation-delay: calc(var(--mv-dur) * 0.02); }
+.mv-consulting__bar--2 { --mv-h: 0.72; animation-delay: calc(var(--mv-dur) * 0.06); }
+.mv-consulting__bar--3 { --mv-h: 1;    animation-delay: calc(var(--mv-dur) * 0.10); }
+
+@keyframes mvConsultingScan {
+    0%        { opacity: 0; transform: translateY(28px); }
+    6%        { opacity: 1; transform: translateY(52px); }
+    56%       { opacity: 1; transform: translateY(242px); }
+    64%, 100% { opacity: 0; transform: translateY(242px); }
+}
+
+@keyframes mvConsultingFlag1 {
+    0%, 20%   { opacity: 0; }
+    27%, 60%  { opacity: 1; }
+    68%, 100% { opacity: 0; }
+}
+
+@keyframes mvConsultingFlag2 {
+    0%, 39%   { opacity: 0; }
+    46%, 62%  { opacity: 1; }
+    71%, 100% { opacity: 0; }
+}
+
+@keyframes mvConsultingCheck {
+    0%, 62%   { opacity: 0; transform: scale(0.35); }
+    71%, 88%  { opacity: 1; transform: scale(1); }
+    94%, 100% { opacity: 0; transform: scale(0.35); }
+}
+
+@keyframes mvConsultingTrend {
+    0%, 8%    { stroke-dashoffset: 126; opacity: 0; }
+    13%       { stroke-dashoffset: 114; opacity: 1; }
+    42%, 88%  { stroke-dashoffset: 0;  opacity: 1; }
+    96%, 100% { stroke-dashoffset: 126; opacity: 0; }
+}
+
+@keyframes mvConsultingBar {
+    0%, 12%   { transform: scaleY(0.06); }
+    30%, 88%  { transform: scaleY(var(--mv-h)); }
+    96%, 100% { transform: scaleY(0.06); }
+}
+
+/* --- Reduced motion ------------------------------------------------------- */
+/* Freeze every timeline and pin the pieces whose authored attributes leave
+   them mid-story, so each card still reads as a finished illustration. */
 @media (prefers-reduced-motion: reduce) {
-    .motion-lib-container * {
+    .motion-lib-container .mv-a,
+    .motion-lib-container.is-inview .mv-a {
         animation: none !important;
-        transition: none !important;
+    }
+
+    .mv-dev__mask      { width: 230px; }
+    .mv-landing__ring  { stroke-dashoffset: 12; }
+
+    .mv-design__cursor,
+    .mv-design__select,
+    .mv-design__guide,
+    .mv-dev__highlight,
+    .mv-auto__packet,
+    .mv-auto__flow,
+    .mv-auto__ring,
+    .mv-brand__sweep,
+    .mv-consulting__scan,
+    .mv-consulting__flag {
+        opacity: 0;
     }
 }
 

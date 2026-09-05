@@ -1,0 +1,16 @@
+---
+/**
+ * ES/EN switch. Rendered twice — once inside the mobile menu, once in the
+ * desktop nav — and both instances are wired by the I18n module, which keys
+ * off .lang-btn[data-lang].
+ */
+const { class: className = '' } = Astro.props;
+---
+<div class:list={['lang-toggle', className]}>
+    <button class="lang-btn active" data-lang="es" data-i18n-aria="lang.es" aria-label="Cambiar a Español" title="Español" tabindex="0">
+        <svg width="22" height="16" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg"><rect width="900" height="600" fill="#FCD116"/><rect y="300" width="900" height="150" fill="#003893"/><rect y="450" width="900" height="150" fill="#CE1126"/></svg>
+    </button>
+    <button class="lang-btn" data-lang="en" data-i18n-aria="lang.en" aria-label="Switch to English" title="English" tabindex="0">
+        <svg width="22" height="16" viewBox="0 0 22 16" xmlns="http://www.w3.org/2000/svg"><rect width="22" height="16" fill="#B22234"/><g fill="#FFF"><rect y="1.5" width="22" height="1.3"/><rect y="4.1" width="22" height="1.3"/><rect y="6.7" width="22" height="1.3"/><rect y="9.3" width="22" height="1.3"/><rect y="11.9" width="22" height="1.3"/><rect y="14.5" width="22" height="1.3"/></g><rect width="8.8" height="8.5" fill="#3C3B6E"/></svg>
+    </button>
+</div>

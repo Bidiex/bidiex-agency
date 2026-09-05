@@ -1,0 +1,22 @@
+---
+/**
+ * Detail dialog for the project cards. Everything inside is populated at
+ * runtime by the Projects module in src/scripts/main.js from src/data/projects.js.
+ */
+---
+<div class="project-modal" id="projectModal" role="dialog"
+  aria-modal="true" aria-labelledby="modalProjectName" hidden>
+  <div class="project-modal__overlay" id="modalOverlay"></div>
+  <div class="project-modal__panel">
+    <button class="project-modal__close" id="modalClose" aria-label="Cerrar">✕</button>
+    <div class="project-modal__content">
+      <span class="project-modal__status" id="modalStatus"></span>
+      <h2 class="project-modal__name" id="modalProjectName"></h2>
+      <p class="project-modal__tagline" id="modalTagline"></p>
+      <div class="project-modal__tags" id="modalTags"></div>
+      <ul class="project-modal__features" id="modalFeatures"></ul>
+      <a class="btn btn-primary project-modal__cta" id="modalCta"
+        target="_blank" rel="noopener"><span id="modalCtaText" data-i18n="project.visit">Visitar sitio</span> <i data-lucide="arrow-right"></i></a>
+    </div>
+  </div>
+</div>

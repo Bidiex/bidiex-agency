@@ -1,0 +1,95 @@
+---
+/**
+ * UI/UX Design — an artboard being laid out: the cursor arrives, the element
+ * gets selected, snaps onto the alignment guide, and a spacing token pops.
+ *
+ * Note on structure: in SVG a CSS `transform` *replaces* the `transform`
+ * attribute, so static placement always lives on an outer <g> and the animated
+ * transform on an inner <g class="mv-a">.
+ */
+---
+<svg class="motion-svg mv mv--design" viewBox="0 0 400 250"
+     preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="mv-design-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle class="mv-a mv-glow" cx="200" cy="140" r="110" fill="url(#mv-design-glow)" />
+
+  <g transform="translate(60, 40)">
+    <g class="mv-a mv-float">
+      <rect width="280" height="196" rx="12" fill="#0A0A0A" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+
+      <!-- Tool bar -->
+      <path d="M0 28 L280 28" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+      <rect x="14" y="10" width="34" height="8" rx="4" fill="rgba(255,255,255,0.14)" />
+      <circle cx="60" cy="14" r="3" fill="rgba(255,255,255,0.10)" />
+      <circle cx="72" cy="14" r="3" fill="rgba(255,255,255,0.10)" />
+
+      <!-- Header block -->
+      <g>
+        <circle cx="40" cy="62" r="15" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.10)" stroke-width="1" />
+        <rect x="66" y="52" width="104" height="7" rx="3.5" fill="rgba(255,255,255,0.22)" />
+        <rect x="66" y="66" width="66" height="7" rx="3.5" fill="rgba(255,255,255,0.10)" />
+      </g>
+
+      <!-- Media block -->
+      <g>
+        <rect x="24" y="98" width="112" height="72" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+        <circle cx="52" cy="126" r="9" fill="rgba(255,255,255,0.10)" />
+        <path d="M32 162 L62 134 L82 152 L100 138 L128 162 Z" fill="rgba(255,255,255,0.07)" />
+      </g>
+
+      <!-- Copy -->
+      <g>
+        <rect x="156" y="100" width="94" height="7" rx="3.5" fill="rgba(255,255,255,0.18)" />
+        <rect x="156" y="116" width="76" height="7" rx="3.5" fill="rgba(255,255,255,0.10)" />
+        <rect x="156" y="132" width="58" height="7" rx="3.5" fill="rgba(255,255,255,0.10)" />
+      </g>
+
+      <!-- Alignment guide the CTA snaps onto -->
+      <path class="mv-a mv-design__guide" d="M156 92 L156 184" stroke="var(--accent)"
+            stroke-width="1" stroke-dasharray="3 3" />
+
+      <!-- The element under design -->
+      <g class="mv-a mv-design__cta">
+        <rect x="156" y="152" width="86" height="26" rx="13"
+              fill="var(--accent)" fill-opacity="0.16"
+              stroke="var(--accent)" stroke-opacity="0.55" stroke-width="1" />
+        <rect x="170" y="162" width="46" height="6" rx="3" fill="var(--accent)" fill-opacity="0.8" />
+      </g>
+
+      <!-- Selection marquee -->
+      <g class="mv-a mv-design__select">
+        <rect x="152" y="148" width="94" height="34" rx="6" fill="none"
+              stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 3" />
+        <g fill="#0A0A0A" stroke="var(--accent)" stroke-width="1.5">
+          <rect x="149" y="145" width="6" height="6" rx="1" />
+          <rect x="243" y="145" width="6" height="6" rx="1" />
+          <rect x="149" y="179" width="6" height="6" rx="1" />
+          <rect x="243" y="179" width="6" height="6" rx="1" />
+        </g>
+      </g>
+
+      <!-- Spacing token -->
+      <g transform="translate(250, 156)">
+        <g class="mv-a mv-design__chip">
+          <rect width="26" height="18" rx="6" fill="var(--accent)" fill-opacity="0.14"
+                stroke="var(--accent)" stroke-opacity="0.4" stroke-width="1" />
+          <circle cx="9" cy="9" r="3" fill="var(--accent)" />
+          <rect x="15" y="7" width="6" height="4" rx="2" fill="var(--accent)" fill-opacity="0.6" />
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <!-- Designer cursor -->
+  <g class="mv-a mv-design__cursor">
+    <path d="M0 0 L0 15 L4 11.5 L6.6 17 L9.6 15.6 L7 10.2 L12 10 Z"
+          fill="#FFFFFF" stroke="rgba(0,0,0,0.35)" stroke-width="0.75" stroke-linejoin="round" />
+  </g>
+</svg>

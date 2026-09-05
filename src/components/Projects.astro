@@ -1,0 +1,59 @@
+---
+import { projects } from '../data/projects.js';
+import ProjectModal from './ProjectModal.astro';
+---
+<section class="projects" id="projects">
+  <div class="container">
+
+    <div class="projects-header reveal">
+      <div>
+        <h2 class="section-title" data-i18n="projects.title">Nuestros Proyectos</h2>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="projectsPrev" aria-label="Anterior"><i data-lucide="arrow-left"></i></button>
+        <button class="carousel-btn" id="projectsNext" aria-label="Siguiente"><i data-lucide="arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="projects-track-wrapper">
+      <div class="projects-track" id="projectsCarousel">
+        {projects.map((project) => (
+          <article class="project-card premium-card" data-project={project.id} tabindex="0" role="button"
+                   aria-label={`Ver detalles de ${project.name}`}>
+            <div class="project-card__glow"></div>
+            <div class="project-card__visual">
+              <div class="project-card__img-scroll">
+                {project.image && <img src={project.image} alt={project.name} loading="lazy" />}
+              </div>
+              <div class="project-card__overlay"></div>
+            </div>
+            <div class="project-card__content">
+              <div class="project-card__header">
+                <div class="project-card__meta-top">
+                  <span class={`premium-badge status-${project.status}`}>
+                    <span class="pulse-dot"></span>
+                    <span data-i18n={`status.${project.status}`}>{project.statusLabel}</span>
+                  </span>
+                </div>
+                <h3 class="project-card__name">{project.name}</h3>
+                <p class="project-card__tagline" data-i18n={`project.${project.id}.tagline`}>
+                  {project.tagline}
+                </p>
+              </div>
+              <div class="project-card__tech">
+                {project.tech.map((tech) => <span class="tech-pill">{tech}</span>)}
+              </div>
+              <div class="project-card__meta-bottom">
+                {project.meta[0]} <span class="meta-dot">•</span> {project.meta[1]} <span class="meta-dot">•</span> {project.meta[2]}
+              </div>
+              <span class="project-card__cta"><span data-i18n="project.view">Ver proyecto</span> <i data-lucide="arrow-right" class="icon-sm"></i></span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<ProjectModal />

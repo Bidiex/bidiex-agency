@@ -1,0 +1,64 @@
+---
+/**
+ * Brand Identity — the mark assembles from loose geometry, the type specimen
+ * settles beneath it and the palette fills in swatch by swatch, closing with a
+ * light sweep across the row.
+ */
+---
+<svg class="motion-svg mv mv--brand" viewBox="0 0 400 250"
+     preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg"
+     role="img" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="mv-brand-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="var(--accent-alt)" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="var(--accent-alt)" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="mv-brand-sweep" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.30" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <clipPath id="mv-brand-swatch-clip">
+      <rect x="96" y="176" width="208" height="34" rx="10" />
+    </clipPath>
+  </defs>
+
+  <circle class="mv-a mv-glow" cx="200" cy="130" r="106" fill="url(#mv-brand-glow)" />
+
+  <!-- The mark -->
+  <g transform="translate(200, 92)">
+    <g class="mv-a mv-brand__mark">
+      <circle class="mv-a mv-brand__piece mv-brand__piece--1" cx="-18" cy="0" r="26"
+              fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-opacity="0.55" stroke-width="1.5" />
+      <rect class="mv-a mv-brand__piece mv-brand__piece--2" x="-6" y="-22" width="44" height="44" rx="12"
+            fill="var(--accent-alt)" fill-opacity="0.16" stroke="var(--accent-alt)" stroke-opacity="0.55" stroke-width="1.5" />
+      <!-- Kept inside the two shapes: a stroke that ran past them read as a
+           prohibition slash rather than part of the mark. -->
+      <path class="mv-a mv-brand__piece mv-brand__piece--3" d="M-8 15 L17 -15"
+            stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="3" stroke-linecap="round" />
+    </g>
+  </g>
+
+  <!-- Type specimen -->
+  <g transform="translate(200, 158)">
+    <g class="mv-a mv-brand__type">
+      <text x="0" y="0" text-anchor="middle"
+            font-family="Inter, system-ui, sans-serif" font-size="34" font-weight="700"
+            letter-spacing="-0.02em" fill="#FFFFFF" fill-opacity="0.9">Aa</text>
+      <path d="M-42 8 L42 8" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+    </g>
+  </g>
+
+  <!-- Palette -->
+  <g>
+    <rect class="mv-a mv-brand__swatch mv-brand__swatch--1" x="96"  y="176" width="34" height="34" rx="10" fill="var(--accent)" />
+    <rect class="mv-a mv-brand__swatch mv-brand__swatch--2" x="139" y="176" width="34" height="34" rx="10" fill="var(--accent-alt)" />
+    <rect class="mv-a mv-brand__swatch mv-brand__swatch--3" x="182" y="176" width="34" height="34" rx="10" fill="rgba(255,255,255,0.85)" />
+    <rect class="mv-a mv-brand__swatch mv-brand__swatch--4" x="225" y="176" width="34" height="34" rx="10" fill="rgba(255,255,255,0.34)" />
+    <rect class="mv-a mv-brand__swatch mv-brand__swatch--5" x="268" y="176" width="34" height="34" rx="10" fill="rgba(255,255,255,0.12)" />
+
+    <g clip-path="url(#mv-brand-swatch-clip)">
+      <rect class="mv-a mv-brand__sweep" x="96" y="176" width="70" height="34" fill="url(#mv-brand-sweep)" />
+    </g>
+  </g>
+</svg>

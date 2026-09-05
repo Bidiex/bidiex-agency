@@ -1,0 +1,86 @@
+---
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const {
+    title = 'Bidiex — Software Studio',
+    description = 'Bidiex es un estudio independiente de productos digitales enfocado en crear software, automatizaciones, experiencias digitales y herramientas escalables para emprendedores y empresas.',
+    canonical = 'https://bidiex.com/',
+    noindex = false,
+} = Astro.props;
+---
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Core SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description}>
+    <meta name="keywords" content="software studio, estudio de software, digital product, desarrollo web, automatización, Bidiex">
+    <link rel="canonical" href={canonical}>
+    {noindex && <meta name="robots" content="noindex">}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title}>
+    <meta property="og:description" content={description}>
+    <meta property="og:image" content="https://bidiex.com/og-image.jpg">
+    <meta property="og:url" content={canonical}>
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+
+    <!-- PWA & Icons -->
+    <meta name="theme-color" content="#050608">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Loading Animation -->
+    <div class="loader" id="loader">
+        <div class="loader-inner"></div>
+    </div>
+
+    <!-- Background Layers -->
+    <div class="bg-layers" aria-hidden="true" id="parallaxBg">
+        <div class="bg-glow blue-glow"></div>
+        <div class="bg-glow purple-glow"></div>
+        <div class="bg-noise"></div>
+    </div>
+
+    <Navbar />
+
+    <main>
+        <slot />
+    </main>
+
+    <Footer />
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top ripple" data-i18n-aria="btn.totop" aria-label="Volver arriba">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
+    <!-- Lucide replaces every [data-lucide] placeholder with its inline SVG. -->
+    <script is:inline src="https://unpkg.com/lucide@latest"></script>
+    <script is:inline>
+      lucide.createIcons();
+    </script>
+    <script>
+      import '../scripts/main.js';
+    </script>
+</body>
+</html>

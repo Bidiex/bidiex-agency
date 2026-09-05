@@ -1,0 +1,35 @@
+---
+import { stack } from '../data/stack.js';
+---
+<section class="stack" id="stack">
+  <div class="container">
+
+    <div class="stack-header reveal">
+      <h2 class="section-title" data-i18n="stack.title">
+        Construido con las<br>herramientas correctas
+      </h2>
+      <p class="stack-subtitle" data-i18n="stack.subtitle">
+        Cada proyecto se desarrolla sobre una base tecnológica
+        moderna, escalable y probada en producción.
+      </p>
+    </div>
+
+    <div class="stack-grid reveal">
+      {stack.map((tech) => (
+        <article class="stack-card" style={`--brand-color: ${tech.brand};`}>
+          <div class="stack-card__icon">
+            <img class="icon-white" src={`https://cdn.simpleicons.org/${tech.slug}/white`}
+                 width="32" height="32" alt={tech.name} loading="lazy">
+            <img class="icon-color" src={`https://cdn.simpleicons.org/${tech.slug}`}
+                 width="32" height="32" alt={tech.name} loading="lazy">
+          </div>
+          <h3 class="stack-card__name">{tech.name}</h3>
+          <p class="stack-card__desc" data-i18n={tech.descKey}>
+            {tech.desc}
+          </p>
+        </article>
+      ))}
+    </div>
+
+  </div>
+</section>
