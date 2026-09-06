@@ -1,5 +1,6 @@
 ---
 import { projects } from '../data/projects.js';
+import { withBase } from '../utils/url.js';
 import ProjectModal from './ProjectModal.astro';
 ---
 <section class="projects" id="projects">
@@ -23,7 +24,7 @@ import ProjectModal from './ProjectModal.astro';
             <div class="project-card__glow"></div>
             <div class="project-card__visual">
               <div class="project-card__img-scroll">
-                {project.image && <img src={project.image} alt={project.name} loading="lazy" />}
+                {project.image && <img src={withBase(project.image)} alt={project.name} loading="lazy" />}
               </div>
               <div class="project-card__overlay"></div>
             </div>
