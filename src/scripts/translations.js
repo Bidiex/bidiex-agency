@@ -47,6 +47,14 @@ export const translations = {
         "project.visit": "Visitar sitio",
         "project.view": "Ver proyecto",
         "project.soon": "Próximamente",
+
+        // Project modal
+        "modal.challenge": "El reto",
+        "modal.solution": "La solución",
+        "modal.impact": "Lo que cambia",
+        "modal.includes": "Qué incluye",
+        "modal.stack": "Construido con",
+        "modal.similar": "Quiero algo así",
         
         // Services
         "services.label": "[ Estudio ]",
@@ -193,6 +201,14 @@ export const translations = {
         "project.visit": "Visit site",
         "project.view": "View project",
         "project.soon": "Coming soon",
+
+        // Project modal
+        "modal.challenge": "The challenge",
+        "modal.solution": "The solution",
+        "modal.impact": "What changes",
+        "modal.includes": "What's included",
+        "modal.stack": "Built with",
+        "modal.similar": "I want something like this",
         
         // Services
         "services.label": "[ Studio ]",

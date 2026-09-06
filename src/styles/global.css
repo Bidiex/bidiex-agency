@@ -22,7 +22,8 @@
 
     /* Typography */
     --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    
+    --font-display: 'Ranade', 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
     /* Layout */
     --max-width: 1280px;
     --container-width: 1200px;
@@ -32,6 +33,27 @@
     --transition-fast: 150ms ease;
     --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-slow: 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   1b. Ranade — display face for headings
+   --------------------------------------------------------------------------
+   Self-hosted from /public/fonts under the ITF Free Font License, which allows
+   commercial use and @font-face self-hosting at no cost; only reselling or
+   redistributing the files themselves is forbidden.
+
+   The path has to spell out the Astro `base`: files in /public are copied
+   verbatim and never enter the bundler, so a relative url() here would be
+   resolved against src/styles/ at build time and fail. One variable file
+   covers every weight we use and costs less than the three static cuts.
+   ========================================================================== */
+@font-face {
+    font-family: 'Ranade';
+    src: url('/bidiex-agency/fonts/Ranade-Variable.woff2') format('woff2-variations'),
+         url('/bidiex-agency/fonts/Ranade-Variable.woff') format('woff-variations');
+    font-weight: 100 700;
+    font-style: normal;
+    font-display: swap;
 }
 
 /* ==========================================================================
@@ -96,6 +118,7 @@ button {
 
 /* Typography Hierarchy */
 h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
     line-height: 1.1;
     letter-spacing: -0.02em;
     font-weight: 700;
@@ -625,20 +648,91 @@ section:last-of-type {
   justify-content: center;
 }
 
-.project-card__img-scroll {
-  width: 100%;
-  height: 100%;
-  padding: 32px 32px 0 32px;
-  box-sizing: border-box;
+/* --- Browser frame -------------------------------------------------------
+   Wraps either a live embed of the product or a screenshot in the same piece
+   of browser chrome, so a card that cannot be framed still reads as a real
+   site rather than as a broken one.
+
+   Scaling trick: the iframe is laid out `--embed-zoom` times wider than its
+   frame and then scaled back down by the reciprocal. The embedded site
+   therefore believes it has a desktop viewport and renders its desktop hero,
+   while the frame stays fully fluid — no pixel width to keep in sync with the
+   card breakpoints. */
+.browser-frame {
+  --embed-zoom: 3;
+  flex: 1;
+  align-self: stretch;
+  min-width: 0;
+  margin: 32px 32px 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  background: var(--bg-secondary);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   transition: transform 0.45s cubic-bezier(.22,1,.36,1);
 }
 
-.project-card__img-scroll img {
+.browser-frame__bar {
+  flex: 0 0 auto;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid var(--border);
+}
+
+.browser-frame__dots {
+  display: inline-flex;
+  gap: 5px;
+  flex: 0 0 auto;
+}
+
+.browser-frame__dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.browser-frame__url {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.browser-frame__viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+.browser-frame__embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% * var(--embed-zoom));
+  height: calc(100% * var(--embed-zoom));
+  border: 0;
+  transform: scale(calc(1 / var(--embed-zoom)));
+  transform-origin: top left;
+  /* The card is the click target; the embedded app must not swallow the click
+     or hijack the carousel's scroll. */
+  pointer-events: none;
+}
+
+.browser-frame__shot {
+  display: block;
   width: 100%;
   height: auto;
-  border-radius: 12px 12px 0 0;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  display: block;
   transition: transform 0.45s cubic-bezier(.22,1,.36,1);
 }
 
@@ -759,11 +853,11 @@ section:last-of-type {
   opacity: 1;
 }
 
-.project-card:hover .project-card__img-scroll {
+.project-card:hover .browser-frame {
   transform: translateY(-4px);
 }
 
-.project-card:hover .project-card__img-scroll img {
+.project-card:hover .browser-frame__shot {
   transform: scale(1.02);
 }
 
@@ -876,7 +970,7 @@ section:last-of-type {
   border: 1px solid var(--border-hover);
   border-radius: 24px;
   width: 100%;
-  max-width: 560px;
+  max-width: 880px;
   max-height: 90vh;
   overflow-y: auto;
   animation: modalIn 0.3s ease;
@@ -914,7 +1008,7 @@ section:last-of-type {
   padding: 40px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 28px;
 }
 
 .project-modal__name {
@@ -969,14 +1063,138 @@ section:last-of-type {
   color: var(--accent);
 }
 
-.project-modal__cta {
+/* Preview sits above the copy: proof that the product exists comes before the
+   argument for it. A wider frame needs less zoom to reach a desktop viewport. */
+.project-modal__preview {
+  padding: 20px 20px 0;
+}
+
+.project-modal__preview[hidden] {
+  display: none;
+}
+
+.project-modal__preview .browser-frame {
+  --embed-zoom: 1.6;
+  margin: 0;
+  height: 300px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.project-modal__head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Micro-labels stay in Inter — Ranade is the display face for real headings,
+   and at 11px uppercase it loses the qualities it was chosen for. */
+.project-modal__block-title {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+
+.project-modal__prose {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.project-modal__story {
+  display: grid;
+  gap: 24px;
+}
+
+.project-modal__block--impact {
+  background: rgba(79, 107, 255, 0.06);
+  border: 1px solid rgba(79, 107, 255, 0.18);
+  border-radius: 16px;
+  padding: 20px 24px;
+}
+
+.project-modal__outcome {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.project-modal__outcome li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* Drawn rather than typed so the tick inherits the accent and stays crisp. */
+.project-modal__outcome li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 5px;
+  width: 12px;
+  height: 7px;
+  border-left: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: rotate(-45deg);
+}
+
+.project-modal__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-top: 8px;
-  align-self: flex-start;
 }
 
 .project-modal__cta.disabled {
   opacity: 0.35;
   pointer-events: none;
+}
+
+@media (min-width: 720px) {
+  .project-modal__story {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .project-modal__outcome {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 24px;
+  }
+  .project-modal__features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+}
+
+@media (max-width: 719px) {
+  .project-modal__preview {
+    padding: 14px 14px 0;
+  }
+  .project-modal__preview .browser-frame {
+    --embed-zoom: 2.4;
+    height: 190px;
+  }
+  .project-modal__content {
+    padding: 28px 24px 32px;
+  }
+  .project-modal__name {
+    font-size: 28px;
+  }
 }
 
 /* ==========================================================================

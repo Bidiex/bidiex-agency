@@ -2,6 +2,12 @@
 /**
  * Detail dialog for the project cards. Everything inside is populated at
  * runtime by the Projects module in src/scripts/main.js from src/data/projects.js.
+ *
+ * The order of the blocks is the sales argument, not a layout accident: the
+ * preview proves the product exists, the challenge names the cost of the status
+ * quo, the solution explains the approach, and only then does the feature list
+ * appear as supporting evidence. The closing pair of actions lets a visitor
+ * either inspect the product or ask for one like it.
  */
 ---
 <div class="project-modal" id="projectModal" role="dialog"
@@ -9,14 +15,51 @@
   <div class="project-modal__overlay" id="modalOverlay"></div>
   <div class="project-modal__panel">
     <button class="project-modal__close" id="modalClose" aria-label="Cerrar">✕</button>
+
+    <div class="project-modal__preview" id="modalPreview"></div>
+
     <div class="project-modal__content">
-      <span class="project-modal__status" id="modalStatus"></span>
-      <h2 class="project-modal__name" id="modalProjectName"></h2>
-      <p class="project-modal__tagline" id="modalTagline"></p>
-      <div class="project-modal__tags" id="modalTags"></div>
-      <ul class="project-modal__features" id="modalFeatures"></ul>
-      <a class="btn btn-primary project-modal__cta" id="modalCta"
-        target="_blank" rel="noopener"><span id="modalCtaText" data-i18n="project.visit">Visitar sitio</span> <i data-lucide="arrow-right"></i></a>
+
+      <header class="project-modal__head">
+        <span class="project-modal__status" id="modalStatus"></span>
+        <h2 class="project-modal__name" id="modalProjectName"></h2>
+        <p class="project-modal__tagline" id="modalTagline"></p>
+        <div class="project-modal__tags" id="modalTags"></div>
+      </header>
+
+      <div class="project-modal__story">
+        <section class="project-modal__block">
+          <h3 class="project-modal__block-title" data-i18n="modal.challenge">El reto</h3>
+          <p class="project-modal__prose" id="modalProblem"></p>
+        </section>
+        <section class="project-modal__block">
+          <h3 class="project-modal__block-title" data-i18n="modal.solution">La solución</h3>
+          <p class="project-modal__prose" id="modalSolution"></p>
+        </section>
+      </div>
+
+      <section class="project-modal__block project-modal__block--impact">
+        <h3 class="project-modal__block-title" data-i18n="modal.impact">Lo que cambia</h3>
+        <ul class="project-modal__outcome" id="modalOutcome"></ul>
+      </section>
+
+      <section class="project-modal__block">
+        <h3 class="project-modal__block-title" data-i18n="modal.includes">Qué incluye</h3>
+        <ul class="project-modal__features" id="modalFeatures"></ul>
+      </section>
+
+      <section class="project-modal__block">
+        <h3 class="project-modal__block-title" data-i18n="modal.stack">Construido con</h3>
+        <div class="project-modal__tech" id="modalTech"></div>
+      </section>
+
+      <div class="project-modal__actions">
+        <a class="btn btn-primary project-modal__cta" id="modalCta"
+          target="_blank" rel="noopener"><span id="modalCtaText" data-i18n="project.visit">Visitar sitio</span> <i data-lucide="arrow-right"></i></a>
+        <a class="btn btn-secondary project-modal__cta-alt" id="modalContactCta" href="#contact"
+          data-i18n="modal.similar">Quiero algo así</a>
+      </div>
+
     </div>
   </div>
 </div>

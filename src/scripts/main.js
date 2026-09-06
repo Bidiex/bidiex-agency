@@ -6,6 +6,7 @@
 import { I18n, getLang } from './i18n.js';
 import { MotionLibrary } from './motion.js';
 import { projectsById } from '../data/projects.js';
+import { withBase } from '../utils/url.js';
 
 // 1. Loading — entrance animation
 const Loading = (function() {
@@ -348,24 +349,75 @@ const Projects = (() => {
   };
 
   // ── Modal ──────────────────────────────────────
+
+  /**
+   * Rebuilds the preview on every open, and is cleared on close, so a live
+   * embed only runs while its project is on screen instead of leaving several
+   * third-party apps executing behind the page.
+   */
+  const renderPreview = (p) => {
+    const el = document.getElementById('modalPreview');
+    if (!el) return;
+
+    if (!p.preview) {
+      el.innerHTML = '';
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+
+    let host = '';
+    try { host = p.url ? new URL(p.url).host : ''; } catch { host = ''; }
+
+    const media = p.preview.type === 'embed'
+      ? `<iframe class="browser-frame__embed" src="${p.preview.src}"
+           title="Vista previa de ${p.name}" loading="lazy" tabindex="-1"
+           aria-hidden="true" scrolling="no" referrerpolicy="no-referrer"
+           sandbox="allow-scripts allow-same-origin"></iframe>`
+      : `<img class="browser-frame__shot" src="${withBase(p.preview.src)}" alt="${p.name}" loading="lazy">`;
+
+    el.innerHTML = `
+      <div class="browser-frame">
+        <div class="browser-frame__bar">
+          <span class="browser-frame__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          ${host ? `<span class="browser-frame__url">${host}</span>` : ''}
+        </div>
+        <div class="browser-frame__viewport">${media}</div>
+      </div>`;
+  };
+
   const openModal = (key) => {
     const p = data[key];
     if (!p || !modal) return;
+
+    renderPreview(p);
 
     document.getElementById('modalStatus').className =
       `status-badge status-${p.status}`;
     document.getElementById('modalStatus').textContent = p.statusLabel;
     document.getElementById('modalProjectName').textContent = p.name;
     document.getElementById('modalTagline').textContent    = p.tagline;
+    document.getElementById('modalProblem').textContent    = p.problem;
+    document.getElementById('modalSolution').textContent   = p.solution;
 
     const tagsEl = document.getElementById('modalTags');
     tagsEl.innerHTML = p.tags
       .map(t => `<span class="project-modal__tag">${t}</span>`)
       .join('');
 
+    const outcomeEl = document.getElementById('modalOutcome');
+    outcomeEl.innerHTML = p.outcome
+      .map(o => `<li>${o}</li>`)
+      .join('');
+
     const featuresEl = document.getElementById('modalFeatures');
     featuresEl.innerHTML = p.features
       .map(f => `<li>${f}</li>`)
+      .join('');
+
+    const techEl = document.getElementById('modalTech');
+    techEl.innerHTML = p.tech
+      .map(t => `<span class="tech-pill">${t}</span>`)
       .join('');
 
     const ctaEl = document.getElementById('modalCta');
@@ -387,6 +439,8 @@ const Projects = (() => {
     }
 
     modal.removeAttribute('hidden');
+    // The panel scrolls, so a second project has to start from its own top.
+    modal.querySelector('.project-modal__panel')?.scrollTo({ top: 0 });
     document.body.style.overflow = 'hidden';
     closeBtn?.focus();
   };
@@ -394,6 +448,9 @@ const Projects = (() => {
   const closeModal = () => {
     if (!modal) return;
     modal.setAttribute('hidden', '');
+    // Drop the embed so the third-party app stops running in the background.
+    const preview = document.getElementById('modalPreview');
+    if (preview) preview.innerHTML = '';
     document.body.style.overflow = '';
   };
 
@@ -410,6 +467,10 @@ const Projects = (() => {
         }
       });
     });
+
+    // "Quiero algo así" closes the dialog first so the anchor can reach #contact.
+    document.getElementById('modalContactCta')
+      ?.addEventListener('click', closeModal);
 
     // Close
     closeBtn?.addEventListener('click', closeModal);

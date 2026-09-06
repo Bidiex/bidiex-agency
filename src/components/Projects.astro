@@ -2,6 +2,11 @@
 import { projects } from '../data/projects.js';
 import { withBase } from '../utils/url.js';
 import ProjectModal from './ProjectModal.astro';
+
+/** Bare host shown in the fake address bar, e.g. "www.traego.app". */
+const hostOf = (url) => {
+  try { return new URL(url).host; } catch { return ''; }
+};
 ---
 <section class="projects" id="projects">
   <div class="container">
@@ -23,9 +28,36 @@ import ProjectModal from './ProjectModal.astro';
                    aria-label={`Ver detalles de ${project.name}`}>
             <div class="project-card__glow"></div>
             <div class="project-card__visual">
-              <div class="project-card__img-scroll">
-                {project.image && <img src={withBase(project.image)} alt={project.name} loading="lazy" />}
-              </div>
+              {project.preview && (
+                <div class="browser-frame">
+                  <div class="browser-frame__bar">
+                    <span class="browser-frame__dots" aria-hidden="true">
+                      <i></i><i></i><i></i>
+                    </span>
+                    {project.url && <span class="browser-frame__url">{hostOf(project.url)}</span>}
+                  </div>
+                  <div class="browser-frame__viewport">
+                    {project.preview.type === 'embed' ? (
+                      /* aria-hidden + tabindex -1: the embed is decoration, and the
+                         card itself is the interactive element. Clicks fall through
+                         to the card because CSS disables pointer events on it. */
+                      <iframe
+                        class="browser-frame__embed"
+                        src={project.preview.src}
+                        title={`Vista previa de ${project.name}`}
+                        loading="lazy"
+                        tabindex="-1"
+                        aria-hidden="true"
+                        scrolling="no"
+                        referrerpolicy="no-referrer"
+                        sandbox="allow-scripts allow-same-origin"
+                      ></iframe>
+                    ) : (
+                      <img class="browser-frame__shot" src={withBase(project.preview.src)} alt={project.name} loading="lazy" />
+                    )}
+                  </div>
+                </div>
+              )}
               <div class="project-card__overlay"></div>
             </div>
             <div class="project-card__content">
