@@ -489,45 +489,27 @@ const Projects = (() => {
   return { init };
 })();
 
-// 10. Stack Carousel
+// 10. Stack index — highlight on touch
 const Stack = (function() {
   const init = () => {
-    const stackGrid = document.querySelector('.stack-grid');
-    const stackCards = document.querySelectorAll('.stack-card');
-    
-    if (!stackGrid || stackCards.length === 0) return;
+    const rows = document.querySelectorAll('.stack-row');
+    if (rows.length === 0) return;
 
-    const observerOptions = {
-      root: stackGrid,
-      rootMargin: '0px',
-      threshold: 0.6
-    };
+    // Pointer devices get :hover straight from CSS; only coarse pointers,
+    // where hover never fires, need a row to light up as it scrolls past.
+    if (window.matchMedia('(hover: hover)').matches) return;
 
-    const cardObserver = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-active');
-        } else {
-          entry.target.classList.remove('is-active');
-        }
+        entry.target.classList.toggle('is-active', entry.isIntersecting);
       });
-    }, observerOptions);
+      // A narrow band across the middle of the viewport, so one row at a time
+      // is active instead of every row that happens to be on screen.
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
 
-    const checkObserver = () => {
-      if (window.innerWidth <= 991) {
-        stackCards.forEach(card => cardObserver.observe(card));
-      } else {
-        stackCards.forEach(card => {
-          cardObserver.unobserve(card);
-          card.classList.remove('is-active');
-        });
-      }
-    };
-
-    window.addEventListener('resize', checkObserver, { passive: true });
-    checkObserver();
+    rows.forEach(row => observer.observe(row));
   };
-  
+
   return { init };
 })();
 

@@ -974,6 +974,29 @@ section:last-of-type {
   max-height: 90vh;
   overflow-y: auto;
   animation: modalIn 0.3s ease;
+  /* Firefox / standards. The WebKit block below covers Chrome and Safari. */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+
+.project-modal__panel::-webkit-scrollbar {
+  width: 10px;
+}
+
+.project-modal__panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* The border is the trick that makes the thumb look inset rather than glued
+   to the panel edge — it paints the card colour around a rounded bar. */
+.project-modal__panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border: 3px solid var(--bg-card);
+  border-radius: 999px;
+}
+
+.project-modal__panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 @keyframes modalIn {
@@ -1005,10 +1028,10 @@ section:last-of-type {
 }
 
 .project-modal__content {
-  padding: 40px;
+  padding: 32px 36px 36px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 20px;
 }
 
 .project-modal__name {
@@ -1066,7 +1089,7 @@ section:last-of-type {
 /* Preview sits above the copy: proof that the product exists comes before the
    argument for it. A wider frame needs less zoom to reach a desktop viewport. */
 .project-modal__preview {
-  padding: 20px 20px 0;
+  padding: 16px 16px 0;
 }
 
 .project-modal__preview[hidden] {
@@ -1074,17 +1097,25 @@ section:last-of-type {
 }
 
 .project-modal__preview .browser-frame {
-  --embed-zoom: 1.6;
+  --embed-zoom: 2;
   margin: 0;
-  height: 300px;
   border-bottom: 1px solid var(--border);
   border-radius: 14px;
+}
+
+/* A 16:9 window rather than a fixed short strip: a letterbox that tall only
+   ever showed the first slice of a hero. Explicit flex sizing because a
+   flex-grow item inside a content-height column can collapse to nothing. */
+.project-modal__preview .browser-frame__viewport {
+  flex: 0 0 auto;
+  width: 100%;
+  aspect-ratio: 16 / 9;
 }
 
 .project-modal__head {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 /* Micro-labels stay in Inter — Ranade is the display face for real headings,
@@ -1096,7 +1127,7 @@ section:last-of-type {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-muted);
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .project-modal__prose {
@@ -1108,14 +1139,14 @@ section:last-of-type {
 
 .project-modal__story {
   display: grid;
-  gap: 24px;
+  gap: 20px;
 }
 
 .project-modal__block--impact {
   background: rgba(79, 107, 255, 0.06);
   border: 1px solid rgba(79, 107, 255, 0.18);
   border-radius: 16px;
-  padding: 20px 24px;
+  padding: 18px 20px;
 }
 
 .project-modal__outcome {
@@ -1168,7 +1199,7 @@ section:last-of-type {
 @media (min-width: 720px) {
   .project-modal__story {
     grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    gap: 28px;
   }
   .project-modal__outcome {
     grid-template-columns: 1fr 1fr;
@@ -1186,11 +1217,10 @@ section:last-of-type {
     padding: 14px 14px 0;
   }
   .project-modal__preview .browser-frame {
-    --embed-zoom: 2.4;
-    height: 190px;
+    --embed-zoom: 2.6;
   }
   .project-modal__content {
-    padding: 28px 24px 32px;
+    padding: 24px 20px 28px;
   }
   .project-modal__name {
     font-size: 28px;
@@ -1831,131 +1861,138 @@ section:last-of-type {
   margin-bottom: 0;
 }
 
-/* 4-column grid on desktop, adapts down */
-.stack-grid {
+/* Ruled index — one row per technology, no card boxes. */
+.stack-index {
+  border-top: 1px solid var(--border);
+}
+
+.stack-row {
+  --brand-color: var(--accent);
+  position: relative;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: 42px 44px minmax(120px, 190px) 1fr;
+  grid-template-areas: "num icon name desc";
+  align-items: center;
+  gap: 24px;
+  padding: 22px 12px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              padding 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.stack-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 28px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  transition: border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1), 
-              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+/* The row's own rule, drawn in its brand colour across the divider below it.
+   Sits on ::after so the existing border-bottom stays as the resting state. */
+.stack-row::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--brand-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.stack-card__icon {
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+.stack-row__num {
+  grid-area: num;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  transition: color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.stack-row__icon {
+  grid-area: icon;
+  position: relative;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 12px;
   transition: border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.stack-card__icon img {
+.stack-row__icon img {
+  position: absolute;
   display: block;
   opacity: 0.85;
   transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  position: absolute;
 }
 
-.icon-color {
-  opacity: 0 !important; /* hidden by default */
-}
-
-.stack-card__name {
-  font-size: 17px;
+.stack-row__name {
+  grid-area: name;
+  font-size: 20px;
   font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
   line-height: 1.2;
-}
-
-.stack-card__desc {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.65;
   margin: 0;
-  flex: 1;
 }
 
-/* Hover state only for pointer devices */
+.stack-row__desc {
+  grid-area: desc;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 68ch;
+}
+
+/* Hover belongs to pointer devices; touch gets the .is-active equivalent. */
 @media (hover: hover) {
-  .stack-card:hover {
-    border-color: var(--brand-color);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 50px color-mix(in srgb, var(--brand-color) 15%, transparent);
+  .stack-row:hover {
+    background: color-mix(in srgb, var(--brand-color) 7%, transparent);
+    padding-left: 22px;
+    padding-right: 22px;
   }
-  .stack-card:hover .icon-color { opacity: 1 !important; }
-  .stack-card:hover .icon-white { opacity: 0 !important; }
-  .stack-card:hover .stack-card__icon { border-color: var(--brand-color); }
+  .stack-row:hover::after { transform: scaleX(1); }
+  .stack-row:hover .stack-row__num { color: var(--brand-color); }
+  .stack-row:hover .stack-row__icon { border-color: var(--brand-color); }
+  .stack-row:hover .icon-color { opacity: 1 !important; }
+  .stack-row:hover .icon-white { opacity: 0 !important; }
 }
 
-/* Responsive grid & Free Flow Carousel */
-@media (min-width: 992px) and (max-width: 1199px) {
-  /* Laptop Responsive Grid */
-  .stack-grid {
-    grid-template-columns: repeat(3, 1fr);
+/* Touch: the row scrolled into view lights up, since hover never fires. */
+@media (hover: none) {
+  .stack-row.is-active {
+    background: color-mix(in srgb, var(--brand-color) 7%, transparent);
   }
+  .stack-row.is-active::after { transform: scaleX(1); }
+  .stack-row.is-active .stack-row__num { color: var(--brand-color); }
+  .stack-row.is-active .stack-row__icon { border-color: var(--brand-color); }
+  .stack-row.is-active .icon-color { opacity: 1 !important; }
+  .stack-row.is-active .icon-white { opacity: 0 !important; }
 }
 
+/* Narrow: the description drops under the name, number and icon span both. */
 @media (max-width: 991px) {
-  /* Tablet/Mobile Free Flow Carousel */
-  .stack-grid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 24px;
-    gap: 20px;
-    padding-bottom: 24px; /* Space for shadows */
-    padding-top: 24px; /* Space for active scale */
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    margin: -24px -24px 0 -24px; /* bleed to edges and counteract top padding */
-    padding-left: 24px;
-    padding-right: 24px;
+  .stack-row {
+    grid-template-columns: 34px 44px 1fr;
+    grid-template-areas:
+      "num icon name"
+      "num icon desc";
+    align-items: start;
+    gap: 6px 18px;
+    padding: 20px 10px;
   }
-  .stack-grid::-webkit-scrollbar {
-    display: none;
+  .stack-row__num,
+  .stack-row__icon { align-self: center; }
+  .stack-row__name {
+    align-self: end;
+    font-size: 17px;
   }
-  
-  .stack-card {
-    flex: 0 0 84%;
-    max-width: 340px;
-    scroll-snap-align: center;
-    /* Inactive states */
-    transform: scale(0.97);
-    opacity: 0.85;
-  }
-  
-  /* Active state injected by IntersectionObserver */
-  .stack-card.is-active {
-    transform: scale(1.02);
-    opacity: 1;
-    border-color: var(--brand-color);
-    box-shadow: 0 20px 50px color-mix(in srgb, var(--brand-color) 15%, transparent);
-  }
-  .stack-card.is-active .icon-color { opacity: 1 !important; }
-  .stack-card.is-active .icon-white { opacity: 0 !important; }
-  .stack-card.is-active .stack-card__icon { border-color: var(--brand-color); }
+  .stack-row__desc { font-size: 13px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stack-card, .stack-card__icon, .stack-card__icon img {
+  .stack-row,
+  .stack-row::after,
+  .stack-row__icon,
+  .stack-row__icon img {
     transition: none !important;
   }
 }
