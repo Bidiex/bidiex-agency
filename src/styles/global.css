@@ -277,15 +277,39 @@ section {
     padding: clamp(60px, 6vw, 100px) 0;
     position: relative;
     z-index: 1;
-    border-bottom: 1px solid var(--border);
 }
 
-section:last-of-type {
-    border-bottom: none;
+/* Hairline seam between sections. A gradient rather than a border so the rule
+   fades out before the viewport edges and lifts slightly at the centre — it
+   reads as a seam between blocks of content, not as a table rule. */
+section:not(:last-of-type)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg,
+        transparent,
+        var(--border) 12%,
+        var(--border-hover) 50%,
+        var(--border) 88%,
+        transparent);
 }
 
 .section-title {
     margin-bottom: 60px;
+    text-align: center;
+}
+
+/* 5 — gradient wash for display headings. */
+.gradient-text {
+    background: linear-gradient(90deg, #517ce8, #c45cff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 
 /* ==========================================================================
@@ -435,7 +459,23 @@ section:last-of-type {
     text-align: center;
 }
 
+/* Dotted field behind the hero, masked to an ellipse so it dissolves well
+   before the section edges and never competes with the headline. */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='1' fill='rgba(255,255,255,0.18)'/%3E%3C/svg%3E");
+    background-size: 32px 32px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 62% at 50% 45%, #000 8%, transparent 72%);
+    mask-image: radial-gradient(ellipse 70% 62% at 50% 45%, #000 8%, transparent 72%);
+}
+
 .hero-content {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -506,8 +546,9 @@ section:last-of-type {
 /* --- Projects Section --- */
 .projects-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
   margin-bottom: 40px;
 }
 
@@ -1028,10 +1069,10 @@ section:last-of-type {
 }
 
 .project-modal__content {
-  padding: 32px 36px 36px;
+  padding: 22px 24px 26px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 14px;
 }
 
 .project-modal__name {
@@ -1089,7 +1130,7 @@ section:last-of-type {
 /* Preview sits above the copy: proof that the product exists comes before the
    argument for it. A wider frame needs less zoom to reach a desktop viewport. */
 .project-modal__preview {
-  padding: 16px 16px 0;
+  padding: 14px 14px 0;
 }
 
 .project-modal__preview[hidden] {
@@ -1115,7 +1156,7 @@ section:last-of-type {
 .project-modal__head {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 /* Micro-labels stay in Inter — Ranade is the display face for real headings,
@@ -1127,7 +1168,7 @@ section:last-of-type {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-muted);
-  margin: 0 0 8px;
+  margin: 0 0 6px;
 }
 
 .project-modal__prose {
@@ -1139,14 +1180,14 @@ section:last-of-type {
 
 .project-modal__story {
   display: grid;
-  gap: 20px;
+  gap: 16px;
 }
 
 .project-modal__block--impact {
   background: rgba(79, 107, 255, 0.06);
   border: 1px solid rgba(79, 107, 255, 0.18);
-  border-radius: 16px;
-  padding: 18px 20px;
+  border-radius: 14px;
+  padding: 14px 16px;
 }
 
 .project-modal__outcome {
@@ -1187,8 +1228,8 @@ section:last-of-type {
 .project-modal__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 2px;
 }
 
 .project-modal__cta.disabled {
@@ -1199,7 +1240,7 @@ section:last-of-type {
 @media (min-width: 720px) {
   .project-modal__story {
     grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    gap: 24px;
   }
   .project-modal__outcome {
     grid-template-columns: 1fr 1fr;
@@ -1214,13 +1255,13 @@ section:last-of-type {
 
 @media (max-width: 719px) {
   .project-modal__preview {
-    padding: 14px 14px 0;
+    padding: 12px 12px 0;
   }
   .project-modal__preview .browser-frame {
     --embed-zoom: 2.6;
   }
   .project-modal__content {
-    padding: 24px 20px 28px;
+    padding: 18px 16px 22px;
   }
   .project-modal__name {
     font-size: 28px;
@@ -1850,7 +1891,8 @@ section:last-of-type {
 
 .stack-header {
   max-width: 640px;
-  margin-bottom: 64px;
+  margin: 0 auto 64px;
+  text-align: center;
 }
 
 .stack-subtitle {
@@ -1863,18 +1905,30 @@ section:last-of-type {
 
 /* Ruled index — one row per technology, no card boxes. */
 .stack-index {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 48px;
   border-top: 1px solid var(--border);
+}
+
+/* One column as soon as two would squeeze the prose. */
+@media (max-width: 767px) {
+  .stack-index {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .stack-row {
   --brand-color: var(--accent);
   position: relative;
   display: grid;
-  grid-template-columns: 42px 44px minmax(120px, 190px) 1fr;
-  grid-template-areas: "num icon name desc";
-  align-items: center;
-  gap: 24px;
-  padding: 22px 12px;
+  grid-template-columns: 34px 44px minmax(0, 1fr);
+  grid-template-areas:
+    "num icon name"
+    "num icon desc";
+  align-items: start;
+  gap: 6px 18px;
+  padding: 20px 12px;
   border-bottom: 1px solid var(--border);
   transition: background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
               padding 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1925,9 +1979,15 @@ section:last-of-type {
   transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.stack-row__num,
+.stack-row__icon {
+  align-self: center;
+}
+
 .stack-row__name {
   grid-area: name;
-  font-size: 20px;
+  align-self: end;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.2;
   margin: 0;
@@ -1935,11 +1995,10 @@ section:last-of-type {
 
 .stack-row__desc {
   grid-area: desc;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.6;
   color: var(--text-secondary);
   margin: 0;
-  max-width: 68ch;
 }
 
 /* Hover belongs to pointer devices; touch gets the .is-active equivalent. */
@@ -1968,24 +2027,11 @@ section:last-of-type {
   .stack-row.is-active .icon-white { opacity: 0 !important; }
 }
 
-/* Narrow: the description drops under the name, number and icon span both. */
-@media (max-width: 991px) {
+@media (max-width: 767px) {
   .stack-row {
-    grid-template-columns: 34px 44px 1fr;
-    grid-template-areas:
-      "num icon name"
-      "num icon desc";
-    align-items: start;
-    gap: 6px 18px;
-    padding: 20px 10px;
+    padding: 18px 10px;
   }
-  .stack-row__num,
-  .stack-row__icon { align-self: center; }
-  .stack-row__name {
-    align-self: end;
-    font-size: 17px;
-  }
-  .stack-row__desc { font-size: 13px; }
+  .stack-row__name { font-size: 17px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

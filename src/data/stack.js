@@ -12,6 +12,13 @@ export const stack = [
         desc: 'Lenguaje principal del ecosistema. Usado tanto en frontend como en lógica de negocio del lado del servidor.',
     },
     {
+        name: 'TypeScript',
+        slug: 'typescript',
+        brand: '#3178C6',
+        descKey: 'stack.typescript',
+        desc: 'Tipado estático sobre JavaScript: menos errores en producción y refactorizaciones seguras cuando la base de código crece.',
+    },
+    {
         name: 'HTML5',
         slug: 'html5',
         brand: '#E34F26',
@@ -59,5 +66,12 @@ export const stack = [
         brand: '#5FA04E',
         descKey: 'stack.node',
         desc: 'Entorno de ejecución para servicios backend, scripts de automatización y Edge Functions serverless.',
+    },
+    {
+        name: 'GSAP',
+        slug: 'gsap',
+        brand: '#0AE448',
+        descKey: 'stack.gsap',
+        desc: 'Librería de animación de alto rendimiento para microinteracciones y transiciones que se mantienen fluidas en cualquier dispositivo.',
     },
 ];

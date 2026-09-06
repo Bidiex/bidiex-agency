@@ -86,6 +86,8 @@ export const translations = {
         "stack.expo":    "Plataforma que acelera el desarrollo móvil con React Native, simplificando builds y distribución.",
         "stack.vite":    "Herramienta de build ultrarrápida. Arquitectura MPA que estructura proyectos web modernos y escalables.",
         "stack.node":    "Entorno de ejecución para servicios backend, scripts de automatización y Edge Functions serverless.",
+        "stack.typescript": "Tipado estático sobre JavaScript: menos errores en producción y refactorizaciones seguras cuando la base de código crece.",
+        "stack.gsap":    "Librería de animación de alto rendimiento para microinteracciones y transiciones que se mantienen fluidas en cualquier dispositivo.",
         
         // Process
         "process.label": "[ Proceso ]",
@@ -240,6 +242,8 @@ export const translations = {
         "stack.expo":    "Platform that accelerates React Native mobile development, simplifying builds and distribution.",
         "stack.vite":    "Ultra-fast build tool. MPA architecture that structures modern, scalable web projects.",
         "stack.node":    "Runtime for backend services, automation scripts and serverless Edge Functions.",
+        "stack.typescript": "Static typing on top of JavaScript: fewer production bugs and safe refactors as the codebase grows.",
+        "stack.gsap":    "High-performance animation library for microinteractions and transitions that stay smooth on any device.",
         
         // Process
         "process.label": "[ Process ]",
