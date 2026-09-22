@@ -9,6 +9,13 @@ let currentLang = 'es';
 
 export const getLang = () => currentLang;
 
+/**
+ * One string from the active dictionary, for text that is built in JavaScript
+ * after `apply()` has already run over the document — a [data-i18n] attribute
+ * alone would only be picked up the next time the language changes.
+ */
+export const t = (key, fallback = '') => translations[currentLang]?.[key] ?? fallback;
+
 function apply(lang) {
     document.documentElement.lang = lang;
     currentLang = lang;

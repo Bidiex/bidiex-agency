@@ -3,8 +3,9 @@
  * Modular, dependency-free. Bundled by Astro as an ES module, so each
  * module below stays a private IIFE exposing only `init()`.
  */
-import { I18n, getLang } from './i18n.js';
+import { I18n, getLang, t } from './i18n.js';
 import { MotionLibrary } from './motion.js';
+import { Showcase } from './showcase.js';
 import { projectsById } from '../data/projects.js';
 import { withBase } from '../utils/url.js';
 
@@ -280,73 +281,16 @@ const Contact = (function() {
     return { init };
 })();
 
-// 9. Projects Module
+// 9. Projects Module — the detail dialog. The list itself is src/scripts/showcase.js.
 const Projects = (() => {
 
   // ── Project data — single source in src/data/projects.js ──
   const data = projectsById;
 
   // ── DOM refs ──────────────────────────────────
-  const track    = document.getElementById('projectsCarousel');
-  const prevBtn  = document.getElementById('projectsPrev');
-  const nextBtn  = document.getElementById('projectsNext');
   const modal    = document.getElementById('projectModal');
   const overlay  = document.getElementById('modalOverlay');
   const closeBtn = document.getElementById('modalClose');
-
-  // ── Carousel ──────────────────────────────────
-  const getStep = () => {
-    const card = track?.querySelector('.project-card');
-    if (!card) return 580;
-    return card.offsetWidth + 20;
-  };
-
-  const updateArrows = () => {
-    if (!track || !prevBtn || !nextBtn) return;
-    const max = track.scrollWidth - track.clientWidth;
-    prevBtn.disabled = track.scrollLeft <= 1;
-    nextBtn.disabled = track.scrollLeft >= max - 1;
-  };
-
-  const initCarousel = () => {
-    if (!track) return;
-
-    prevBtn?.addEventListener('click', () => {
-      track.scrollBy({ left: -getStep(), behavior: 'smooth' });
-    });
-
-    nextBtn?.addEventListener('click', () => {
-      track.scrollBy({ left: getStep(), behavior: 'smooth' });
-    });
-
-    track.addEventListener('scroll', updateArrows, { passive: true });
-    updateArrows();
-
-    // Drag to scroll on desktop
-    let isDown = false, startX = 0, scrollStart = 0;
-
-    track.addEventListener('mousedown', e => {
-      isDown = true;
-      track.style.cursor = 'grabbing';
-      startX = e.pageX - track.offsetLeft;
-      scrollStart = track.scrollLeft;
-    });
-
-    ['mouseleave','mouseup'].forEach(evt => {
-      track.addEventListener(evt, () => {
-        isDown = false;
-        track.style.cursor = 'grab';
-      });
-    });
-
-    track.addEventListener('mousemove', e => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x    = e.pageX - track.offsetLeft;
-      const walk = (x - startX) * 1.5;
-      track.scrollLeft = scrollStart - walk;
-    });
-  };
 
   // ── Modal ──────────────────────────────────────
 
@@ -392,9 +336,14 @@ const Projects = (() => {
 
     renderPreview(p);
 
-    document.getElementById('modalStatus').className =
-      `status-badge status-${p.status}`;
-    document.getElementById('modalStatus').textContent = p.statusLabel;
+    // Keeps the base class: overwriting className outright dropped the pill
+    // styling, and `status-badge` was never a rule. The label is looked up
+    // rather than taken from the data, which only carries Spanish, and the
+    // attribute keeps it swapping with the language toggle afterwards.
+    const statusEl = document.getElementById('modalStatus');
+    statusEl.className = `project-modal__status status-${p.status}`;
+    statusEl.setAttribute('data-i18n', `status.${p.status}`);
+    statusEl.textContent = t(`status.${p.status}`, p.statusLabel);
     document.getElementById('modalProjectName').textContent = p.name;
     document.getElementById('modalTagline').textContent    = p.tagline;
     document.getElementById('modalProblem').textContent    = p.problem;
@@ -455,16 +404,13 @@ const Projects = (() => {
   };
 
   const initModal = () => {
-    // Open on card click or Enter/Space
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('click', () => {
-        openModal(card.dataset.project);
-      });
-      card.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openModal(card.dataset.project);
-        }
+    // One click handler per row covers both paths: a pointer anywhere on the
+    // row, and the row's own button, whose native Enter and Space produce a
+    // click that bubbles up to here. No keydown branch of its own — the row is
+    // not focusable, so it would never have fired.
+    document.querySelectorAll('[data-project]').forEach(row => {
+      row.addEventListener('click', () => {
+        openModal(row.dataset.project);
       });
     });
 
@@ -482,7 +428,6 @@ const Projects = (() => {
 
   // ── Init ──────────────────────────────────────
   const init = () => {
-    initCarousel();
     initModal();
   };
 
@@ -537,6 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ScrollProgress.init();
     BackToTop.init();
     Projects.init();
+    Showcase.init();
     Contact.init();
     MotionLibrary.init();
     Stack.init();

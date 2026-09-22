@@ -3,89 +3,117 @@ import { projects } from '../data/projects.js';
 import { withBase } from '../utils/url.js';
 import ProjectModal from './ProjectModal.astro';
 
-/** Bare host shown in the fake address bar, e.g. "www.traego.app". */
-const hostOf = (url) => {
-  try { return new URL(url).host; } catch { return ''; }
-};
+/**
+ * Scroll showcase: a pinned line on one side, the list of projects on the
+ * other. The pinned line names whichever row is currently in the reading band,
+ * so the list itself is the navigation — there are no arrows and nothing is
+ * hidden off-screen the way the old horizontal carousel hid three of five.
+ *
+ * The rolling name is driven by src/scripts/showcase.js. Its window is sized by
+ * an invisible copy of every name, so a short one never lets the next name peek
+ * out from the side and a wide one is never cut off.
+ */
 ---
 <section class="projects" id="projects">
   <div class="container">
+    <div class="showcase">
 
-    <div class="projects-header reveal">
-      <div>
-        <h2 class="section-title gradient-text" data-i18n="projects.title">Nuestros Proyectos</h2>
-      </div>
-      <div class="carousel-controls">
-        <button class="carousel-btn" id="projectsPrev" aria-label="Anterior"><i data-lucide="arrow-left"></i></button>
-        <button class="carousel-btn" id="projectsNext" aria-label="Siguiente"><i data-lucide="arrow-right"></i></button>
-      </div>
-    </div>
+      <div class="showcase__aside">
+        <div class="showcase__sticky">
+          <h2 class="showcase__label" data-i18n="projects.title">Nuestros Proyectos</h2>
 
-    <div class="projects-track-wrapper">
-      <div class="projects-track" id="projectsCarousel">
+          {/* Decorative: every name in the roller also opens its own row
+              below, so without aria-hidden a screen reader would read the
+              whole roster twice over — once as a list of five bare names with
+              no context, then again in place. */}
+          <div class="showcase__wordmark" aria-hidden="true">
+            <span class="showcase__roll">
+              <span class="showcase__roll-sizer">
+                {projects.map((project) => <span>{project.name}</span>)}
+              </span>
+              <span class="showcase__roll-track" id="projectsRoll">
+                {projects.map((project) => (
+                  <span class="showcase__roll-name">{project.name}</span>
+                ))}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <ul class="showcase__list" id="projectsList">
         {projects.map((project) => (
-          <article class="project-card premium-card" data-project={project.id} tabindex="0" role="button"
-                   aria-label={`Ver detalles de ${project.name}`}>
-            <div class="project-card__glow"></div>
-            <div class="project-card__visual">
-              {project.preview && (
-                <div class="browser-frame">
-                  <div class="browser-frame__bar">
-                    <span class="browser-frame__dots" aria-hidden="true">
-                      <i></i><i></i><i></i>
-                    </span>
-                    {project.url && <span class="browser-frame__url">{hostOf(project.url)}</span>}
-                  </div>
-                  <div class="browser-frame__viewport">
-                    {project.preview.type === 'embed' ? (
-                      /* aria-hidden + tabindex -1: the embed is decoration, and the
-                         card itself is the interactive element. Clicks fall through
-                         to the card because CSS disables pointer events on it. */
-                      <iframe
-                        class="browser-frame__embed"
-                        src={project.preview.src}
-                        title={`Vista previa de ${project.name}`}
-                        loading="lazy"
-                        tabindex="-1"
-                        aria-hidden="true"
-                        scrolling="no"
-                        referrerpolicy="no-referrer"
-                        sandbox="allow-scripts allow-same-origin"
-                      ></iframe>
-                    ) : (
-                      <img class="browser-frame__shot" src={withBase(project.preview.src)} alt={project.name} loading="lazy" />
-                    )}
-                  </div>
-                </div>
-              )}
-              <div class="project-card__overlay"></div>
-            </div>
-            <div class="project-card__content">
-              <div class="project-card__header">
-                <div class="project-card__meta-top">
-                  <span class={`premium-badge status-${project.status}`}>
-                    <span class="pulse-dot"></span>
-                    <span data-i18n={`status.${project.status}`}>{project.statusLabel}</span>
-                  </span>
-                </div>
-                <h3 class="project-card__name">{project.name}</h3>
-                <p class="project-card__tagline" data-i18n={`project.${project.id}.tagline`}>
-                  {project.tagline}
-                </p>
-              </div>
-              <div class="project-card__tech">
-                {project.tech.map((tech) => <span class="tech-pill">{tech}</span>)}
-              </div>
-              <div class="project-card__meta-bottom">
-                {project.meta[0]} <span class="meta-dot">•</span> {project.meta[1]} <span class="meta-dot">•</span> {project.meta[2]}
-              </div>
-              <span class="project-card__cta"><span data-i18n="project.view">Ver proyecto</span> <i data-lucide="arrow-right" class="icon-sm"></i></span>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
+          <li class="showcase__item">
+            {/* The row opens the dialog from anywhere on it — main.js binds the
+                click to [data-project] — but the keyboard path is the real
+                button at the bottom, whose Enter and Space bubble up to the
+                same handler. A `role="button"` on the article would have
+                flattened the heading, the name and the status out of the
+                accessibility tree — the very context the roller above skips
+                repeating. */}
+            <article class="showcase__row" data-project={project.id}>
 
+              <div class="showcase__media">
+                {project.preview ? (
+                  project.preview.type === 'embed' ? (
+                    /* aria-hidden + tabindex -1: the embed is decoration, and
+                       the row itself is the interactive element. */
+                    <iframe
+                      class="showcase__embed"
+                      src={project.preview.src}
+                      title={`Vista previa de ${project.name}`}
+                      loading="lazy"
+                      tabindex="-1"
+                      aria-hidden="true"
+                      scrolling="no"
+                      referrerpolicy="no-referrer"
+                      sandbox="allow-scripts allow-same-origin"
+                    ></iframe>
+                  ) : (
+                    <img class="showcase__shot" src={withBase(project.preview.src)}
+                         alt={project.name} loading="lazy" />
+                  )
+                ) : (
+                  /* Nothing to screenshot yet, so the name carries the frame
+                     rather than leaving a hole where the product should be. */
+                  <div class="showcase__plate">
+                    <span class="gradient-text">{project.name}</span>
+                  </div>
+                )}
+              </div>
+
+              <div class="showcase__meta">
+                <p class="showcase__who">
+                  <span class="showcase__name">{project.name}</span>, {project.tags[project.tags.length - 1]}
+                </p>
+                <span class={`showcase__status status-${project.status}`}>
+                  <span class="pulse-dot"></span>
+                  <span data-i18n={`status.${project.status}`}>{project.statusLabel}</span>
+                </span>
+                <span class="showcase__year">{project.meta[0]}</span>
+              </div>
+
+              <h3 class="showcase__title" data-i18n={`project.${project.id}.tagline`}>
+                {project.tagline}
+              </h3>
+
+              {/* The project name rides along inside the button's name, after
+                  the visible words rather than replacing them, so "Ver
+                  proyecto" still works for voice control while a screen
+                  reader gets five distinguishable buttons. */}
+              <button type="button" class="showcase__cta">
+                <span data-i18n="project.view">Ver proyecto</span>
+                <span class="sr-only">{project.name}</span>
+                <i data-lucide="arrow-right"></i>
+              </button>
+
+              <div class="showcase__rule"></div>
+            </article>
+          </li>
+        ))}
+      </ul>
+
+    </div>
   </div>
 </section>
 

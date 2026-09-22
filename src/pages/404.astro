@@ -37,9 +37,16 @@ import '../styles/global.css';
             font-weight: 800;
             line-height: 1;
             margin-bottom: 24px;
-            background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.2) 100%);
+            /* Same white-to-blue ramp as the display headings, so the
+               standalone page still reads as part of the same system. */
+            background-image: linear-gradient(180deg,
+                var(--title-grad-top) 0%,
+                var(--title-grad-mid) 48%,
+                var(--title-grad-end) 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            color: transparent;
             letter-spacing: -0.04em;
         }
 

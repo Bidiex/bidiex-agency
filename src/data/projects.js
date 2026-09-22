@@ -1,16 +1,19 @@
 /**
  * Bidiex Studio — Projects.
  *
- * Single source for both the carousel cards (rendered at build time by
+ * Single source for both the showcase rows (rendered at build time by
  * Projects.astro) and the detail modal (filled at runtime by main.js), which
  * used to keep two hand-synced copies of the same content.
  *
- * `meta` is the small dotted line at the bottom of a card. Taglines are swapped
- * by i18n through project.<id>.tagline.
+ * `meta[0]` is the year shown at the right of a row; the rest of `meta` is no
+ * longer rendered. Taglines are swapped by i18n through
+ * project.<id>.tagline, and are the row's headline.
  *
- * `preview` drives the card and modal visual:
+ * `preview` drives both the row and the modal visual:
  *   { type: 'embed', src }  — live iframe of the real product's hero.
  *   { type: 'image', src }  — static screenshot resolved against /public.
+ *   null                    — nothing to show yet: the row sets the project's
+ *                             name in the frame instead of leaving a hole.
  * Use 'embed' only for sites that allow framing. A site that answers with
  * `X-Frame-Options` or a `frame-ancestors` CSP renders as a blank box, so it
  * has to fall back to an image — TraeGo currently sends SAMEORIGIN.

@@ -20,6 +20,11 @@
     --accent:         #4F6BFF;   /* Electric Blue */
     --accent-alt:     #6C63FF;   /* Violet */
 
+    /* Display heading ramp — white easing into a lightened --accent */
+    --title-grad-top: #FFFFFF;
+    --title-grad-mid: #EEF3FF;
+    --title-grad-end: #7BA4FF;
+
     /* Typography */
     --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-display: 'Ranade', 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -67,6 +72,15 @@
 
 html {
     scroll-behavior: smooth;
+    /* Horizontal clipping belongs on the root, not on `body`: `overflow-x` on
+       the body turns the body into a scroll container, and `position: sticky`
+       inside a scroll container that never scrolls simply never sticks — which
+       is what would keep the projects wordmark from pinning. Set here the value
+       propagates to the viewport instead and the root stays `visible`, so
+       sticky keeps working. (`clip` would also do it, but the minifier drops
+       any `hidden` fallback beside it, and `clip` is unsupported before
+       Safari 16.) */
+    overflow-x: hidden;
     font-family: var(--font-sans);
     background-color: var(--bg-base);
     color: var(--text-primary);
@@ -77,7 +91,6 @@ html {
 
 body {
     min-height: 100vh;
-    overflow-x: hidden;
     position: relative;
 }
 
@@ -206,6 +219,20 @@ p {
                 0 0 40px -10px rgba(79, 107, 255, 0.05); /* very soft blue glow */
 }
 
+/* Text that only assistive technology reads. Clipped rather than hidden with
+   `display: none`, which would take it out of the accessibility tree too. */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* Section Labels */
 .section-label {
     display: inline-flex;
@@ -303,13 +330,35 @@ section:not(:last-of-type)::after {
     text-align: center;
 }
 
-/* 5 — gradient wash for display headings. */
+/* 5 — gradient wash for display headings.
+   --------------------------------------------------------------------------
+   Apple reads a headline as lit from above: near-white through the cap height,
+   tipping into the brand blue only as it falls toward the baseline. So the ramp
+   runs vertically and holds white for its first half — a horizontal or evenly
+   spaced sweep looks like paint rather than light. Vertical also means a
+   wrapped headline keeps drifting bluer line after line instead of replaying
+   the same sweep on every row. */
 .gradient-text {
-    background: linear-gradient(90deg, #517ce8, #c45cff);
+    background-image: linear-gradient(180deg,
+        var(--title-grad-top) 0%,
+        var(--title-grad-mid) 48%,
+        var(--title-grad-end) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+    /* drop-shadow follows the painted glyphs, so the bloom survives the text
+       clip; text-shadow would be erased along with the fill. */
+    filter: drop-shadow(0 1px 20px rgba(79, 107, 255, 0.16));
+}
+
+/* Without background-clip: text the transparent fill erases the heading
+   outright, so hand the solid colour back. */
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+    .gradient-text {
+        color: var(--text-primary);
+        -webkit-text-fill-color: var(--text-primary);
+    }
 }
 
 /* ==========================================================================
@@ -543,177 +592,368 @@ section:not(:last-of-type)::after {
    9. Projects
    ========================================================================== */
 
-/* --- Projects Section --- */
-.projects-header {
+/* --- Projects showcase ---------------------------------------------------
+   Two halves: the left one pins while the right one scrolls, and the pinned
+   line names whichever row is in the reading band. The list is the navigation,
+   so the arrows, the drag-to-scroll and the fixed-width cards are gone — all
+   five projects are on the page instead of three of them being parked
+   off-screen.
+
+   Driven by src/scripts/showcase.js (GSAP + ScrollTrigger), which owns the
+   dimming and the rolling name because both have to agree on the same idea of
+   which row is being read. Everything here is the resting state, so the
+   section still reads correctly with no JavaScript at all.
+   ------------------------------------------------------------------------- */
+.showcase {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+
+@media (min-width: 900px) {
+  .showcase {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 48px;
+  }
+}
+
+/* --- The pinned half ---
+   Two sticky elements rather than one, because the pinning happens in a
+   different box at each width. Stacked, the aside is a row of its own and its
+   cell is only as tall as its content, so the aside itself has to stick inside
+   the grid; side by side, the cell stretches to the height of the list and the
+   inner block sticks inside it. `align-items` is deliberately left alone — the
+   moment the cell stops stretching, the sticky child has nowhere to travel. */
+.showcase__aside {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 2;
+  /* The rows pass underneath, so the pinned line needs a ground of its own.
+     Fading it out rather than cutting it keeps the noise layer visible. */
+  background: linear-gradient(to bottom, var(--bg-base) 72%, rgba(5, 6, 8, 0));
+  padding-bottom: 18px;
+}
+
+@media (min-width: 900px) {
+  .showcase__aside {
+    position: relative;
+    top: auto;
+    background: none;
+    padding-bottom: 0;
+    height: 100%;
+  }
+
+  .showcase__sticky {
+    position: sticky;
+    top: calc(var(--nav-height) + 40px);
+  }
+}
+
+/* Micro-label in Inter: Ranade is the display face for real headings, and at
+   this size uppercase it loses the qualities it was chosen for. The display
+   weight of this block lives in the wordmark below. */
+.showcase__label {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.showcase__wordmark {
+  margin-top: 14px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 40px;
+  align-items: flex-start;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(32px, 4.4vw, 58px);
+  /* 1.25 everywhere in this block: the roller clips to exactly one line, so the
+     window, the sizer and each name have to agree on what a line is — and it
+     has to leave room for the descender in AlbumCorp and CarCopilot. */
+  line-height: 1.25;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
 }
 
-.projects-header .section-title {
-  margin-bottom: 0;
-}
-
-.carousel-controls {
-  display: flex;
-  gap: 12px;
-  flex-shrink: 0;
-}
-
-.carousel-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  font-size: 18px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s ease, border-color 0.2s ease;
-  flex-shrink: 0;
-}
-
-.carousel-btn:hover {
-  border-color: var(--border-hover);
-}
-
-.carousel-btn:disabled {
-  opacity: 0.25;
-  cursor: default;
-}
-
-/* Track wrapper: clips the scroll area cleanly */
-.projects-track-wrapper {
-  overflow: hidden;
-}
-
-/* The scrollable track */
-.projects-track {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 20px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding: 8px 4px 24px 4px;
-  cursor: grab;
-}
-
-.projects-track:active {
-  cursor: grabbing;
-}
-
-.projects-track::-webkit-scrollbar {
-  display: none;
-}
-
-/* Base card — mobile first */
-.project-card {
-  flex: 0 0 300px;
-  width: 300px;
-  min-width: 300px;
-  scroll-snap-align: start;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  cursor: pointer;
-  transition: all 0.45s cubic-bezier(.22,1,.36,1);
+.showcase__roll {
   position: relative;
+  display: inline-block;
   overflow: hidden;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  min-height: 480px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  /* The negative tracking above applies after the last letter too, so the box
+     measures a hair narrower than the ink it has to hold. `inset: 0` on the
+     track resolves against the padding box, so this hands that width back
+     without moving where the names start. */
+  padding-right: 0.08em;
 }
 
-/* Tablet: 1 card + peek */
-@media (min-width: 640px) and (max-width: 1023px) {
-  .project-card {
-    flex: 0 0 520px;
-    width: 520px;
-    min-width: 520px;
-    min-height: 540px;
-  }
+/* Every name stacked into one grid cell, so the window is as wide as the widest
+   name AS THE FONT SETS IT and still one line tall. Sizing it by the longest
+   name in characters got this wrong: AlbumCorp composes wider than the
+   letter-count-longer CarCopilot, and its final p fell outside the window. */
+.showcase__roll-sizer {
+  display: grid;
+  visibility: hidden;
 }
 
-/* Desktop: exactly 2 cards + peek of 3rd */
-@media (min-width: 1024px) {
-  .project-card {
-    flex: 0 0 560px;
-    width: 560px;
-    min-width: 560px;
-    min-height: 560px;
-  }
+.showcase__roll-sizer > span {
+  grid-area: 1 / 1;
 }
 
-.project-card:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-/* Glow Layer */
-.project-card__glow {
-  position: absolute;
-  top: -20%;
-  left: 50%;
-  width: 140%;
-  height: 80%;
-  background: radial-gradient(circle at center, rgba(100, 150, 255, 0.08) 0%, transparent 60%);
-  transform: translateX(-50%);
-  opacity: 0.5;
-  transition: opacity 0.45s cubic-bezier(.22,1,.36,1);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Visual Area */
-.project-card__visual {
+/* `inset: 0` keeps the track exactly one line tall, which is what lets the
+   script step it by whole multiples of 100%. column-reverse then stacks the
+   remaining names ABOVE the window instead of below it, so the first name
+   needs no transform at all. */
+.showcase__roll-track {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 65%;
-  z-index: 1;
-  overflow: hidden;
+  right: 0;
+  bottom: 0;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column-reverse;
+}
+
+.showcase__roll-name {
+  flex: none;
+  background-image: linear-gradient(180deg,
+      var(--title-grad-top) 0%,
+      var(--title-grad-mid) 48%,
+      var(--title-grad-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .showcase__roll-name {
+    color: var(--text-primary);
+    -webkit-text-fill-color: var(--text-primary);
+  }
+}
+
+/* --- The list --- */
+.showcase__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.showcase__item {
+  padding-top: 16px;
+}
+
+.showcase__row {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.showcase__media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  margin-bottom: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-card);
+  /* The row is the click target; nothing inside the frame may swallow it. */
+  pointer-events: none;
+}
+
+@media (min-width: 900px) {
+  .showcase__media {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.showcase__shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform var(--transition-slow);
+}
+
+/* Same trick as the modal preview: the iframe is laid out --embed-zoom times
+   wider than its frame and scaled back down, so the embedded site renders its
+   desktop hero while the frame stays fluid. */
+.showcase__embed {
+  --embed-zoom: 2.4;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% * var(--embed-zoom));
+  height: calc(100% * var(--embed-zoom));
+  border: 0;
+  transform: scale(calc(1 / var(--embed-zoom)));
+  transform-origin: top left;
+}
+
+.showcase__plate {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  background: var(--bg-secondary);
+}
+
+.showcase__plate span {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.6vw, 44px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.showcase__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.showcase__who {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.showcase__name {
+  color: var(--text-primary);
+}
+
+.showcase__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.showcase__year {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.showcase__title {
+  margin: 0;
+  font-size: clamp(19px, 2.1vw, 26px);
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.showcase__cta {
+  align-self: flex-start;
+  margin-top: 12px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-normal);
+}
+
+.showcase__cta:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.showcase__cta .lucide {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-normal);
+}
+
+.showcase__row:hover .showcase__cta,
+.showcase__cta:focus-visible {
+  color: var(--accent);
+}
+
+.showcase__row:hover .showcase__cta .lucide,
+.showcase__cta:focus-visible .lucide {
+  transform: translateX(4px);
+}
+
+.showcase__row:hover .showcase__shot {
+  transform: scale(1.03);
+}
+
+/* The rule belongs to the row above it, so the last row closes the section
+   with the section seam instead of a second line next to it. */
+.showcase__rule {
+  height: 1px;
+  width: 100%;
+  margin-top: 22px;
+  background: var(--border);
+}
+
+@media (min-width: 900px) {
+  .showcase__rule {
+    margin-top: 44px;
+  }
+}
+
+.showcase__item:last-child .showcase__rule {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showcase__shot,
+  .showcase__cta,
+  .showcase__cta .lucide {
+    transition: none;
+  }
+
+  .showcase__row:hover .showcase__shot {
+    transform: none;
+  }
 }
 
 /* --- Browser frame -------------------------------------------------------
    Wraps either a live embed of the product or a screenshot in the same piece
-   of browser chrome, so a card that cannot be framed still reads as a real
-   site rather than as a broken one.
+   of browser chrome, so a project that cannot be framed still reads as a real
+   site rather than as a broken one. Only the modal preview uses it now — the
+   showcase rows put the product straight in the frame, and the chrome would
+   fight the rules that structure the list.
 
    Scaling trick: the iframe is laid out `--embed-zoom` times wider than its
    frame and then scaled back down by the reciprocal. The embedded site
    therefore believes it has a desktop viewport and renders its desktop hero,
-   while the frame stays fully fluid — no pixel width to keep in sync with the
-   card breakpoints. */
+   while the frame stays fully fluid — no pixel width to keep in sync. */
 .browser-frame {
-  --embed-zoom: 3;
-  flex: 1;
-  align-self: stretch;
+  --embed-zoom: 2;
   min-width: 0;
-  margin: 32px 32px 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-bottom: none;
-  border-radius: 12px 12px 0 0;
+  border-radius: 14px;
   background: var(--bg-secondary);
   box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  transition: transform 0.45s cubic-bezier(.22,1,.36,1);
 }
 
 .browser-frame__bar {
@@ -765,8 +1005,8 @@ section:not(:last-of-type)::after {
   border: 0;
   transform: scale(calc(1 / var(--embed-zoom)));
   transform-origin: top left;
-  /* The card is the click target; the embedded app must not swallow the click
-     or hijack the carousel's scroll. */
+  /* The embedded app must not swallow a click meant for the dialog, nor
+     capture the page's scroll as it passes over it. */
   pointer-events: none;
 }
 
@@ -775,70 +1015,6 @@ section:not(:last-of-type)::after {
   width: 100%;
   height: auto;
   transition: transform 0.45s cubic-bezier(.22,1,.36,1);
-}
-
-/* Cinematic Overlay */
-.project-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 50%, var(--bg-card) 100%);
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Content Area */
-.project-card__content {
-  position: relative;
-  z-index: 3;
-  margin-top: auto;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.1) 0%, var(--bg-card) 20%);
-}
-
-.project-card__meta-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 4px;
-}
-
-.premium-category {
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-.project-card__name {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-  line-height: 1.2;
-}
-@media (min-width: 640px) { .project-card__name { font-size: 24px; } }
-@media (min-width: 1024px) { .project-card__name { font-size: 32px; } }
-
-.project-card__tagline {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.project-card__tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
 }
 
 .tech-pill {
@@ -857,77 +1033,7 @@ section:not(:last-of-type)::after {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.project-card__meta-bottom {
-  font-size: 11px;
-  color: var(--text-secondary);
-  opacity: 0.7;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-}
-.meta-dot { font-size: 8px; }
-
-.project-card__cta {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  opacity: 0.8;
-  transition: all 0.3s ease;
-}
-.project-card__cta .lucide {
-  transition: transform 0.3s cubic-bezier(.22,1,.36,1);
-}
-
-/* Hover Effects */
-.project-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-8px);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255,255,255,0.05);
-}
-
-.project-card:hover .project-card__glow {
-  opacity: 1;
-}
-
-.project-card:hover .browser-frame {
-  transform: translateY(-4px);
-}
-
-.project-card:hover .browser-frame__shot {
-  transform: scale(1.02);
-}
-
-.project-card:hover .project-card__cta {
-  opacity: 1;
-  color: var(--accent);
-}
-
-.project-card:hover .project-card__cta .lucide {
-  transform: translateX(4px);
-}
-
 /* Status Badges */
-.premium-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  padding: 4px 8px;
-  border-radius: 999px;
-  text-transform: uppercase;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid rgba(255,255,255,0.05);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-
 .pulse-dot {
   width: 6px;
   height: 6px;
@@ -951,33 +1057,6 @@ section:not(:last-of-type)::after {
 @keyframes premiumPulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.6; transform: scale(0.9); }
-}
-
-@keyframes autoScrollPreview {
-  0%, 10% { transform: translateY(0); }
-  90%, 100% { transform: translateY(-30px); }
-}
-
-/* Responsive: Stack cards vertically on mobile (no carousel) */
-@media (max-width: 639px) {
-  .carousel-controls { display: none; }
-  .projects-track {
-    flex-direction: column;
-    padding: 0;
-    overflow-x: visible;
-    scroll-snap-type: none;
-    gap: 20px;
-  }
-  .project-card {
-    flex: auto;
-    width: 100%;
-    min-width: 100%;
-    scroll-snap-align: none;
-  }
-}
-
-@media (min-width: 640px) {
-  .projects-track { padding-left: 8px; padding-right: 8px; }
 }
 
 /* --- Modal --- */
@@ -1089,6 +1168,28 @@ section:not(:last-of-type)::after {
   margin: 0;
 }
 
+/* Same mark as the showcase rows carry, so a project keeps its status when the
+   dialog opens over it. */
+.project-modal__status {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.project-modal__status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
 .project-modal__tags {
   display: flex;
   flex-wrap: wrap;
@@ -1135,13 +1236,6 @@ section:not(:last-of-type)::after {
 
 .project-modal__preview[hidden] {
   display: none;
-}
-
-.project-modal__preview .browser-frame {
-  --embed-zoom: 2;
-  margin: 0;
-  border-bottom: 1px solid var(--border);
-  border-radius: 14px;
 }
 
 /* A 16:9 window rather than a fixed short strip: a letterbox that tall only
