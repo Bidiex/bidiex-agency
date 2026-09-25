@@ -20,7 +20,7 @@ import ProjectModal from './ProjectModal.astro';
 
       <div class="showcase__aside">
         <div class="showcase__sticky">
-          <h2 class="showcase__label" data-i18n="projects.title">Nuestros Proyectos</h2>
+          <h2 class="showcase__label" data-motion="heading" data-i18n="projects.title">Nuestros Proyectos</h2>
 
           {/* Decorative: every name in the roller also opens its own row
               below, so without aria-hidden a screen reader would read the
@@ -62,6 +62,7 @@ import ProjectModal from './ProjectModal.astro';
                       class="showcase__embed"
                       src={project.preview.src}
                       title={`Vista previa de ${project.name}`}
+                      data-i18n-title={`project.${project.id}.preview`}
                       loading="lazy"
                       tabindex="-1"
                       aria-hidden="true"
@@ -84,7 +85,7 @@ import ProjectModal from './ProjectModal.astro';
 
               <div class="showcase__meta">
                 <p class="showcase__who">
-                  <span class="showcase__name">{project.name}</span>, {project.tags[project.tags.length - 1]}
+                  <span class="showcase__name">{project.name}</span>, <span data-i18n={`project.${project.id}.sector`}>{project.tags[project.tags.length - 1]}</span>
                 </p>
                 <span class={`showcase__status status-${project.status}`}>
                   <span class="pulse-dot"></span>

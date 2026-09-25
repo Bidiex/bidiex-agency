@@ -1,7 +1,13 @@
 /**
  * Bidiex Studio — i18n dictionary (ES / EN)
- * Keys are referenced from markup via data-i18n / data-i18n-placeholder / data-i18n-aria.
+ * Keys are referenced from markup via data-i18n / data-i18n-placeholder /
+ * data-i18n-aria / data-i18n-title.
+ *
+ * Project and capability copy is not typed here: it lives, in both languages,
+ * in src/data/, and the keys for it are derived at the bottom of this file.
  */
+import { projects, localizeProject } from '../data/projects.js';
+import { services, serviceKeys } from '../data/services.js';
 
 export const translations = {
     es: {
@@ -13,6 +19,8 @@ export const translations = {
         "nav.cta": "Iniciar Proyecto",
         "lang.es": "Cambiar a Español",
         "lang.en": "Switch to English",
+        "nav.home": "Bidiex, ir al inicio",
+        "nav.menu": "Abrir menú",
         
         // Hero
         "hero.badge": "✦ Estudio Independiente de Software",
@@ -39,11 +47,6 @@ export const translations = {
         "projects.title": "Nuestros Proyectos",
         "status.active": "En producción",
         "status.dev": "En desarrollo",
-        "project.traego.tagline": "Plataforma SaaS B2B2C de gestión integral de gastronegocios",
-        "project.albumcorp.tagline": "Plataforma SaaS B2B de álbumes de colección estilo Panini para empresas",
-        "project.invio.tagline": "Servicio B2C de invitaciones digitales para todo tipo de eventos",
-        "project.sellogo.tagline": "Plataforma SaaS B2B2C de tarjetas de fidelización digitales",
-        "project.carcopilot.tagline": "App B2C de gestión inteligente de gastos vehiculares potenciada con IA",
         "project.visit": "Visitar sitio",
         "project.view": "Ver proyecto",
         "project.soon": "Próximamente",
@@ -55,39 +58,24 @@ export const translations = {
         "modal.includes": "Qué incluye",
         "modal.stack": "Construido con",
         "modal.similar": "Quiero algo así",
+        "modal.close": "Cerrar",
         
         // Services
         "services.label": "[ Estudio ]",
         "services.title": "Nuestras Capacidades",
-        "srv.design.title": "Diseño UI/UX",
-        "srv.design.desc": "Diseñamos interfaces claras y sistemas de diseño consistentes que reducen la fricción y hacen que cada interacción se sienta obvia.",
-        "srv.dev.title": "Desarrollo de Software",
-        "srv.dev.desc": "Construimos aplicaciones robustas y escalables adaptadas para resolver problemas empresariales complejos con arquitecturas modernas.",
-        "srv.web.title": "Aplicaciones Web",
-        "srv.web.desc": "Desarrollamos plataformas web que funcionan igual de bien en escritorio que en móvil, con datos en tiempo real y rendimiento medible.",
-        "srv.auto.title": "Automatización",
-        "srv.auto.desc": "Conectamos tus herramientas y eliminamos el trabajo manual repetitivo con flujos que se ejecutan solos y sin errores.",
-        "srv.brand.title": "Identidad de Marca",
-        "srv.brand.desc": "Construimos identidades visuales coherentes: marca, paleta, tipografía y tono aplicados de forma consistente en cada punto de contacto.",
-        "srv.landing.title": "Landing Pages",
-        "srv.landing.desc": "Creamos páginas rápidas y enfocadas en conversión, optimizadas para SEO y listas para sostener tus campañas.",
-        "srv.consulting.title": "Consultoría Técnica",
-        "srv.consulting.desc": "Auditamos tu arquitectura y tu stack para detectar cuellos de botella y trazar un plan técnico que sostenga tu crecimiento.",
+        "services.more": "Conocer más",
+
+        // Capability pages
+        "srvpage.eyebrow": "Capacidad",
+        "srvpage.back": "Todas las capacidades",
+        "srvpage.what": "Qué hacemos",
+        "srvpage.how": "Cómo trabajamos",
+        "srvpage.fit": "Es para ti si…",
+        "srvpage.others": "Otras capacidades",
         
         // Stack
         "stack.label":   "[ Stack ]",
         "stack.title":   "Construido con las herramientas correctas",
-        "stack.subtitle":"Cada proyecto se desarrolla sobre una base tecnológica moderna, escalable y probada en producción.",
-        "stack.js":      "Lenguaje principal del ecosistema. Usado tanto en frontend como en lógica de negocio del lado del servidor.",
-        "stack.html":    "Estructura semántica, accesible y optimizada para SEO en cada interfaz que construimos.",
-        "stack.css":     "Diseño visual preciso, animaciones fluidas y experiencias responsivas sin depender de frameworks pesados.",
-        "stack.react":   "Desarrollo de aplicaciones móviles nativas para iOS y Android desde una sola base de código.",
-        "stack.supabase":"Backend como servicio: base de datos PostgreSQL, autenticación, almacenamiento y Edge Functions en un solo lugar.",
-        "stack.expo":    "Plataforma que acelera el desarrollo móvil con React Native, simplificando builds y distribución.",
-        "stack.vite":    "Herramienta de build ultrarrápida. Arquitectura MPA que estructura proyectos web modernos y escalables.",
-        "stack.node":    "Entorno de ejecución para servicios backend, scripts de automatización y Edge Functions serverless.",
-        "stack.typescript": "Tipado estático sobre JavaScript: menos errores en producción y refactorizaciones seguras cuando la base de código crece.",
-        "stack.gsap":    "Librería de animación de alto rendimiento para microinteracciones y transiciones que se mantienen fluidas en cualquier dispositivo.",
         
         // Process
         "process.label": "[ Proceso ]",
@@ -139,6 +127,8 @@ export const translations = {
         "contact.email": "Correo*",
         "contact.email.placeholder": "juan@ejemplo.com",
         "contact.phone": "Teléfono*",
+        "contact.phone.title": "El teléfono debe tener 10 dígitos y empezar por 3",
+        "contact.unspecified": "No especificado",
         "contact.project": "Cuéntanos sobre tu proyecto",
         "contact.project.placeholder": "Describe brevemente lo que quieres construir...",
         "contact.source": "¿Donde escuchaste sobre nosotros?",
@@ -156,6 +146,7 @@ export const translations = {
         "btn.totop": "Volver arriba",
         
         // 404
+        "404.doctitle": "404 — Página No Encontrada | Bidiex",
         "404.title": "Página no encontrada",
         "404.desc": "La página que estás buscando no existe o ha sido movida.",
         "404.btn": "Volver al Inicio"
@@ -169,6 +160,8 @@ export const translations = {
         "nav.cta": "Start Project",
         "lang.es": "Cambiar a Español",
         "lang.en": "Switch to English",
+        "nav.home": "Bidiex, go to home",
+        "nav.menu": "Open menu",
         
         // Hero
         "hero.badge": "✦ Independent Software Studio",
@@ -195,11 +188,6 @@ export const translations = {
         "projects.title": "Our projects",
         "status.active": "Live",
         "status.dev": "In development",
-        "project.traego.tagline": "B2B2C SaaS platform for full restaurant business management",
-        "project.albumcorp.tagline": "B2B SaaS platform for Panini-style corporate sticker albums",
-        "project.invio.tagline": "B2C digital invitation service for all types of events",
-        "project.sellogo.tagline": "B2B2C SaaS platform for digital loyalty cards",
-        "project.carcopilot.tagline": "AI-powered B2C app for intelligent vehicle expense tracking",
         "project.visit": "Visit site",
         "project.view": "View project",
         "project.soon": "Coming soon",
@@ -211,39 +199,24 @@ export const translations = {
         "modal.includes": "What's included",
         "modal.stack": "Built with",
         "modal.similar": "I want something like this",
+        "modal.close": "Close",
         
         // Services
         "services.label": "[ Studio ]",
         "services.title": "Our Capabilities",
-        "srv.design.title": "UI/UX Design",
-        "srv.design.desc": "We design clear interfaces and consistent design systems that cut friction and make every interaction feel obvious.",
-        "srv.dev.title": "Software Development",
-        "srv.dev.desc": "We build robust, scalable applications tailored to solve complex business problems with modern architectures.",
-        "srv.web.title": "Web Applications",
-        "srv.web.desc": "We develop web platforms that work just as well on desktop as on mobile, with real-time data and measurable performance.",
-        "srv.auto.title": "Automation",
-        "srv.auto.desc": "We connect your tools and remove repetitive manual work with flows that run on their own, without errors.",
-        "srv.brand.title": "Brand Identity",
-        "srv.brand.desc": "We build coherent visual identities: mark, palette, typography and tone applied consistently across every touchpoint.",
-        "srv.landing.title": "Landing Pages",
-        "srv.landing.desc": "We craft fast, conversion-focused pages, optimized for SEO and ready to carry your campaigns.",
-        "srv.consulting.title": "Technical Consulting",
-        "srv.consulting.desc": "We audit your architecture and stack to surface bottlenecks and lay out a technical plan that supports your growth.",
+        "services.more": "Learn more",
+
+        // Capability pages
+        "srvpage.eyebrow": "Capability",
+        "srvpage.back": "All capabilities",
+        "srvpage.what": "What we do",
+        "srvpage.how": "How we work",
+        "srvpage.fit": "This is for you if…",
+        "srvpage.others": "Other capabilities",
         
         // Stack
         "stack.label":   "[ Stack ]",
         "stack.title":   "Built with the right tools",
-        "stack.subtitle":"Every project is built on a modern, scalable technology foundation proven in production.",
-        "stack.js":      "Core language of the ecosystem. Used in both frontend interfaces and server-side business logic.",
-        "stack.html":    "Semantic, accessible, SEO-optimized structure in every interface we build.",
-        "stack.css":     "Precise visual design, fluid animations and responsive experiences without heavy frameworks.",
-        "stack.react":   "Native mobile app development for iOS and Android from a single codebase.",
-        "stack.supabase":"Backend as a service: PostgreSQL database, authentication, storage and Edge Functions in one place.",
-        "stack.expo":    "Platform that accelerates React Native mobile development, simplifying builds and distribution.",
-        "stack.vite":    "Ultra-fast build tool. MPA architecture that structures modern, scalable web projects.",
-        "stack.node":    "Runtime for backend services, automation scripts and serverless Edge Functions.",
-        "stack.typescript": "Static typing on top of JavaScript: fewer production bugs and safe refactors as the codebase grows.",
-        "stack.gsap":    "High-performance animation library for microinteractions and transitions that stay smooth on any device.",
         
         // Process
         "process.label": "[ Process ]",
@@ -295,6 +268,8 @@ export const translations = {
         "contact.email": "Email*",
         "contact.email.placeholder": "john@example.com",
         "contact.phone": "Phone*",
+        "contact.phone.title": "The phone number must have 10 digits and start with 3",
+        "contact.unspecified": "Not specified",
         "contact.project": "Tell us about your project",
         "contact.project.placeholder": "Briefly describe what you want to build...",
         "contact.source": "Where did you hear about us?",
@@ -312,8 +287,23 @@ export const translations = {
         "btn.totop": "Back to top",
         
         // 404
+        "404.doctitle": "404 — Page Not Found | Bidiex",
         "404.title": "Page not found",
         "404.desc": "The page you are looking for doesn't exist or has been moved.",
         "404.btn": "Return Home"
     }
 };
+
+// Derived keys — one source for the prose, whichever language renders it.
+for (const lang of ['es', 'en']) {
+    const dict = translations[lang];
+    for (const project of projects) {
+        const p = localizeProject(project, lang);
+        dict[`project.${p.id}.tagline`] = p.tagline;
+        dict[`project.${p.id}.sector`] = p.tags[p.tags.length - 1];
+        dict[`project.${p.id}.preview`] = (lang === 'es' ? 'Vista previa de ' : 'Preview of ') + p.name;
+    }
+    for (const service of services) {
+        Object.assign(dict, serviceKeys(service, lang));
+    }
+}

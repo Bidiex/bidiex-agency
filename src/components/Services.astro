@@ -1,26 +1,11 @@
 ---
 import { services } from '../data/services.js';
-import MotionDesign from './motion/MotionDesign.astro';
-import MotionDev from './motion/MotionDev.astro';
-import MotionWeb from './motion/MotionWeb.astro';
-import MotionAuto from './motion/MotionAuto.astro';
-import MotionBrand from './motion/MotionBrand.astro';
-import MotionLanding from './motion/MotionLanding.astro';
-import MotionConsulting from './motion/MotionConsulting.astro';
-
-const visuals = {
-    design: MotionDesign,
-    dev: MotionDev,
-    web: MotionWeb,
-    auto: MotionAuto,
-    brand: MotionBrand,
-    landing: MotionLanding,
-    consulting: MotionConsulting,
-};
+import { withBase } from '../utils/url.js';
+import { visuals } from './motion/index.js';
 ---
 <section class="services" id="services">
     <div class="container">
-        <h2 class="section-title reveal gradient-text" data-i18n="services.title">Nuestras Capacidades</h2>
+        <h2 class="section-title gradient-text" data-motion="heading" data-i18n="services.title">Nuestras Capacidades</h2>
 
         <div class="bento-grid">
             {services.map((service) => {
@@ -32,6 +17,12 @@ const visuals = {
                             <h3 class="bento-title" data-i18n={`srv.${service.id}.title`}>{service.title}</h3>
                         </div>
                         <p class="bento-desc" data-i18n={`srv.${service.id}.desc`}>{service.desc}</p>
+                        {/* Icon-only on screen, so the card stays about its illustration;
+                            the name is "Conocer más" plus the capability. */}
+                        <a class="bento-link" href={withBase(`/servicios/${service.slug}/`)}>
+                            <span class="sr-only"><span data-i18n="services.more">Conocer más</span>: <span data-i18n={`srv.${service.id}.title`}>{service.title}</span></span>
+                            <i data-lucide="arrow-up-right"></i>
+                        </a>
                         <div class="bento-visual motion-lib-container" id={`motion-${service.id}`}>
                             <Visual />
                         </div>

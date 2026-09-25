@@ -204,6 +204,42 @@ p {
     background: var(--bg-secondary);
 }
 
+/* Shine — a diagonal band of light crosses the button once on hover. The
+   transition only exists in the hover state, so on leave the band snaps back
+   out of sight instead of sweeping back across. On the white primary the band
+   is tinted with the accent, since white light on white would not show. */
+.btn-primary::after,
+.btn-secondary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg,
+        transparent 30%,
+        var(--btn-shine, rgba(255, 255, 255, 0.16)) 50%,
+        transparent 70%);
+    transform: translateX(-110%);
+}
+
+.btn-primary {
+    --btn-shine: rgba(123, 164, 255, 0.4);
+}
+
+.btn-primary:hover::after,
+.btn-secondary:hover::after,
+.btn-primary:focus-visible::after,
+.btn-secondary:focus-visible::after {
+    transform: translateX(110%);
+    transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-primary::after,
+    .btn-secondary::after {
+        display: none;
+    }
+}
+
 /* Cards Base */
 .card-hover {
     border-radius: 22px;
@@ -370,19 +406,31 @@ section:not(:last-of-type)::after {
     left: 0;
     width: 100%;
     z-index: 100;
-    background: rgba(11, 13, 18, 0.4);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    /* Solid, so nothing scrolling underneath shows through. */
+    background: var(--bg-secondary);
     border-bottom: 1px solid transparent;
-    transition: var(--transition-normal);
+    transition: border-color var(--transition-normal),
+                translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     opacity: 0;
     transform: translateY(-20px);
     animation: navEntrance 1s ease forwards 0.5s;
 }
 
 .navbar.scrolled {
-    background: rgba(11, 13, 18, 0.8);
-    border-bottom-color: var(--border-hover);
+    border-bottom-color: var(--border);
+}
+
+/* Hidden while scrolling down, back on the first scroll up (main.js). Uses
+   the standalone `translate` property because the entrance animation fills
+   `transform` forwards and would override a class that set it. */
+.navbar.is-hidden {
+    translate: 0 -100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar {
+        transition: border-color var(--transition-normal);
+    }
 }
 
 .nav-container {
@@ -499,12 +547,15 @@ section:not(:last-of-type)::after {
 /* ==========================================================================
    6. Hero
    ========================================================================== */
+/* Sized by its content plus generous padding rather than a full 100vh, so the
+   tech band beneath it shows on the first screen instead of a tall void. The
+   top padding clears the fixed navbar before adding the section's own air. */
 .hero {
-    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 100px;
+    padding-top: calc(var(--nav-height) + clamp(64px, 9vw, 130px));
+    padding-bottom: clamp(56px, 7vw, 104px);
     text-align: center;
 }
 
@@ -618,28 +669,50 @@ section:not(:last-of-type)::after {
 }
 
 /* --- The pinned half ---
-   Two sticky elements rather than one, because the pinning happens in a
-   different box at each width. Stacked, the aside is a row of its own and its
-   cell is only as tall as its content, so the aside itself has to stick inside
-   the grid; side by side, the cell stretches to the height of the list and the
-   inner block sticks inside it. `align-items` is deliberately left alone — the
-   moment the cell stops stretching, the sticky child has nowhere to travel. */
+   Only pinned side by side, where the cell stretches to the height of the list
+   and the inner block sticks inside it. `align-items` is deliberately left
+   alone — the moment the cell stops stretching, the sticky child has nowhere
+   to travel.
+
+   Stacked (below 900px) there is no pinning at all. A sticky header there
+   needed a solid ground for the rows to pass under, and a flat black band
+   over the page's glow layers is exactly what it looked like — while the
+   rolling name was clipped mid-step above it. On a phone the rows already
+   carry the project name, so the aside is just the section heading. */
 .showcase__aside {
-  position: sticky;
-  top: var(--nav-height);
-  z-index: 2;
-  /* The rows pass underneath, so the pinned line needs a ground of its own.
-     Fading it out rather than cutting it keeps the noise layer visible. */
-  background: linear-gradient(to bottom, var(--bg-base) 72%, rgba(5, 6, 8, 0));
-  padding-bottom: 18px;
+  position: relative;
+}
+
+/* Scoped under .showcase so these win over the base rules further down. */
+@media (max-width: 899px) {
+  .showcase .showcase__wordmark {
+    display: none;
+  }
+
+  /* The micro-label is the only heading left, so it takes the role (and the
+     look) of every other section title. */
+  .showcase .showcase__label {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 8vw, 40px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    text-transform: none;
+    text-align: center;
+    background-image: linear-gradient(180deg,
+        var(--title-grad-top) 0%,
+        var(--title-grad-mid) 48%,
+        var(--title-grad-end) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    margin-bottom: 8px;
+  }
 }
 
 @media (min-width: 900px) {
   .showcase__aside {
-    position: relative;
-    top: auto;
-    background: none;
-    padding-bottom: 0;
     height: 100%;
   }
 
@@ -751,9 +824,11 @@ section:not(:last-of-type)::after {
   cursor: pointer;
 }
 
+/* 16:10 on phones too: the screenshots are 16:9 desktop captures, and a
+   portrait frame cropped their headlines off both sides. */
 .showcase__media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 16 / 10;
   margin-bottom: 12px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -1126,8 +1201,8 @@ section:not(:last-of-type)::after {
 
 .project-modal__close {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  right: 16px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1147,11 +1222,14 @@ section:not(:last-of-type)::after {
   background: rgba(255,255,255,0.12);
 }
 
+/* Breathing room is the point here: the copy is a sales argument, and a
+   cramped column reads like a spec sheet. Sections are separated by space
+   rather than rules, with more of it around the blocks than inside them. */
 .project-modal__content {
-  padding: 22px 24px 26px;
+  padding: 32px 44px 44px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 28px;
 }
 
 .project-modal__name {
@@ -1231,7 +1309,7 @@ section:not(:last-of-type)::after {
 /* Preview sits above the copy: proof that the product exists comes before the
    argument for it. A wider frame needs less zoom to reach a desktop viewport. */
 .project-modal__preview {
-  padding: 14px 14px 0;
+  padding: 64px 24px 0;
 }
 
 .project-modal__preview[hidden] {
@@ -1250,7 +1328,11 @@ section:not(:last-of-type)::after {
 .project-modal__head {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+}
+
+.project-modal__head .project-modal__tags {
+  margin-top: 4px;
 }
 
 /* Micro-labels stay in Inter — Ranade is the display face for real headings,
@@ -1262,7 +1344,21 @@ section:not(:last-of-type)::after {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-muted);
-  margin: 0 0 6px;
+  margin: 0 0 12px;
+}
+
+/* The blocks are <section>s for their headings, but the page-level section
+   rules (vertical padding, the seam underneath) are for page sections — here
+   they doubled every gap and drew a stray rule between challenge and solution. */
+/* :where() keeps this at element specificity, so the impact block's own
+   padding still applies. */
+:where(.project-modal) section {
+  padding: 0;
+  z-index: auto;
+}
+
+.project-modal .project-modal__block::after {
+  content: none;
 }
 
 .project-modal__prose {
@@ -1280,8 +1376,8 @@ section:not(:last-of-type)::after {
 .project-modal__block--impact {
   background: rgba(79, 107, 255, 0.06);
   border: 1px solid rgba(79, 107, 255, 0.18);
-  border-radius: 14px;
-  padding: 14px 16px;
+  border-radius: 16px;
+  padding: 24px 28px;
 }
 
 .project-modal__outcome {
@@ -1322,8 +1418,9 @@ section:not(:last-of-type)::after {
 .project-modal__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 2px;
+  gap: 12px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
 }
 
 .project-modal__cta.disabled {
@@ -1334,28 +1431,45 @@ section:not(:last-of-type)::after {
 @media (min-width: 720px) {
   .project-modal__story {
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 40px;
   }
   .project-modal__outcome {
     grid-template-columns: 1fr 1fr;
-    gap: 12px 24px;
+    gap: 14px 32px;
   }
   .project-modal__features {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px 24px;
+    gap: 10px 32px;
   }
 }
 
 @media (max-width: 719px) {
+  .project-modal {
+    padding: 12px;
+  }
+  .project-modal__panel {
+    max-height: calc(100dvh - 24px);
+    border-radius: 20px;
+  }
   .project-modal__preview {
-    padding: 12px 12px 0;
+    padding: 60px 14px 0;
   }
   .project-modal__preview .browser-frame {
     --embed-zoom: 2.6;
   }
   .project-modal__content {
-    padding: 18px 16px 22px;
+    padding: 24px 20px 28px;
+    gap: 24px;
+  }
+  .project-modal__block--impact {
+    padding: 20px;
+  }
+  .project-modal__actions {
+    padding-top: 24px;
+  }
+  .project-modal__actions .btn {
+    flex: 1 1 100%;
   }
   .project-modal__name {
     font-size: 28px;
@@ -1387,9 +1501,100 @@ section:not(:last-of-type)::after {
 
 .bento-card:hover {
     background: rgba(255,255,255,0.03);
-    border-color: rgba(255,255,255,0.15);
+    border-color: rgba(123, 164, 255, 0.2);
     transform: translateY(-4px);
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+/* Hover glow — a faint wash of the accent pair behind the illustration. It
+   follows the pointer (main.js writes --glow-x / --glow-y), and falls back to
+   the upper middle of the card where there is no pointer to follow. Kept
+   under the motion layer and at single-digit alpha so it tints the card
+   rather than lighting it. */
+.bento-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    background:
+        radial-gradient(380px circle at var(--glow-x, 50%) var(--glow-y, 35%),
+            rgba(79, 107, 255, 0.11),
+            rgba(108, 99, 255, 0.05) 45%,
+            transparent 72%);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bento-card:hover::before,
+.bento-card:focus-within::before {
+    opacity: 1;
+}
+
+/* The whole card opens its capability page: the link's ::after is stretched
+   over the card, so the click target is the card while the link itself is a
+   small round arrow in the corner, clear of the illustration. */
+.bento-header {
+    padding-right: 48px;
+}
+
+.bento-link {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    z-index: 3;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    transition: color var(--transition-normal),
+                border-color var(--transition-normal),
+                background var(--transition-normal);
+}
+
+.bento-link::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+}
+
+.bento-card {
+    /* Contains the stretched link's fixed ::after — a transformed ancestor
+       becomes the containing block for fixed descendants, and the card
+       already lifts with a transform on hover. */
+    transform: translateZ(0);
+}
+
+.bento-link .lucide {
+    width: 16px;
+    height: 16px;
+    transition: transform var(--transition-normal);
+}
+
+.bento-card:hover .bento-link,
+.bento-link:focus-visible {
+    color: var(--bg-base);
+    background: var(--text-primary);
+    border-color: var(--text-primary);
+}
+
+.bento-card:hover .bento-link .lucide,
+.bento-link:focus-visible .lucide {
+    transform: translate(1px, -1px);
+}
+
+.bento-link:focus-visible {
+    outline: none;
+}
+
+.bento-card:has(.bento-link:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 .bento-header {
@@ -1596,6 +1801,8 @@ section:not(:last-of-type)::after {
 }
 
 /* --- 2. Software Development ---------------------------------------------- */
+/* Timeline: type (18–38%) → sweep (40–60%) → build, test, deploy (46–66%)
+   → release bar (64–78%) → check (80–92%) → everything resets (≥94%). */
 
 .mv-dev__pulse { animation-name: mvDevPulse; animation-timing-function: ease-in-out; }
 .mv-dev__mask  { animation-name: mvDevType;  animation-timing-function: steps(18, end); }
@@ -1604,10 +1811,15 @@ section:not(:last-of-type)::after {
     animation-duration: var(--mv-dur), 0.85s;
     animation-timing-function: steps(18, end), steps(2, end);
 }
-.mv-dev__highlight { animation-name: mvDevHighlight; }
-.mv-dev__log--1    { animation-name: mvDevLog1; }
-.mv-dev__log--2    { animation-name: mvDevLog2; }
-.mv-dev__check     { animation-name: mvDevCheck; }
+.mv-dev__highlight  { animation-name: mvDevHighlight; }
+.mv-dev__stage--1   { animation-name: mvDevStage1; }
+.mv-dev__stage--2   { animation-name: mvDevStage2; }
+.mv-dev__stage--3   { animation-name: mvDevStage3; }
+.mv-dev__link       { transform-origin: top; }
+.mv-dev__link--1    { animation-name: mvDevLink1; }
+.mv-dev__link--2    { animation-name: mvDevLink2; }
+.mv-dev__progress   { animation-name: mvDevProgress; transform-origin: left; }
+.mv-dev__check      { animation-name: mvDevCheck; }
 
 @keyframes mvDevPulse {
     0%, 100% { opacity: 1; }
@@ -1616,13 +1828,13 @@ section:not(:last-of-type)::after {
 
 @keyframes mvDevType {
     0%, 18%   { width: 0; }
-    38%, 88%  { width: 230px; }
+    38%, 88%  { width: 176px; }
     96%, 100% { width: 0; }
 }
 
 @keyframes mvDevCaret {
     0%, 18%   { transform: translateX(0); }
-    38%, 88%  { transform: translateX(230px); }
+    38%, 88%  { transform: translateX(172px); }
     96%, 100% { transform: translateX(0); }
 }
 
@@ -1632,27 +1844,51 @@ section:not(:last-of-type)::after {
 }
 
 @keyframes mvDevHighlight {
-    0%, 40%   { opacity: 0; transform: translateX(-26px); }
-    49%, 62%  { opacity: 0.16; transform: translateX(0); }
-    72%, 100% { opacity: 0; transform: translateX(26px); }
+    0%, 39%   { opacity: 0; transform: translateX(-20px); }
+    46%, 56%  { opacity: 0.14; transform: translateX(0); }
+    64%, 100% { opacity: 0; transform: translateX(20px); }
 }
 
-@keyframes mvDevLog1 {
-    0%, 56%   { opacity: 0; transform: translateX(-6px); }
-    62%, 90%  { opacity: 1; transform: translateX(0); }
-    96%, 100% { opacity: 0; transform: translateX(-6px); }
+@keyframes mvDevStage1 {
+    0%, 45%   { opacity: 0; transform: scale(0.3); }
+    50%, 90%  { opacity: 1; transform: scale(0.62); }
+    96%, 100% { opacity: 0; transform: scale(0.3); }
 }
 
-@keyframes mvDevLog2 {
-    0%, 62%   { opacity: 0; transform: translateX(-6px); }
-    68%, 90%  { opacity: 1; transform: translateX(0); }
-    96%, 100% { opacity: 0; transform: translateX(-6px); }
+@keyframes mvDevStage2 {
+    0%, 53%   { opacity: 0; transform: scale(0.3); }
+    58%, 90%  { opacity: 1; transform: scale(0.62); }
+    96%, 100% { opacity: 0; transform: scale(0.3); }
+}
+
+@keyframes mvDevStage3 {
+    0%, 61%   { opacity: 0; transform: scale(0.3); }
+    66%, 90%  { opacity: 1; transform: scale(0.62); }
+    96%, 100% { opacity: 0; transform: scale(0.3); }
+}
+
+@keyframes mvDevLink1 {
+    0%, 49%   { transform: scaleY(0); }
+    54%, 90%  { transform: scaleY(1); }
+    96%, 100% { transform: scaleY(0); }
+}
+
+@keyframes mvDevLink2 {
+    0%, 57%   { transform: scaleY(0); }
+    62%, 90%  { transform: scaleY(1); }
+    96%, 100% { transform: scaleY(0); }
+}
+
+@keyframes mvDevProgress {
+    0%, 64%   { transform: scaleX(0); }
+    78%, 90%  { transform: scaleX(1); }
+    96%, 100% { transform: scaleX(0); }
 }
 
 @keyframes mvDevCheck {
-    0%, 68%   { opacity: 0; transform: scale(0.55); }
-    76%, 90%  { opacity: 1; transform: scale(1); }
-    95%, 100% { opacity: 0; transform: scale(0.55); }
+    0%, 77%   { opacity: 0; transform: scale(0.5); }
+    83%, 90%  { opacity: 1; transform: scale(1); }
+    95%, 100% { opacity: 0; transform: scale(0.5); }
 }
 
 /* --- 3. Web Applications -------------------------------------------------- */
@@ -1962,7 +2198,8 @@ section:not(:last-of-type)::after {
         animation: none !important;
     }
 
-    .mv-dev__mask      { width: 230px; }
+    .mv-dev__mask      { width: 176px; }
+    .mv-dev__stage     { opacity: 1; transform: scale(0.62); }
     .mv-landing__ring  { stroke-dashoffset: 12; }
 
     .mv-design__cursor,
@@ -1980,160 +2217,93 @@ section:not(:last-of-type)::after {
 }
 
 /* ==========================================================================
-   11. Stack
+   11. Stack (tech band)
    ========================================================================== */
 
-.stack-header {
-  max-width: 640px;
-  margin: 0 auto 64px;
+/* Tech band — sits right under the hero. The track holds two copies of the
+   list and slides by -50%, which is exactly one copy, so the loop is seamless
+   at any viewport width. Faded at both edges so logos enter and leave instead
+   of being cut. No hover pause, by design. */
+.tech-band {
+  padding: 36px 0 44px;
+  overflow: hidden;
+}
+
+.tech-band__title {
+  margin: 0 0 26px;
   text-align: center;
-}
-
-.stack-subtitle {
-  font-size: 18px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-top: 20px;
-  margin-bottom: 0;
-}
-
-/* Ruled index — one row per technology, no card boxes. */
-.stack-index {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 48px;
-  border-top: 1px solid var(--border);
-}
-
-/* One column as soon as two would squeeze the prose. */
-@media (max-width: 767px) {
-  .stack-index {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.stack-row {
-  --brand-color: var(--accent);
-  position: relative;
-  display: grid;
-  grid-template-columns: 34px 44px minmax(0, 1fr);
-  grid-template-areas:
-    "num icon name"
-    "num icon desc";
-  align-items: start;
-  gap: 6px 18px;
-  padding: 20px 12px;
-  border-bottom: 1px solid var(--border);
-  transition: background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-              padding 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* The row's own rule, drawn in its brand colour across the divider below it.
-   Sits on ::after so the existing border-bottom stays as the resting state. */
-.stack-row::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 1px;
-  background: var(--brand-color);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.stack-row__num {
-  grid-area: num;
+  font-family: var(--font-sans);
   font-size: 12px;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--text-muted);
-  transition: color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.stack-row__icon {
-  grid-area: icon;
-  position: relative;
-  width: 44px;
-  height: 44px;
+.tech-band__viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.tech-band__track {
+  display: flex;
+  width: max-content;
+  animation: techBand 60s linear infinite;
+}
+
+.tech-band__list {
+  display: flex;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tech-band__item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  transition: border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.stack-row__icon img {
-  position: absolute;
-  display: block;
-  opacity: 0.85;
-  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.stack-row__num,
-.stack-row__icon {
-  align-self: center;
-}
-
-.stack-row__name {
-  grid-area: name;
-  align-self: end;
-  font-size: 18px;
+  gap: 12px;
+  /* Spacing on the right of every item, the last included, so both copies
+     are exactly the same width and the -50% step lands on a boundary. */
+  margin-right: clamp(40px, 5vw, 72px);
+  white-space: nowrap;
+  font-size: clamp(15px, 1.4vw, 18px);
   font-weight: 600;
-  line-height: 1.2;
-  margin: 0;
-}
-
-.stack-row__desc {
-  grid-area: desc;
-  font-size: 13px;
-  line-height: 1.6;
+  letter-spacing: -0.01em;
   color: var(--text-secondary);
-  margin: 0;
 }
 
-/* Hover belongs to pointer devices; touch gets the .is-active equivalent. */
-@media (hover: hover) {
-  .stack-row:hover {
-    background: color-mix(in srgb, var(--brand-color) 7%, transparent);
-    padding-left: 22px;
-    padding-right: 22px;
-  }
-  .stack-row:hover::after { transform: scaleX(1); }
-  .stack-row:hover .stack-row__num { color: var(--brand-color); }
-  .stack-row:hover .stack-row__icon { border-color: var(--brand-color); }
-  .stack-row:hover .icon-color { opacity: 1 !important; }
-  .stack-row:hover .icon-white { opacity: 0 !important; }
+.tech-band__item img {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 14px color-mix(in srgb, var(--brand-color) 35%, transparent));
 }
 
-/* Touch: the row scrolled into view lights up, since hover never fires. */
-@media (hover: none) {
-  .stack-row.is-active {
-    background: color-mix(in srgb, var(--brand-color) 7%, transparent);
-  }
-  .stack-row.is-active::after { transform: scaleX(1); }
-  .stack-row.is-active .stack-row__num { color: var(--brand-color); }
-  .stack-row.is-active .stack-row__icon { border-color: var(--brand-color); }
-  .stack-row.is-active .icon-color { opacity: 1 !important; }
-  .stack-row.is-active .icon-white { opacity: 0 !important; }
+@keyframes techBand {
+  to { transform: translateX(-50%); }
 }
 
-@media (max-width: 767px) {
-  .stack-row {
-    padding: 18px 10px;
-  }
-  .stack-row__name { font-size: 17px; }
-}
-
+/* Reduced motion: stand still, and wrap the first copy instead of letting
+   half the logos sit outside the viewport. */
 @media (prefers-reduced-motion: reduce) {
-  .stack-row,
-  .stack-row::after,
-  .stack-row__icon,
-  .stack-row__icon img {
-    transition: none !important;
+  .tech-band__track {
+    animation: none;
+    width: auto;
+    justify-content: center;
+  }
+  .tech-band__list {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 20px;
+  }
+  .tech-band__list[aria-hidden="true"] {
+    display: none;
+  }
+  .tech-band__viewport {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }
 
@@ -2771,3 +2941,339 @@ section:not(:last-of-type)::after {
     height: 18px;
 }
 
+
+/* ==========================================================================
+   18. Capability pages (/servicios/<slug>/)
+   --------------------------------------------------------------------------
+   Built from the same pieces as the home page — the display face, the
+   gradient headings, the card illustration — so a visitor who clicks through
+   from a bento card lands somewhere that is visibly the same studio.
+   ========================================================================== */
+.srv-hero {
+    padding-top: calc(var(--nav-height) + clamp(40px, 6vw, 80px));
+}
+
+.srv-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+    align-items: center;
+}
+
+@media (min-width: 960px) {
+    .srv-hero__grid {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+        gap: 64px;
+    }
+}
+
+.srv-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 36px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color var(--transition-normal);
+}
+
+.srv-back .lucide {
+    width: 16px;
+    height: 16px;
+    transition: transform var(--transition-normal);
+}
+
+.srv-back:hover {
+    color: var(--text-primary);
+}
+
+.srv-back:hover .lucide {
+    transform: translateX(-3px);
+}
+
+.srv-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.srv-eyebrow .lucide {
+    width: 18px;
+    height: 18px;
+    color: var(--title-grad-end);
+}
+
+.srv-hero h1 {
+    margin-bottom: 24px;
+}
+
+.srv-hero__lead {
+    max-width: 560px;
+    font-size: clamp(17px, 1.6vw, 20px);
+    line-height: 1.65;
+    color: var(--text-secondary);
+}
+
+.srv-hero__actions {
+    justify-content: flex-start;
+    margin-top: 36px;
+}
+
+/* The card illustration, given a frame of its own. The motion layer is
+   absolutely positioned (it was built to sit at the foot of a card), so the
+   frame supplies the height through an aspect ratio. */
+.srv-hero__visual {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background:
+        radial-gradient(120% 80% at 50% 100%, rgba(79, 107, 255, 0.10), transparent 70%),
+        rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+}
+
+.srv-hero__visual .motion-lib-container {
+    height: 92%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 18%);
+}
+
+.srv-section {
+    padding: clamp(56px, 7vw, 96px) 0;
+}
+
+.srv-heading {
+    margin-bottom: 40px;
+    font-size: clamp(28px, 3.4vw, 42px);
+}
+
+/* Context — two paragraphs set large, the scrubbed words carry the reading. */
+.srv-body {
+    max-width: 860px;
+    display: grid;
+    gap: 28px;
+}
+
+.srv-body p {
+    font-family: var(--font-display);
+    font-size: clamp(21px, 2.3vw, 30px);
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+}
+
+/* Offer */
+.srv-offer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+}
+
+@media (min-width: 720px) {
+    .srv-offer {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+}
+
+.srv-offer__card {
+    position: relative;
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.srv-offer__card:hover {
+    border-color: rgba(123, 164, 255, 0.2);
+    background: rgba(79, 107, 255, 0.04);
+}
+
+.srv-offer__num {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    color: var(--title-grad-end);
+}
+
+.srv-offer__card h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.srv-offer__card p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+}
+
+/* Process — a numbered rail, horizontal once there is room for four columns. */
+.srv-steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    counter-reset: none;
+}
+
+@media (min-width: 900px) {
+    .srv-steps {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 24px;
+    }
+}
+
+.srv-steps__item {
+    position: relative;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+}
+
+.srv-steps__marker {
+    position: absolute;
+    top: -15px;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(123, 164, 255, 0.4);
+    background: var(--bg-base);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--title-grad-end);
+}
+
+.srv-steps__item h3 {
+    margin: 8px 0 8px;
+    font-size: 18px;
+}
+
+.srv-steps__item p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+}
+
+/* Fit */
+.srv-fit {
+    max-width: 860px;
+}
+
+.srv-fit__list {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--border);
+}
+
+.srv-fit__list li {
+    position: relative;
+    padding: 20px 0 20px 40px;
+    border-bottom: 1px solid var(--border);
+    font-size: clamp(16px, 1.5vw, 18px);
+    line-height: 1.55;
+    color: var(--text-primary);
+}
+
+/* Same drawn tick as the project dialog's outcome list. */
+.srv-fit__list li::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 27px;
+    width: 13px;
+    height: 7px;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(-45deg);
+}
+
+/* Other capabilities */
+.srv-others__title {
+    margin-bottom: 20px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.srv-others {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 40px;
+    border-top: 1px solid var(--border);
+}
+
+@media (min-width: 720px) {
+    .srv-others {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .srv-others {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.srv-others a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 4px;
+    border-bottom: 1px solid var(--border);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: color var(--transition-normal), padding var(--transition-normal);
+}
+
+.srv-others a .lucide {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.srv-others__arrow {
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+.srv-others a:hover,
+.srv-others a:focus-visible {
+    color: var(--text-primary);
+    padding-left: 10px;
+}
+
+.srv-others a:hover .srv-others__arrow,
+.srv-others a:focus-visible .srv-others__arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+}
+
+@media (max-width: 480px) {
+    .srv-offer__card {
+        padding: 24px;
+    }
+    .srv-hero__actions .btn {
+        width: 100%;
+    }
+}

@@ -6,7 +6,8 @@
 import { I18n, getLang, t } from './i18n.js';
 import { MotionLibrary } from './motion.js';
 import { Showcase } from './showcase.js';
-import { projectsById } from '../data/projects.js';
+import { TextMotion } from './text-motion.js';
+import { projectsById, localizeProject } from '../data/projects.js';
 import { withBase } from '../utils/url.js';
 
 // 1. Loading — entrance animation
@@ -32,17 +33,40 @@ const Navbar = (function() {
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('section');
 
+    // Scroll distance that counts as a change of direction, so the jitter of
+    // a trackpad or a momentum scroll does not flicker the bar.
+    const DIRECTION_THRESHOLD = 8;
+    let lastY = window.scrollY;
+
+    const updateVisibility = () => {
+        const y = window.scrollY;
+        const menuOpen = navLinksContainer?.classList.contains('active');
+
+        // Always shown near the top and while the mobile menu is open.
+        if (y <= navbar.offsetHeight || menuOpen) {
+            navbar.classList.remove('is-hidden');
+            lastY = y;
+            return;
+        }
+
+        const delta = y - lastY;
+        if (Math.abs(delta) < DIRECTION_THRESHOLD) return;
+
+        navbar.classList.toggle('is-hidden', delta > 0);
+        lastY = y;
+    };
+
     const init = () => {
         if (!navbar) return;
         // Scroll behavior
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            updateVisibility();
             updateActiveSection();
         }, { passive: true });
+
+        // A keyboard user tabbing into the bar must be able to see it.
+        navbar.addEventListener('focusin', () => navbar.classList.remove('is-hidden'));
 
         // Mobile menu
         if (mobileToggle) {
@@ -88,11 +112,11 @@ const Navbar = (function() {
             }
         });
 
+        // The links carry the home path in front of the hash (so they work
+        // from a capability page too), hence comparing the parts.
         navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
+            const here = link.pathname === location.pathname && link.hash === `#${current}`;
+            link.classList.toggle('active', here);
         });
     };
 
@@ -246,8 +270,12 @@ const Contact = (function() {
             const serviceElement = document.querySelector('input[name="service"]:checked');
             const budgetElement = document.querySelector('input[name="budget"]:checked');
             
-            const service = serviceElement ? serviceElement.value : 'No especificado';
-            const budget = budgetElement ? budgetElement.value : 'No especificado';
+            // The chip's visible label rather than its value, which is fixed
+            // in Spanish: an English message should name the service in English.
+            const serviceLabel = serviceElement?.closest('.radio-chip')?.querySelector('span');
+            const unspecified = t('contact.unspecified', 'No especificado');
+            const service = serviceLabel ? serviceLabel.textContent.trim() : unspecified;
+            const budget = budgetElement ? budgetElement.value : unspecified;
 
             let text = '';
             
@@ -315,7 +343,7 @@ const Projects = (() => {
 
     const media = p.preview.type === 'embed'
       ? `<iframe class="browser-frame__embed" src="${p.preview.src}"
-           title="Vista previa de ${p.name}" loading="lazy" tabindex="-1"
+           title="${t(`project.${p.id}.preview`, p.name)}" loading="lazy" tabindex="-1"
            aria-hidden="true" scrolling="no" referrerpolicy="no-referrer"
            sandbox="allow-scripts allow-same-origin"></iframe>`
       : `<img class="browser-frame__shot" src="${withBase(p.preview.src)}" alt="${p.name}" loading="lazy">`;
@@ -330,12 +358,11 @@ const Projects = (() => {
       </div>`;
   };
 
-  const openModal = (key) => {
-    const p = data[key];
-    if (!p || !modal) return;
+  /** Key of the project on screen, so a language switch can refill it. */
+  let openKey = null;
 
-    renderPreview(p);
-
+  /** Fills every text slot of the dialog in the active language. */
+  const fillText = (p) => {
     // Keeps the base class: overwriting className outright dropped the pill
     // styling, and `status-badge` was never a rule. The label is looked up
     // rather than taken from the data, which only carries Spanish, and the
@@ -371,21 +398,27 @@ const Projects = (() => {
 
     const ctaEl = document.getElementById('modalCta');
     const ctaTextEl = document.getElementById('modalCtaText');
+    const ctaKey = p.hasUrl ? 'project.visit' : 'project.soon';
+    if (ctaTextEl) {
+      ctaTextEl.setAttribute('data-i18n', ctaKey);
+      ctaTextEl.textContent = t(ctaKey);
+    }
     if (p.hasUrl) {
       ctaEl.href = p.url;
-      if(ctaTextEl) {
-        ctaTextEl.setAttribute('data-i18n', 'project.visit');
-        ctaTextEl.textContent = getLang() === 'en' ? 'Visit site' : 'Visitar sitio';
-      }
       ctaEl.classList.remove('disabled');
     } else {
       ctaEl.removeAttribute('href');
-      if(ctaTextEl) {
-        ctaTextEl.setAttribute('data-i18n', 'project.soon');
-        ctaTextEl.textContent = getLang() === 'en' ? 'Coming soon' : 'Próximamente';
-      }
       ctaEl.classList.add('disabled');
     }
+  };
+
+  const openModal = (key) => {
+    const p = data[key] && localizeProject(data[key], getLang());
+    if (!p || !modal) return;
+    openKey = key;
+
+    renderPreview(p);
+    fillText(p);
 
     modal.removeAttribute('hidden');
     // The panel scrolls, so a second project has to start from its own top.
@@ -395,7 +428,8 @@ const Projects = (() => {
   };
 
   const closeModal = () => {
-    if (!modal) return;
+    if (!modal || openKey === null) return;
+    openKey = null;
     modal.setAttribute('hidden', '');
     // Drop the embed so the third-party app stops running in the background.
     const preview = document.getElementById('modalPreview');
@@ -424,6 +458,13 @@ const Projects = (() => {
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') closeModal();
     });
+
+    // The dialog is filled from data, not from [data-i18n] nodes, so a switch
+    // while it is open has to refill it — the preview is left running.
+    document.addEventListener('bidiex:langchange', (e) => {
+      if (openKey === null) return;
+      fillText(localizeProject(data[openKey], e.detail.lang));
+    });
   };
 
   // ── Init ──────────────────────────────────────
@@ -434,25 +475,19 @@ const Projects = (() => {
   return { init };
 })();
 
-// 10. Stack index — highlight on touch
-const Stack = (function() {
+// 10. Capability cards — the soft glow follows the pointer
+const CardGlow = (function() {
   const init = () => {
-    const rows = document.querySelectorAll('.stack-row');
-    if (rows.length === 0) return;
+    // Touch has no hover to follow; the CSS keeps the glow centred there.
+    if (!window.matchMedia('(hover: hover)').matches) return;
 
-    // Pointer devices get :hover straight from CSS; only coarse pointers,
-    // where hover never fires, need a row to light up as it scrolls past.
-    if (window.matchMedia('(hover: hover)').matches) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        entry.target.classList.toggle('is-active', entry.isIntersecting);
-      });
-      // A narrow band across the middle of the viewport, so one row at a time
-      // is active instead of every row that happens to be on screen.
-    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-
-    rows.forEach(row => observer.observe(row));
+    document.querySelectorAll('.bento-card').forEach(card => {
+      card.addEventListener('pointermove', (e) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
+      }, { passive: true });
+    });
   };
 
   return { init };
@@ -485,6 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Showcase.init();
     Contact.init();
     MotionLibrary.init();
-    Stack.init();
+    CardGlow.init();
+    TextMotion.init();
     FooterYear.init();
 });

@@ -8,6 +8,8 @@ const {
     title = 'Bidiex — Software Studio',
     description = 'Bidiex es un estudio independiente de productos digitales enfocado en crear software, automatizaciones, experiencias digitales y herramientas escalables para emprendedores y empresas.',
     noindex = false,
+    // i18n key that swaps the tab title along with the page language.
+    titleKey = undefined,
 } = Astro.props;
 
 // Derived from `site` + `base` in astro.config.mjs so the canonical, og:url and
@@ -21,7 +23,7 @@ const ogImage = new URL(withBase('og-image.jpg'), Astro.site).href;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Core SEO -->
-    <title>{title}</title>
+    <title data-i18n={titleKey}>{title}</title>
     <meta name="description" content={description}>
     <meta name="keywords" content="software studio, estudio de software, digital product, desarrollo web, automatización, Bidiex">
     <link rel="canonical" href={canonical}>

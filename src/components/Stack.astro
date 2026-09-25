@@ -1,45 +1,39 @@
 ---
-import { stack } from '../data/stack.js';
+import { stack, iconUrl } from '../data/stack.js';
 
 /**
- * The stack reads as a typographic index rather than a grid of eight identical
- * cards: the page already spends a bento grid on Services, so a second card
- * layout would blur the two together. A ruled list is also the honest shape for
- * this content — it is a reference table, and it lets each row carry its brand
- * colour on hover without eight competing boxes. Projects now runs on ruled
- * rows too, so the two sections share a vocabulary rather than competing.
+ * The stack as a band that never stops moving, straight under the hero: it is
+ * a credential, not a reference table, so it reads at a glance and gets out of
+ * the way.
+ *
+ * The list is rendered twice inside one track and the track slides by exactly
+ * half its width, so the second copy lands where the first began and the loop
+ * has no seam. Only the first copy is exposed to assistive technology. The
+ * band deliberately does not pause on hover; it only stands still when the
+ * visitor has asked the OS for reduced motion.
  */
+const copies = [false, true];
 ---
-<section class="stack" id="stack">
+<section class="tech-band" id="stack" aria-labelledby="stackTitle">
   <div class="container">
+    <h2 class="tech-band__title" id="stackTitle" data-motion="heading" data-i18n="stack.title">
+      Construido con las herramientas correctas
+    </h2>
+  </div>
 
-    <div class="stack-header reveal">
-      <h2 class="section-title gradient-text" data-i18n="stack.title">
-        Construido con las<br>herramientas correctas
-      </h2>
-      <p class="stack-subtitle" data-i18n="stack.subtitle">
-        Cada proyecto se desarrolla sobre una base tecnológica
-        moderna, escalable y probada en producción.
-      </p>
-    </div>
-
-    <div class="stack-index reveal">
-      {stack.map((tech, i) => (
-        <article class="stack-row" style={`--brand-color: ${tech.brand};`}>
-          <span class="stack-row__num">{String(i + 1).padStart(2, '0')}</span>
-          <span class="stack-row__icon">
-            <img class="icon-white" src={`https://cdn.simpleicons.org/${tech.slug}/white`}
-                 width="24" height="24" alt={tech.name} loading="lazy">
-            <img class="icon-color" src={`https://cdn.simpleicons.org/${tech.slug}`}
-                 width="24" height="24" alt="" loading="lazy">
-          </span>
-          <h3 class="stack-row__name">{tech.name}</h3>
-          <p class="stack-row__desc" data-i18n={tech.descKey}>
-            {tech.desc}
-          </p>
-        </article>
+  <div class="tech-band__viewport">
+    <div class="tech-band__track">
+      {copies.map((isClone) => (
+        <ul class="tech-band__list" aria-hidden={isClone ? 'true' : undefined}>
+          {stack.map((tech) => (
+            <li class="tech-band__item" style={`--brand-color: ${tech.brand};`}>
+              <img src={iconUrl(tech)}
+                   width="28" height="28" alt="" decoding="async">
+              <span>{tech.name}</span>
+            </li>
+          ))}
+        </ul>
       ))}
     </div>
-
   </div>
 </section>

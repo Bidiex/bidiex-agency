@@ -39,6 +39,10 @@ export const Showcase = (() => {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    // Side by side only: stacked, there is no pinned name for the dimming to
+    // point at, and a half-faded row on a phone just reads as disabled.
+    const wide = window.matchMedia('(min-width: 900px)');
+
     let active = -1;
 
     const setActive = (index) => {
@@ -56,7 +60,7 @@ export const Showcase = (() => {
 
       items.forEach((item, i) => {
         gsap.to(item, {
-          opacity: i === index ? 1 : DIM,
+          opacity: i === index || !wide.matches ? 1 : DIM,
           duration: reduced ? 0 : 0.4,
           overwrite: 'auto'
         });
@@ -84,6 +88,12 @@ export const Showcase = (() => {
     });
 
     setActive(0);
+
+    wide.addEventListener('change', () => {
+      const current = active;
+      active = -1;
+      setActive(current);
+    });
 
     // ScrollTrigger measures on its own for load and resize, but not for a font
     // swap: Ranade arrives with `font-display: swap`, and the new metrics change

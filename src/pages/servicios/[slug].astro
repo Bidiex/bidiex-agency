@@ -1,0 +1,136 @@
+---
+/**
+ * One page per capability, generated from src/data/services.js.
+ *
+ * The page answers, in order, the questions a visitor arrives with from the
+ * card: what is this (lead + context), what do I get (offer), how does it run
+ * (process), is it for me (fit) — and then hands them the contact form, which
+ * is rendered here too so "#contact" never has to leave the page.
+ *
+ * Every string carries a data-i18n key derived from the same data, so the
+ * language toggle swaps the whole page.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Contact from '../../components/Contact.astro';
+import { visuals } from '../../components/motion/index.js';
+import { services } from '../../data/services.js';
+import { withBase } from '../../utils/url.js';
+
+export function getStaticPaths() {
+    return services.map((service) => ({
+        params: { slug: service.slug },
+        props: { service },
+    }));
+}
+
+const { service } = Astro.props;
+const page = service.page.es;
+const k = `srvp.${service.id}`;
+const Visual = visuals[service.id];
+const others = services.filter((s) => s.id !== service.id);
+---
+<BaseLayout
+    title={`${service.title} — Bidiex`}
+    titleKey={`${k}.doctitle`}
+    description={page.lead}
+>
+    <section class="srv-hero">
+        <div class="container srv-hero__grid">
+            <div class="srv-hero__copy">
+                <a class="srv-back" href={withBase('/#services')}>
+                    <i data-lucide="arrow-left"></i>
+                    <span data-i18n="srvpage.back">Todas las capacidades</span>
+                </a>
+
+                <p class="srv-eyebrow">
+                    <i data-lucide={service.icon}></i>
+                    <span data-i18n="srvpage.eyebrow">Capacidad</span>
+                </p>
+
+                <h1 class="gradient-text" data-motion="heading" data-i18n={`srv.${service.id}.title`}>{service.title}</h1>
+                <p class="srv-hero__lead reveal" data-i18n={`${k}.lead`}>{page.lead}</p>
+
+                <div class="hero-actions srv-hero__actions reveal">
+                    <a href="#contact" class="btn btn-primary ripple">
+                        <span data-i18n="hero.ctaSecondary">Contáctanos</span>
+                        <i data-lucide="arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="srv-hero__visual reveal" aria-hidden="true">
+                <div class="motion-lib-container" id={`motion-${service.id}`}>
+                    <Visual />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="srv-section">
+        <div class="container srv-body">
+            {page.body.map((paragraph, i) => (
+                <p data-motion="words" data-i18n={`${k}.body${i}`}>{paragraph}</p>
+            ))}
+        </div>
+    </section>
+
+    <section class="srv-section">
+        <div class="container">
+            <h2 class="srv-heading gradient-text" data-motion="heading" data-i18n="srvpage.what">Qué hacemos</h2>
+            <div class="srv-offer">
+                {page.offer.map((item, i) => (
+                    <article class="srv-offer__card reveal">
+                        <span class="srv-offer__num">{String(i + 1).padStart(2, '0')}</span>
+                        <h3 data-i18n={`${k}.offer${i}.title`}>{item.title}</h3>
+                        <p data-i18n={`${k}.offer${i}.desc`}>{item.desc}</p>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section class="srv-section">
+        <div class="container">
+            <h2 class="srv-heading gradient-text" data-motion="heading" data-i18n="srvpage.how">Cómo trabajamos</h2>
+            <ol class="srv-steps">
+                {page.process.map((step, i) => (
+                    <li class="srv-steps__item reveal">
+                        <span class="srv-steps__marker">{i + 1}</span>
+                        <h3 data-i18n={`${k}.step${i}.title`}>{step.title}</h3>
+                        <p data-i18n={`${k}.step${i}.desc`}>{step.desc}</p>
+                    </li>
+                ))}
+            </ol>
+        </div>
+    </section>
+
+    <section class="srv-section">
+        <div class="container srv-fit">
+            <h2 class="srv-heading gradient-text" data-motion="heading" data-i18n="srvpage.fit">Es para ti si…</h2>
+            <ul class="srv-fit__list">
+                {page.fit.map((line, i) => (
+                    <li class="reveal" data-i18n={`${k}.fit${i}`}>{line}</li>
+                ))}
+            </ul>
+        </div>
+    </section>
+
+    <section class="srv-section">
+        <div class="container">
+            <h2 class="srv-others__title" data-i18n="srvpage.others">Otras capacidades</h2>
+            <ul class="srv-others">
+                {others.map((other) => (
+                    <li>
+                        <a href={withBase(`/servicios/${other.slug}/`)}>
+                            <i data-lucide={other.icon}></i>
+                            <span data-i18n={`srv.${other.id}.title`}>{other.title}</span>
+                            <i data-lucide="arrow-up-right" class="srv-others__arrow"></i>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    </section>
+
+    <Contact />
+</BaseLayout>

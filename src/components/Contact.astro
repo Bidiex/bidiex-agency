@@ -1,8 +1,8 @@
 <section class="contact" id="contact">
     <div class="container">
         <div class="contact-card reveal card-hover">
-            <h2 class="gradient-text" data-i18n="contact.title">Construyamos algo.</h2>
-            <p data-i18n="contact.subtitle">Inicia una conversación directamente vía WhatsApp.</p>
+            <h2 class="gradient-text" data-motion="heading" data-i18n="contact.title">Construyamos algo.</h2>
+            <p data-motion="words" data-i18n="contact.subtitle">Inicia una conversación directamente vía WhatsApp.</p>
             
             <form id="contactForm" class="contact-form new-contact-form">
                 <div class="form-group full-width">
@@ -60,7 +60,7 @@
                 </div>
                 <div class="form-group phone-group">
                     <label for="phone" data-i18n="contact.phone">Teléfono*</label>
-                    <input type="tel" id="phone" name="phone" class="line-input" placeholder="3211234567" pattern="^3[0-9]{9}$" title="El teléfono debe tener 10 dígitos y empezar por 3" maxlength="10" minlength="10" required>
+                    <input type="tel" id="phone" name="phone" class="line-input" placeholder="3211234567" pattern="^3[0-9]{9}$" title="El teléfono debe tener 10 dígitos y empezar por 3" data-i18n-title="contact.phone.title" maxlength="10" minlength="10" required>
                 </div>
 
                 <div class="form-group full-width" style="margin-top: 16px;">
@@ -81,7 +81,7 @@
                 </div>
                 
                 <div class="form-group full-width" style="margin-top: 32px; text-align: center;">
-                    <button type="submit" class="btn ripple form-submit" style="background: white; color: black; border: 1px solid black; padding: 12px 48px; border-radius: 50px; font-weight: 500;"><span data-i18n="contact.submit">Enviar</span></button>
+                    <button type="submit" class="btn btn-primary ripple form-submit" style="background: white; color: black; border: 1px solid black; padding: 12px 48px; border-radius: 50px; font-weight: 500;"><span data-i18n="contact.submit">Enviar</span></button>
                 </div>
             </form>
         </div>

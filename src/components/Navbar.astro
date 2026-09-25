@@ -1,18 +1,26 @@
 ---
 import LangToggle from './LangToggle.astro';
+import { withBase } from '../utils/url.js';
+
+/**
+ * Section links point at the home page rather than a bare fragment, so they
+ * still work from a capability page. On the home page itself a link to the
+ * same path plus a hash is a same-document navigation: it scrolls, no reload.
+ */
+const home = withBase('/');
 ---
 <nav class="navbar" id="navbar">
     <div class="nav-container">
-        <a href="#" class="brand-logo" aria-label="Bidiex Home">Bidiex</a>
+        <a href={home} class="brand-logo" aria-label="Bidiex, ir al inicio" data-i18n-aria="nav.home">Bidiex</a>
 
         <!-- Mobile Menu Toggle -->
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu" aria-expanded="false">
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menú" data-i18n-aria="nav.menu" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
 
         <ul class="nav-links" id="navLinks">
-            <li><a href="#projects" class="nav-link" data-i18n="nav.projects">Proyectos</a></li>
-            <li><a href="#services" class="nav-link" data-i18n="nav.services">Servicios</a></li>
+            <li><a href={`${home}#projects`} class="nav-link" data-i18n="nav.projects">Proyectos</a></li>
+            <li><a href={`${home}#services`} class="nav-link" data-i18n="nav.services">Servicios</a></li>
 
             <!-- Mobile Language Toggle (visible only inside the mobile menu) -->
             <li class="mobile-lang-toggle">

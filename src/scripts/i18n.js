@@ -45,6 +45,14 @@ function apply(lang) {
         }
     });
 
+    // 4. Native tooltips / validation hints
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (dict[key]) {
+            el.title = dict[key];
+        }
+    });
+
     // Update UI buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
         if (btn.getAttribute('data-lang') === lang) {
@@ -53,18 +61,23 @@ function apply(lang) {
             btn.classList.remove('active');
         }
     });
+
+    // Text built in JavaScript (the project dialog, the split headings) has no
+    // attribute to be found by, so its owners re-render on this event.
+    document.dispatchEvent(new CustomEvent('bidiex:langchange', { detail: { lang } }));
 }
 
 function toggle(lang) {
     if (currentLang === lang) return;
-    localStorage.setItem('bidiex-lang', lang);
+    try { localStorage.setItem('bidiex-lang', lang); } catch { /* storage blocked */ }
     apply(lang);
 }
 
 function init() {
     // Check persistence
-    const savedLang = localStorage.getItem('bidiex-lang');
-    const defaultLang = savedLang || 'es';
+    let savedLang = null;
+    try { savedLang = localStorage.getItem('bidiex-lang'); } catch { /* storage blocked */ }
+    const defaultLang = translations[savedLang] ? savedLang : 'es';
     apply(defaultLang);
 
     // Bind events
