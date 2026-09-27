@@ -445,9 +445,13 @@ section:not(:last-of-type)::after {
 }
 
 .brand-logo {
-    font-weight: 700;
-    font-size: 18px;
-    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+}
+
+.brand-logo img {
+    height: 24px;
+    width: auto;
 }
 
 .nav-links {
@@ -2516,8 +2520,9 @@ section:not(:last-of-type)::after {
 }
 
 .footer-logo {
-    font-weight: 700;
-    font-size: 18px;
+    height: 22px;
+    width: auto;
+    align-self: flex-start;
 }
 
 .footer-tag {
@@ -2552,10 +2557,6 @@ section:not(:last-of-type)::after {
 @keyframes float {
     0% { transform: translate(0, 0) scale(1); }
     100% { transform: translate(5%, 5%) scale(1.1); }
-}
-
-@keyframes spin {
-    100% { transform: rotate(360deg); }
 }
 
 @keyframes navEntrance {
@@ -2605,13 +2606,65 @@ section:not(:last-of-type)::after {
     pointer-events: none;
 }
 
-.loader-inner {
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--border);
-    border-top-color: var(--text-primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+/* The Bidiex wordmark writes itself: each letter is traced left to right, then
+   fills in while the dots of the i drop onto their stems. The finished logo
+   holds for a beat and fades so the loop can start over. Every part shares one
+   duration and offsets by its --i, so the letters stay in step on each loop. */
+.loader-logo {
+    --loader-loop: 2.4s;
+    --loader-stagger: 90ms;
+    width: min(200px, 48vw);
+    height: auto;
+    overflow: visible;
+}
+
+.loader-letter,
+.loader-dot {
+    fill: var(--text-primary);
+    animation-duration: var(--loader-loop);
+    animation-iteration-count: infinite;
+    animation-delay: calc(var(--i) * var(--loader-stagger));
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.loader-letter {
+    fill-opacity: 0;
+    stroke: var(--text-primary);
+    stroke-width: 6;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation-name: loader-write;
+}
+
+.loader-dot {
+    opacity: 0;
+    animation-name: loader-drop;
+    animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes loader-write {
+    0%        { stroke-dashoffset: 1; fill-opacity: 0; opacity: 1; }
+    38%       { stroke-dashoffset: 0; fill-opacity: 0; }
+    55%, 82%  { stroke-dashoffset: 0; fill-opacity: 1; opacity: 1; }
+    100%      { stroke-dashoffset: 0; fill-opacity: 1; opacity: 0; }
+}
+
+@keyframes loader-drop {
+    0%, 38%   { opacity: 0; transform: translateY(-60px); }
+    55%, 82%  { opacity: 1; transform: translateY(0); }
+    100%      { opacity: 0; transform: translateY(0); }
+}
+
+/* Without motion, show the finished logo instead of an animation. */
+@media (prefers-reduced-motion: reduce) {
+    .loader-letter,
+    .loader-dot {
+        animation: none;
+        opacity: 1;
+        fill-opacity: 1;
+        stroke: none;
+    }
 }
 
 /* Scroll Progress */
@@ -3012,6 +3065,8 @@ section:not(:last-of-type)::after {
 
 .srv-hero h1 {
     margin-bottom: 24px;
+    font-size: clamp(34px, 5vw, 60px);
+    text-wrap: balance;
 }
 
 .srv-hero__lead {
@@ -3050,14 +3105,69 @@ section:not(:last-of-type)::after {
     padding: clamp(56px, 7vw, 96px) 0;
 }
 
+/* Editorial split — the section title in a narrow left column, the content in
+   a wide right one, as in the projects showcase. Stacks below 960px. */
+.srv-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+}
+
+@media (min-width: 960px) {
+    .srv-split {
+        grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+        gap: 48px;
+        align-items: start;
+    }
+
+    .srv-label {
+        position: sticky;
+        top: calc(var(--nav-height) + 32px);
+    }
+}
+
+.srv-label {
+    font-size: clamp(26px, 2.8vw, 36px);
+}
+
 .srv-heading {
     margin-bottom: 40px;
     font-size: clamp(28px, 3.4vw, 42px);
 }
 
-/* Context — two paragraphs set large, the scrubbed words carry the reading. */
+/* Shared row number, the small blue index of the ruled lists. */
+.srv-index {
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    color: var(--title-grad-end);
+}
+
+/* Pains — scenes from the reader's week, set large on a ruled list. */
+.srv-pains {
+    list-style: none;
+    border-top: 1px solid var(--border);
+}
+
+.srv-pains li {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    align-items: baseline;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.srv-pains p {
+    font-family: var(--font-display);
+    font-size: clamp(19px, 2vw, 26px);
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+}
+
+/* Approach — two paragraphs set large, the scrubbed words carry the reading. */
 .srv-body {
-    max-width: 860px;
     display: grid;
     gap: 28px;
 }
@@ -3071,53 +3181,161 @@ section:not(:last-of-type)::after {
     color: var(--text-primary);
 }
 
-/* Offer */
+/* Offer — a ruled index: number, deliverable, what it contains. */
 .srv-offer {
+    list-style: none;
+    border-top: 1px solid var(--border);
+}
+
+.srv-offer__row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+    grid-template-columns: 44px minmax(0, 1fr);
+    row-gap: 6px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--border);
 }
 
-@media (min-width: 720px) {
-    .srv-offer {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 20px;
-    }
+.srv-offer__row .srv-index {
+    grid-row: span 2;
+    padding-top: 6px;
 }
 
-.srv-offer__card {
-    position: relative;
-    padding: 32px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.02);
-    transition: border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+.srv-offer__row h3 {
+    font-size: clamp(19px, 1.9vw, 22px);
 }
 
-.srv-offer__card:hover {
-    border-color: rgba(123, 164, 255, 0.2);
-    background: rgba(79, 107, 255, 0.04);
-}
-
-.srv-offer__num {
-    display: block;
-    margin-bottom: 20px;
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.08em;
-    color: var(--title-grad-end);
-}
-
-.srv-offer__card h3 {
-    margin-bottom: 10px;
-    font-size: 20px;
-}
-
-.srv-offer__card p {
+.srv-offer__row p {
     font-size: 15px;
     line-height: 1.65;
     color: var(--text-secondary);
+}
+
+@media (min-width: 720px) {
+    .srv-offer__row {
+        grid-template-columns: 44px minmax(0, 5fr) minmax(0, 6fr);
+        column-gap: 24px;
+        align-items: baseline;
+    }
+
+    .srv-offer__row .srv-index {
+        grid-row: auto;
+        padding-top: 0;
+    }
+}
+
+/* Cases — the projects that used this capability; the button opens the same
+   dialog as the home page showcase. */
+.srv-cases {
+    display: grid;
+    gap: 20px;
+}
+
+.srv-case {
+    display: grid;
+    gap: 16px;
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background:
+        radial-gradient(120% 90% at 100% 0%, rgba(79, 107, 255, 0.08), transparent 60%),
+        rgba(255, 255, 255, 0.02);
+    transition: border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.srv-case:hover {
+    border-color: rgba(123, 164, 255, 0.22);
+}
+
+.srv-case__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.srv-case__name {
+    font-size: clamp(26px, 3vw, 36px);
+}
+
+.srv-case__tagline {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text-primary);
+}
+
+.srv-case__problem {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-secondary);
+}
+
+.srv-case__outcome {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+}
+
+.srv-case__outcome li {
+    position: relative;
+    padding-left: 28px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-primary);
+}
+
+/* Same drawn tick as the project dialog's outcome list. */
+.srv-case__outcome li::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 7px;
+    width: 11px;
+    height: 6px;
+    border-left: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    transform: rotate(-45deg);
+}
+
+.srv-case__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.srv-case__tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.srv-case__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.srv-case__cta .lucide {
+    width: 16px;
+    height: 16px;
+    transition: transform var(--transition-normal);
+}
+
+.srv-case__cta:hover .lucide,
+.srv-case__cta:focus-visible .lucide {
+    transform: translate(2px, -2px);
 }
 
 /* Process — a numbered rail, horizontal once there is room for four columns. */
@@ -3126,7 +3344,6 @@ section:not(:last-of-type)::after {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 28px;
-    counter-reset: none;
 }
 
 @media (min-width: 900px) {
@@ -3138,6 +3355,8 @@ section:not(:last-of-type)::after {
 
 .srv-steps__item {
     position: relative;
+    display: flex;
+    flex-direction: column;
     padding-top: 28px;
     border-top: 1px solid var(--border);
 }
@@ -3170,37 +3389,119 @@ section:not(:last-of-type)::after {
     color: var(--text-secondary);
 }
 
-/* Fit */
-.srv-fit {
-    max-width: 860px;
-}
-
-.srv-fit__list {
+/* What exists when the step ends, pinned to the foot so the four line up. */
+.srv-steps__output {
     display: grid;
-    gap: 0;
-    border-top: 1px solid var(--border);
+    gap: 2px;
+    margin-top: auto;
+    padding-top: 18px;
 }
 
-.srv-fit__list li {
-    position: relative;
-    padding: 20px 0 20px 40px;
-    border-bottom: 1px solid var(--border);
-    font-size: clamp(16px, 1.5vw, 18px);
-    line-height: 1.55;
+.srv-steps__output span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.srv-steps__item .srv-steps__output strong {
+    font-size: 14px;
+    font-weight: 600;
     color: var(--text-primary);
 }
 
-/* Same drawn tick as the project dialog's outcome list. */
-.srv-fit__list li::before {
+/* Not a fit — the ruled list again, marked with a cross instead of a tick. */
+.srv-notfit {
+    list-style: none;
+    border-top: 1px solid var(--border);
+}
+
+.srv-notfit li {
+    position: relative;
+    padding: 22px 0 22px 40px;
+    border-bottom: 1px solid var(--border);
+    font-size: clamp(16px, 1.5vw, 18px);
+    line-height: 1.55;
+    color: var(--text-secondary);
+}
+
+.srv-notfit li::before,
+.srv-notfit li::after {
     content: '';
     position: absolute;
     left: 6px;
-    top: 27px;
-    width: 13px;
-    height: 7px;
-    border-left: 2px solid var(--accent);
-    border-bottom: 2px solid var(--accent);
+    top: 34px;
+    width: 14px;
+    height: 2px;
+    background: var(--text-muted);
+    transform: rotate(45deg);
+}
+
+.srv-notfit li::after {
     transform: rotate(-45deg);
+}
+
+/* FAQ — native disclosure, so it works without JavaScript. */
+.srv-faq {
+    border-top: 1px solid var(--border);
+}
+
+.srv-faq__item {
+    border-bottom: 1px solid var(--border);
+}
+
+.srv-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px 0;
+    list-style: none;
+    cursor: pointer;
+    font-size: clamp(17px, 1.6vw, 19px);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.srv-faq__item summary::-webkit-details-marker {
+    display: none;
+}
+
+.srv-faq__item summary .lucide {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--title-grad-end);
+    transition: transform var(--transition-normal);
+}
+
+.srv-faq__item[open] summary .lucide {
+    transform: rotate(45deg);
+}
+
+.srv-faq__item p {
+    max-width: 680px;
+    padding-bottom: 24px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+/* Closing — one sentence and the button, right before the form. */
+.srv-closing .container {
+    display: grid;
+    justify-items: start;
+    gap: 32px;
+}
+
+.srv-closing__text {
+    max-width: 900px;
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3.8vw, 48px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
 }
 
 /* Other capabilities */
@@ -3270,7 +3571,7 @@ section:not(:last-of-type)::after {
 }
 
 @media (max-width: 480px) {
-    .srv-offer__card {
+    .srv-case {
         padding: 24px;
     }
     .srv-hero__actions .btn {

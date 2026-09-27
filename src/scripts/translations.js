@@ -20,6 +20,7 @@ export const translations = {
         "lang.es": "Cambiar a Español",
         "lang.en": "Switch to English",
         "nav.home": "Bidiex, ir al inicio",
+        "loader.label": "Cargando",
         "nav.menu": "Abrir menú",
         
         // Hero
@@ -66,11 +67,17 @@ export const translations = {
         "services.more": "Conocer más",
 
         // Capability pages
-        "srvpage.eyebrow": "Capacidad",
         "srvpage.back": "Todas las capacidades",
-        "srvpage.what": "Qué hacemos",
-        "srvpage.how": "Cómo trabajamos",
-        "srvpage.fit": "Es para ti si…",
+        "srvpage.pains": "¿Te suena?",
+        "srvpage.approach": "Cómo lo resolvemos",
+        "srvpage.what": "Qué te entregamos",
+        "srvpage.cases": "Lo hemos hecho antes",
+        "srvpage.caseCta": "Ver el caso",
+        "srvpage.how": "Paso a paso",
+        "srvpage.output": "Entregable",
+        "srvpage.notfit": "Mejor no, si…",
+        "srvpage.faq": "Preguntas frecuentes",
+        "srvpage.closing": "Cuéntanos en qué punto estás y qué quieres lograr. Con eso basta para empezar.",
         "srvpage.others": "Otras capacidades",
         
         // Stack
@@ -161,6 +168,7 @@ export const translations = {
         "lang.es": "Cambiar a Español",
         "lang.en": "Switch to English",
         "nav.home": "Bidiex, go to home",
+        "loader.label": "Loading",
         "nav.menu": "Open menu",
         
         // Hero
@@ -207,11 +215,17 @@ export const translations = {
         "services.more": "Learn more",
 
         // Capability pages
-        "srvpage.eyebrow": "Capability",
         "srvpage.back": "All capabilities",
-        "srvpage.what": "What we do",
-        "srvpage.how": "How we work",
-        "srvpage.fit": "This is for you if…",
+        "srvpage.pains": "Sound familiar?",
+        "srvpage.approach": "How we solve it",
+        "srvpage.what": "What you get",
+        "srvpage.cases": "Where we have done it",
+        "srvpage.caseCta": "See the case",
+        "srvpage.how": "Step by step",
+        "srvpage.output": "Deliverable",
+        "srvpage.notfit": "Probably not a fit if…",
+        "srvpage.faq": "Questions we get",
+        "srvpage.closing": "Tell us where you are and what you want to achieve. That is enough to get started.",
         "srvpage.others": "Other capabilities",
         
         // Stack
@@ -302,6 +316,8 @@ for (const lang of ['es', 'en']) {
         dict[`project.${p.id}.tagline`] = p.tagline;
         dict[`project.${p.id}.sector`] = p.tags[p.tags.length - 1];
         dict[`project.${p.id}.preview`] = (lang === 'es' ? 'Vista previa de ' : 'Preview of ') + p.name;
+        dict[`project.${p.id}.problem`] = p.problem;
+        p.outcome.forEach((o, i) => { dict[`project.${p.id}.outcome${i}`] = o; });
     }
     for (const service of services) {
         Object.assign(dict, serviceKeys(service, lang));

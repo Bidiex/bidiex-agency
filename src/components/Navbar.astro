@@ -11,7 +11,9 @@ const home = withBase('/');
 ---
 <nav class="navbar" id="navbar">
     <div class="nav-container">
-        <a href={home} class="brand-logo" aria-label="Bidiex, ir al inicio" data-i18n-aria="nav.home">Bidiex</a>
+        <a href={home} class="brand-logo" aria-label="Bidiex, ir al inicio" data-i18n-aria="nav.home">
+            <img src={withBase('bidiex-logo.webp')} alt="" width="1485" height="420">
+        </a>
 
         <!-- Mobile Menu Toggle -->
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menú" data-i18n-aria="nav.menu" aria-expanded="false">

@@ -1,7 +1,10 @@
+---
+import { withBase } from '../utils/url.js';
+---
 <footer class="footer">
     <div class="container footer-content">
         <div class="footer-brand">
-            <span class="footer-logo">Bidiex</span>
+            <img class="footer-logo" src={withBase('bidiex-logo.webp')} alt="Bidiex" width="1485" height="420" loading="lazy">
             <span class="footer-tag" data-i18n="footer.tag">Agencia Digital</span>
         </div>
         <div class="footer-links">
