@@ -2857,6 +2857,11 @@ section:not(:last-of-type)::after {
         grid-template-columns: 1fr;
     }
 
+    /* Five short names: two per row, so the optional question stays short. */
+    .choice-grid--source {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .brief-footer,
     .brief-submit {
         align-items: stretch;
@@ -3443,6 +3448,124 @@ section:not(:last-of-type)::after {
     line-height: 1.45;
     letter-spacing: -0.015em;
     color: var(--text-primary);
+}
+
+/* Legal pages — the structure of Invio's terms page: one narrow reading
+   column, title + update date + intro, an index card of anchors, then
+   numbered sections divided by rules. */
+.legal {
+    max-width: 760px;
+    padding-top: calc(var(--nav-height) + clamp(40px, 6vw, 72px));
+    padding-bottom: clamp(56px, 7vw, 96px);
+}
+
+.legal__hero {
+    margin-bottom: 48px;
+}
+
+.legal__title {
+    margin-bottom: 14px;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.1;
+    text-wrap: balance;
+}
+
+.legal__meta {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.legal__note {
+    margin-top: 4px;
+}
+
+html[lang="es"] .legal__note {
+    display: none;
+}
+
+.legal__intro {
+    max-width: 600px;
+    margin-top: 20px;
+    font-size: clamp(17px, 1.6vw, 19px);
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.legal__index {
+    margin-bottom: 48px;
+    padding: 24px 28px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg-card);
+}
+
+.legal__index-title {
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+.legal__index ol {
+    display: grid;
+    gap: 10px;
+    padding-left: 22px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.legal__index a {
+    color: var(--text-secondary);
+    transition: color var(--transition-normal);
+}
+
+.legal__index a:hover {
+    color: var(--title-grad-end);
+}
+
+.legal__section {
+    padding-bottom: 48px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: calc(var(--nav-height) + 24px);
+}
+
+.legal__section:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.legal__section h2 {
+    margin-bottom: 20px;
+    font-size: clamp(24px, 2.8vw, 32px);
+    line-height: 1.15;
+}
+
+.legal__num {
+    margin-right: 0.3em;
+    color: var(--title-grad-end);
+}
+
+.legal__section p,
+.legal__section ul {
+    margin-bottom: 16px;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.legal__section > :last-child {
+    margin-bottom: 0;
+}
+
+.legal__section ul {
+    display: grid;
+    gap: 8px;
+    padding-left: 22px;
+    list-style: disc;
+}
+
+.legal__section li::marker {
+    color: var(--title-grad-end);
 }
 
 /* Offer — a ruled index: number, deliverable, what it contains. */

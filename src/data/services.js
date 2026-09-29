@@ -201,7 +201,7 @@ export const services = [
         slug: 'aplicaciones-web',
         span: 4,
         icon: 'layout-dashboard',
-        projects: ['traego', 'albumcorp'],
+        projects: ['traego', 'albumcorp', 'citum'],
         title: 'Aplicaciones Web',
         desc: 'Paneles, portales de clientes y herramientas internas que funcionan en cualquier navegador, con los datos al día en todas las pantallas.',
         en: {
@@ -286,7 +286,7 @@ export const services = [
         slug: 'automatizacion',
         span: 4,
         icon: 'workflow',
-        projects: ['traego'],
+        projects: ['traego', 'citum'],
         title: 'Automatización',
         desc: 'Conectamos WhatsApp, tu CRM, la facturación y tus hojas de cálculo para que los datos pasen solos de una herramienta a otra.',
         en: {

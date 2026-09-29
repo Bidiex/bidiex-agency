@@ -337,7 +337,8 @@ Cards are NOT uniform grid items. Vary composition where possible — consider a
 |---|---|---|
 | **TraeGo** | Digital platform focused on business process optimization. | Active |
 | **CarCopilot** | Vehicle expense management platform. | Development |
-| **Invio** | Digital invitation platform. | Planning |
+| **Invio** | Digital invitation platform. | Live |
+| **Citum** | Booking, agenda and POS SaaS for service businesses. | In development |
 | **SelloGo** | Digital loyalty platform for local businesses. | Research |
 
 **Status badge colors:**

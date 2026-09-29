@@ -264,8 +264,6 @@ const Contact = (function() {
             const email = document.getElementById('email').value.trim();
             const userPhone = document.getElementById('phone').value.trim();
             const project = document.getElementById('project').value.trim();
-            const source = document.getElementById('source').value.trim();
-            
             // Get selected radios
             const serviceElement = document.querySelector('input[name="service"]:checked');
             const budgetElement = document.querySelector('input[name="budget"]:checked');
@@ -276,6 +274,9 @@ const Contact = (function() {
             const unspecified = t('contact.unspecified', 'No especificado');
             const service = serviceLabel ? serviceLabel.textContent.trim() : unspecified;
             const budget = budgetElement ? budgetElement.value : unspecified;
+            // Optional, so an unanswered source leaves its line out of the message.
+            const sourceElement = document.querySelector('input[name="source"]:checked');
+            const source = sourceElement?.closest('.radio-chip')?.querySelector('[data-i18n]')?.textContent.trim() ?? '';
 
             let text = '';
             

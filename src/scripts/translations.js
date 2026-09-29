@@ -8,6 +8,7 @@
  */
 import { projects, localizeProject } from '../data/projects.js';
 import { services, serviceKeys } from '../data/services.js';
+import { policyKeys } from '../data/privacy.js';
 
 export const translations = {
     es: {
@@ -139,7 +140,11 @@ export const translations = {
         "contact.project": "Cuéntanos sobre tu proyecto",
         "contact.project.placeholder": "Describe brevemente lo que quieres construir...",
         "contact.source": "¿Dónde escuchaste sobre nosotros?",
-        "contact.source.placeholder": "Ej. Google, LinkedIn, Referencia",
+        "contact.source.opt1": "Instagram",
+        "contact.source.opt2": "YouTube",
+        "contact.source.opt3": "Google",
+        "contact.source.opt4": "Anuncio",
+        "contact.source.opt5": "Referencia",
         "contact.terms": "He leído y acepto la ",
         "contact.terms.link": "Política de Tratamiento de Datos Personales",
         "contact.submit": "Enviar por WhatsApp",
@@ -292,7 +297,11 @@ export const translations = {
         "contact.project": "Tell us about your project",
         "contact.project.placeholder": "Briefly describe what you want to build...",
         "contact.source": "Where did you hear about us?",
-        "contact.source.placeholder": "e.g. Google, LinkedIn, Referral",
+        "contact.source.opt1": "Instagram",
+        "contact.source.opt2": "YouTube",
+        "contact.source.opt3": "Google",
+        "contact.source.opt4": "Ad",
+        "contact.source.opt5": "Referral",
         "contact.terms": "I have read and accept the ",
         "contact.terms.link": "Personal Data Processing Policy",
         "contact.submit": "Send via WhatsApp",
@@ -332,4 +341,5 @@ for (const lang of ['es', 'en']) {
     for (const service of services) {
         Object.assign(dict, serviceKeys(service, lang));
     }
+    Object.assign(dict, policyKeys(lang));
 }

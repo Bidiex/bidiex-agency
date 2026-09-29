@@ -82,8 +82,8 @@ export const projects = [
     {
         id: 'invio',
         name: 'Invio',
-        status: 'dev',
-        statusLabel: 'En desarrollo',
+        status: 'active',
+        statusLabel: 'En producción',
         tagline: 'Servicio B2C de invitaciones digitales para todo tipo de eventos',
         preview: { type: 'embed', src: 'https://invio-invitaciones-digitales.vercel.app/' },
         tech: ['Next.js', 'Tailwind', 'Stripe'],
@@ -107,7 +107,7 @@ export const projects = [
             'Cuenta regresiva al evento'
         ],
         en: {
-            statusLabel: 'In development',
+            statusLabel: 'Live',
             tagline: 'B2C digital invitation service for all types of events',
             tags: ['Web', 'Events'],
             problem: 'A PDF or image invitation cannot confirm attendance, cannot update when plans change and leaves the host chasing replies one by one on WhatsApp.',
@@ -182,6 +182,58 @@ export const projects = [
         },
         url: 'https://albumcorp.vercel.app',
         hasUrl: true
+    },
+    {
+        id: 'citum',
+        name: 'Citum',
+        status: 'dev',
+        statusLabel: 'En desarrollo',
+        tagline: 'Plataforma SaaS B2B2C de agendamiento y POS para negocios de servicios',
+        preview: null,
+        tech: ['Vite', 'Supabase', 'OpenAI'],
+        meta: ['2026', 'SaaS', 'B2B2C'],
+        tags: ['Web App', 'Agendamiento'],
+        problem: 'Consultorios, salones y centros de bienestar siguen agendando en cuaderno o por chat: citas que se cruzan, clientes que no llegan y una caja que no cuadra con la agenda.',
+        solution: 'Un panel donde el negocio organiza la agenda de todos sus profesionales, servicios, clientes e inventario, y un portal público propio donde el cliente reserva solo, a cualquier hora.',
+        outcome: [
+            'Reservas 24/7 desde un enlace propio, sin atender el teléfono',
+            'Cero citas cruzadas: la disponibilidad se calcula por profesional en tiempo real',
+            'Cobro y ticket PDF en el mismo lugar donde se agendó la cita',
+            'Varios negocios o sucursales bajo una sola cuenta'
+        ],
+        features: [
+            'Agenda multi-profesional',
+            'Portal público de reservas',
+            'POS y facturación con tickets PDF',
+            'Gestión de clientes e inventario',
+            'Agente de WhatsApp',
+            'Asistente de IA',
+            'Multi-negocio'
+        ],
+        en: {
+            statusLabel: 'In development',
+            tagline: 'B2B2C SaaS platform for booking and POS for service businesses',
+            tags: ['Web App', 'Booking'],
+            problem: 'Clinics, salons and wellness centres still book in a notebook or over chat: double-booked slots, no-shows and a till that never matches the calendar.',
+            solution: 'A dashboard where the business runs every professional’s calendar, services, clients and stock, plus a public booking page of its own where customers book themselves, any time.',
+            outcome: [
+                '24/7 bookings from the business’s own link, without picking up the phone',
+                'Zero double bookings: availability is computed per professional in real time',
+                'Checkout and PDF receipt in the same place the appointment was booked',
+                'Several businesses or branches under a single account'
+            ],
+            features: [
+                'Multi-professional calendar',
+                'Public booking portal',
+                'POS and invoicing with PDF receipts',
+                'Client and inventory management',
+                'WhatsApp agent',
+                'AI assistant',
+                'Multi-business'
+            ]
+        },
+        url: null,
+        hasUrl: false
     },
     {
         id: 'sellogo',
