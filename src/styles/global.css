@@ -1657,6 +1657,41 @@ section:not(:last-of-type)::after {
     transform: scale(1.02);
 }
 
+/* Phones: a swipeable row instead of a tall stack. The row bleeds past the
+   container's 24px gutter so cards slide out to the screen edge, and the
+   next card peeks in to show there is more. */
+@media (max-width: 767px) {
+    .bento-grid {
+        display: flex;
+        gap: 12px;
+        width: auto;
+        margin: 0 -24px;
+        padding: 8px 24px 16px;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scroll-padding: 0 24px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .bento-grid::-webkit-scrollbar {
+        display: none;
+    }
+
+    .bento-card {
+        flex: 0 0 85%;
+        scroll-snap-align: start;
+        min-height: 360px;
+        padding: 28px 24px;
+    }
+
+    .bento-link {
+        top: 24px;
+        right: 20px;
+    }
+}
+
 /* Responsive Grid Adjustments */
 @media (min-width: 768px) {
     .bento-grid {
@@ -1703,9 +1738,10 @@ section:not(:last-of-type)::after {
     overflow: hidden;
     transition: filter 0.4s cubic-bezier(0.22, 1, 0.36, 1),
                 transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    /* Dissolve the illustration underneath the title and description. */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 28%);
-    mask-image: linear-gradient(to bottom, transparent 0%, #000 28%);
+    /* Dissolve only the glow above the panels; the white windows start at
+       ~16% of the canvas and stay crisp under the description. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
 }
 
 .bento-card:hover .motion-lib-container {
@@ -2851,15 +2887,51 @@ section:not(:last-of-type)::after {
         font-size: 18px;
     }
 
-    .choice-grid--3,
-    .choice-grid--2,
     .brief-fields {
         grid-template-columns: 1fr;
     }
 
+    /* Flex rather than grid so a chip left alone on the last row grows to
+       fill it instead of leaving a gap. */
+    .choice-grid {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .choice-grid .radio-chip {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+
     /* Five short names: two per row, so the optional question stays short. */
-    .choice-grid--source {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    .choice-grid--source .radio-chip {
+        flex-basis: calc(50% - 5px);
+    }
+
+    /* At half width the dot crowds the name; the chip's border and tint
+       already mark the choice. */
+    .choice-grid--source .radio-chip {
+        gap: 10px;
+        padding: 12px;
+        font-size: 13px;
+    }
+
+    .choice-grid--source .radio-chip__icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+    }
+
+    /* The label may still meet a narrow phone: let it shrink and wrap on its
+       own rather than spill past the chip's border. */
+    .choice-grid--source .radio-chip > span:not([class]) {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        line-height: 1.2;
+    }
+
+    .choice-grid--source .radio-chip__dot {
+        display: none;
     }
 
     .brief-footer,

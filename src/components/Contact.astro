@@ -1,5 +1,6 @@
 ---
 import { withBase } from '../utils/url.js';
+import { services as capabilities } from '../data/services.js';
 
 /**
  * The brief, laid out as a ruled index like the projects list: each step
@@ -10,11 +11,11 @@ import { withBase } from '../utils/url.js';
  * reader behaviour stays native. The submit handler in main.js reads fields by
  * id and chips through their `[data-i18n]` label, so both have to survive any restyle.
  */
-const services = [
-    { value: 'Tecnología', key: 'contact.service.opt1', label: 'Tecnología', icon: 'code-xml' },
-    { value: 'Marketing Digital', key: 'contact.service.opt2', label: 'Marketing Digital', icon: 'megaphone' },
-    { value: 'Diseño', key: 'contact.service.opt3', label: 'Diseño', icon: 'pen-tool' },
-];
+// The service choices are the capabilities themselves, so the form never
+// offers something the Services section does not.
+const services = capabilities.map((c) => ({
+    value: c.title, key: `srv.${c.id}.title`, label: c.title, icon: c.icon,
+}));
 
 const budgets = [
     { value: '200k-400k', key: 'contact.budget.opt1', label: '200.000 COP - 400.000 COP' },

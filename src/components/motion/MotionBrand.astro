@@ -25,6 +25,9 @@
 
   <circle class="mv-a mv-glow" cx="200" cy="130" r="106" fill="url(#mv-brand-glow)" />
 
+  <!-- Brand board: the mark, type and palette sit on one sheet like the other cards' windows -->
+  <rect x="76" y="40" width="248" height="196" rx="12" fill="#FFFFFF" stroke="rgba(10,10,10,0.10)" stroke-width="1" />
+
   <!-- The mark -->
   <g transform="translate(200, 92)">
     <g class="mv-a mv-brand__mark">
@@ -35,7 +38,7 @@
       <!-- Kept inside the two shapes: a stroke that ran past them read as a
            prohibition slash rather than part of the mark. -->
       <path class="mv-a mv-brand__piece mv-brand__piece--3" d="M-8 15 L17 -15"
-            stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="3" stroke-linecap="round" />
+            stroke="#0A0A0A" stroke-opacity="0.6" stroke-width="3" stroke-linecap="round" />
     </g>
   </g>
 
@@ -44,8 +47,8 @@
     <g class="mv-a mv-brand__type">
       <text x="0" y="0" text-anchor="middle"
             font-family="Inter, system-ui, sans-serif" font-size="34" font-weight="700"
-            letter-spacing="-0.02em" fill="#FFFFFF" fill-opacity="0.9">Aa</text>
-      <path d="M-42 8 L42 8" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+            letter-spacing="-0.02em" fill="#0A0A0A" fill-opacity="0.9">Aa</text>
+      <path d="M-42 8 L42 8" stroke="rgba(10,10,10,0.12)" stroke-width="1" />
     </g>
   </g>
 
@@ -53,9 +56,9 @@
   <g>
     <rect class="mv-a mv-brand__swatch mv-brand__swatch--1" x="96"  y="176" width="34" height="34" rx="10" fill="var(--accent)" />
     <rect class="mv-a mv-brand__swatch mv-brand__swatch--2" x="139" y="176" width="34" height="34" rx="10" fill="var(--accent-alt)" />
-    <rect class="mv-a mv-brand__swatch mv-brand__swatch--3" x="182" y="176" width="34" height="34" rx="10" fill="rgba(255,255,255,0.85)" />
-    <rect class="mv-a mv-brand__swatch mv-brand__swatch--4" x="225" y="176" width="34" height="34" rx="10" fill="rgba(255,255,255,0.34)" />
-    <rect class="mv-a mv-brand__swatch mv-brand__swatch--5" x="268" y="176" width="34" height="34" rx="10" fill="rgba(255,255,255,0.12)" />
+    <rect class="mv-a mv-brand__swatch mv-brand__swatch--3" x="182" y="176" width="34" height="34" rx="10" fill="rgba(10,10,10,0.85)" />
+    <rect class="mv-a mv-brand__swatch mv-brand__swatch--4" x="225" y="176" width="34" height="34" rx="10" fill="rgba(10,10,10,0.34)" />
+    <rect class="mv-a mv-brand__swatch mv-brand__swatch--5" x="268" y="176" width="34" height="34" rx="10" fill="rgba(10,10,10,0.12)" />
 
     <g clip-path="url(#mv-brand-swatch-clip)">
       <rect class="mv-a mv-brand__sweep" x="96" y="176" width="70" height="34" fill="url(#mv-brand-sweep)" />
