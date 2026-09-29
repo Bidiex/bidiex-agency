@@ -1,87 +1,144 @@
+---
+/**
+ * The brief, laid out as a ruled index like the projects list: each step
+ * carries its number and name on the left and its fields on the right, so the
+ * form reads as four short questions instead of one long sheet.
+ *
+ * Choices are real radio inputs under custom tiles, so keyboard and screen
+ * reader behaviour stays native. The submit handler in main.js reads fields by
+ * id and chips through their `[data-i18n]` label, so both have to survive any restyle.
+ */
+const services = [
+    { value: 'Tecnología', key: 'contact.service.opt1', label: 'Tecnología', icon: 'code-xml' },
+    { value: 'Marketing Digital', key: 'contact.service.opt2', label: 'Marketing Digital', icon: 'megaphone' },
+    { value: 'Diseño', key: 'contact.service.opt3', label: 'Diseño', icon: 'pen-tool' },
+];
+
+const budgets = [
+    { value: '200k-400k', key: 'contact.budget.opt1', label: '200.000 COP - 400.000 COP' },
+    { value: '400k-800k', key: 'contact.budget.opt2', label: '400.000 COP - 800.000 COP' },
+    { value: '800k-1m', key: 'contact.budget.opt3', label: '800.000 COP - 1.000.000 COP' },
+    { value: '1m+', key: 'contact.budget.opt4', label: '>1.000.000 COP' },
+];
+---
 <section class="contact" id="contact">
     <div class="container">
-        <div class="contact-card reveal card-hover">
-            <h2 class="gradient-text" data-motion="heading" data-i18n="contact.title">Construyamos algo.</h2>
-            <p data-motion="words" data-i18n="contact.subtitle">Inicia una conversación directamente vía WhatsApp.</p>
-            
-            <form id="contactForm" class="contact-form new-contact-form">
-                <div class="form-group full-width">
-                    <label data-i18n="contact.service">¿Qué servicio te interesa?*</label>
-                    <div class="radio-chips">
-                        <label class="radio-chip">
-                            <input type="radio" name="service" value="Tecnología" required>
-                            <span data-i18n="contact.service.opt1">Tecnología</span>
-                        </label>
-                        <label class="radio-chip">
-                            <input type="radio" name="service" value="Marketing Digital">
-                            <span data-i18n="contact.service.opt2">Marketing Digital</span>
-                        </label>
-                        <label class="radio-chip">
-                            <input type="radio" name="service" value="Diseño">
-                            <span data-i18n="contact.service.opt3">Diseño</span>
-                        </label>
+        <div class="contact-card reveal">
+            <header class="contact-head">
+                <span class="contact-eyebrow" data-i18n="contact.label">[ Consultas ]</span>
+                <h2 class="gradient-text" data-motion="heading" data-i18n="contact.title">Construyamos algo.</h2>
+                <p data-motion="words" data-i18n="contact.subtitle">Inicia una conversación directamente vía WhatsApp.</p>
+            </header>
+
+            <form id="contactForm" class="brief">
+                <div class="brief-step">
+                    <div class="brief-step__meta" aria-hidden="true">
+                        <span class="brief-step__num">01</span>
+                        <span class="brief-step__name" data-i18n="contact.step.service">Servicio</span>
+                    </div>
+                    <div class="brief-step__body">
+                        <p class="brief-label" id="briefService">
+                            <span data-i18n="contact.service">¿Qué servicio te interesa?</span><span class="req" aria-hidden="true">*</span>
+                        </p>
+                        <div class="choice-grid choice-grid--3" role="radiogroup" aria-labelledby="briefService">
+                            {services.map((s, i) => (
+                                <label class="radio-chip">
+                                    <input type="radio" name="service" value={s.value} required={i === 0}>
+                                    <span class="radio-chip__icon" aria-hidden="true"><i data-lucide={s.icon}></i></span>
+                                    <span data-i18n={s.key}>{s.label}</span>
+                                    <span class="radio-chip__dot" aria-hidden="true"></span>
+                                </label>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group full-width" style="margin-top: 16px;">
-                    <label data-i18n="contact.budget">Presupuesto mensual*</label>
-                    <div class="radio-chips">
-                        <label class="radio-chip">
-                            <input type="radio" name="budget" value="200k-400k" required>
-                            <span data-i18n="contact.budget.opt1">200.000 COP - 400.000 COP</span>
-                        </label>
-                        <label class="radio-chip">
-                            <input type="radio" name="budget" value="400k-800k">
-                            <span data-i18n="contact.budget.opt2">400.000 COP - 800.000 COP</span>
-                        </label>
-                        <label class="radio-chip">
-                            <input type="radio" name="budget" value="800k-1m">
-                            <span data-i18n="contact.budget.opt3">800.000 COP - 1.000.000 COP</span>
-                        </label>
-                        <label class="radio-chip">
-                            <input type="radio" name="budget" value="1m+">
-                            <span data-i18n="contact.budget.opt4">&gt;1.000.000 COP</span>
-                        </label>
+                <div class="brief-step">
+                    <div class="brief-step__meta" aria-hidden="true">
+                        <span class="brief-step__num">02</span>
+                        <span class="brief-step__name" data-i18n="contact.step.budget">Inversión</span>
+                    </div>
+                    <div class="brief-step__body">
+                        <p class="brief-label" id="briefBudget">
+                            <span data-i18n="contact.budget">Presupuesto mensual</span><span class="req" aria-hidden="true">*</span>
+                        </p>
+                        <div class="choice-grid choice-grid--2" role="radiogroup" aria-labelledby="briefBudget">
+                            {budgets.map((b, i) => (
+                                <label class="radio-chip">
+                                    <input type="radio" name="budget" value={b.value} required={i === 0}>
+                                    <span data-i18n={b.key}>{b.label}</span>
+                                    <span class="radio-chip__dot" aria-hidden="true"></span>
+                                </label>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="name" data-i18n="contact.name">Nombre*</label>
-                    <input type="text" id="name" name="name" class="line-input" placeholder="Ej. Juan Pérez" data-i18n-placeholder="contact.name.placeholder" required>
-                </div>
-                <div class="form-group">
-                    <label for="company" data-i18n="contact.company">Compañía</label>
-                    <input type="text" id="company" name="company" class="line-input" placeholder="Ej. Acme Corp" data-i18n-placeholder="contact.company.placeholder">
+                <div class="brief-step" role="group" aria-labelledby="briefDetails">
+                    <div class="brief-step__meta">
+                        <span class="brief-step__num" aria-hidden="true">03</span>
+                        <span class="brief-step__name" id="briefDetails" data-i18n="contact.step.details">Tus datos</span>
+                    </div>
+                    <div class="brief-step__body brief-fields">
+                        <div class="field">
+                            <label for="name" class="brief-label">
+                                <span data-i18n="contact.name">Nombre</span><span class="req" aria-hidden="true">*</span>
+                            </label>
+                            <input type="text" id="name" name="name" class="field__input" autocomplete="name" placeholder="Ej. Juan Pérez" data-i18n-placeholder="contact.name.placeholder" required>
+                        </div>
+                        <div class="field">
+                            <label for="company" class="brief-label" data-i18n="contact.company">Compañía</label>
+                            <input type="text" id="company" name="company" class="field__input" autocomplete="organization" placeholder="Ej. Acme Corp" data-i18n-placeholder="contact.company.placeholder">
+                        </div>
+                        <div class="field">
+                            <label for="email" class="brief-label">
+                                <span data-i18n="contact.email">Correo</span><span class="req" aria-hidden="true">*</span>
+                            </label>
+                            <input type="email" id="email" name="email" class="field__input" autocomplete="email" placeholder="juan@ejemplo.com" data-i18n-placeholder="contact.email.placeholder" required>
+                        </div>
+                        <div class="field">
+                            <label for="phone" class="brief-label">
+                                <span data-i18n="contact.phone">Teléfono</span><span class="req" aria-hidden="true">*</span>
+                            </label>
+                            <div class="field__affix">
+                                <span class="field__prefix" aria-hidden="true">+57</span>
+                                <input type="tel" id="phone" name="phone" class="field__input" autocomplete="tel-national" inputmode="numeric" placeholder="3211234567" pattern="^3[0-9]{9}$" title="El teléfono debe tener 10 dígitos y empezar por 3" data-i18n-title="contact.phone.title" maxlength="10" minlength="10" required>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="email" data-i18n="contact.email">Correo*</label>
-                    <input type="email" id="email" name="email" class="line-input" placeholder="juan@ejemplo.com" data-i18n-placeholder="contact.email.placeholder" required>
-                </div>
-                <div class="form-group phone-group">
-                    <label for="phone" data-i18n="contact.phone">Teléfono*</label>
-                    <input type="tel" id="phone" name="phone" class="line-input" placeholder="3211234567" pattern="^3[0-9]{9}$" title="El teléfono debe tener 10 dígitos y empezar por 3" data-i18n-title="contact.phone.title" maxlength="10" minlength="10" required>
-                </div>
-
-                <div class="form-group full-width" style="margin-top: 16px;">
-                    <label for="project" data-i18n="contact.project">Cuéntanos sobre tu proyecto</label>
-                    <textarea id="project" name="project" class="line-input" rows="3" style="resize: none;" placeholder="Describe brevemente lo que quieres construir..." data-i18n-placeholder="contact.project.placeholder"></textarea>
-                </div>
-
-                <div class="form-group full-width" style="margin-top: 16px;">
-                    <label for="source" data-i18n="contact.source">¿Donde escuchaste sobre nosotros?</label>
-                    <input type="text" id="source" name="source" class="line-input" placeholder="Ej. Google, LinkedIn, Referencia" data-i18n-placeholder="contact.source.placeholder">
+                <div class="brief-step" role="group" aria-labelledby="briefProject">
+                    <div class="brief-step__meta">
+                        <span class="brief-step__num" aria-hidden="true">04</span>
+                        <span class="brief-step__name" id="briefProject" data-i18n="contact.step.project">Proyecto</span>
+                    </div>
+                    <div class="brief-step__body brief-fields">
+                        <div class="field field--full">
+                            <label for="project" class="brief-label" data-i18n="contact.project">Cuéntanos sobre tu proyecto</label>
+                            <textarea id="project" name="project" class="field__input field__input--area" rows="4" placeholder="Describe brevemente lo que quieres construir..." data-i18n-placeholder="contact.project.placeholder"></textarea>
+                        </div>
+                        <div class="field field--full">
+                            <label for="source" class="brief-label" data-i18n="contact.source">¿Dónde escuchaste sobre nosotros?</label>
+                            <input type="text" id="source" name="source" class="field__input" placeholder="Ej. Google, LinkedIn, Referencia" data-i18n-placeholder="contact.source.placeholder">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group full-width checkbox-group" style="margin-top: 24px;">
+                <div class="brief-footer">
                     <label class="checkbox-label">
                         <input type="checkbox" name="terms" required>
-                        <span><span data-i18n="contact.terms">He leído y acepto la</span> <a href="#" style="text-decoration: underline;" data-i18n="contact.terms.link">Política de Tratamiento de Datos Personales</a>.</span>
+                        <span class="checkbox-label__box" aria-hidden="true"><i data-lucide="check"></i></span>
+                        <span><span data-i18n="contact.terms">He leído y acepto la</span> <a href="#" data-i18n="contact.terms.link">Política de Tratamiento de Datos Personales</a>.</span>
                     </label>
-                </div>
-                
-                <div class="form-group full-width" style="margin-top: 32px; text-align: center;">
-                    <button type="submit" class="btn btn-primary ripple form-submit" style="background: white; color: black; border: 1px solid black; padding: 12px 48px; border-radius: 50px; font-weight: 500;"><span data-i18n="contact.submit">Enviar</span></button>
+
+                    <div class="brief-submit">
+                        <button type="submit" class="btn btn-primary ripple form-submit">
+                            <span data-i18n="contact.submit">Enviar por WhatsApp</span>
+                            <i data-lucide="arrow-up-right"></i>
+                        </button>
+                        <p class="brief-submit__note" data-i18n="contact.submit.note">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
+                    </div>
                 </div>
             </form>
         </div>

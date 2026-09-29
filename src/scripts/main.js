@@ -272,7 +272,7 @@ const Contact = (function() {
             
             // The chip's visible label rather than its value, which is fixed
             // in Spanish: an English message should name the service in English.
-            const serviceLabel = serviceElement?.closest('.radio-chip')?.querySelector('span');
+            const serviceLabel = serviceElement?.closest('.radio-chip')?.querySelector('[data-i18n]');
             const unspecified = t('contact.unspecified', 'No especificado');
             const service = serviceLabel ? serviceLabel.textContent.trim() : unspecified;
             const budget = budgetElement ? budgetElement.value : unspecified;
