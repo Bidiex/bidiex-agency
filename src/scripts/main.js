@@ -251,7 +251,7 @@ const BackToTop = (function() {
 // 8. Contact — WhatsApp URL builder
 const Contact = (function() {
     const form = document.getElementById('contactForm');
-    const phone = '573123174919';
+    const phone = '573156290330';
 
     const init = () => {
         if (!form) return;

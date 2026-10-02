@@ -30,7 +30,7 @@ export const policy = {
                 title: 'Responsable del tratamiento',
                 body: [
                     'Bidiex, estudio de software con operación en Colombia, es responsable del tratamiento de los datos personales que recibe a través de este sitio web.',
-                    'Para cualquier asunto relacionado con tus datos puedes escribirnos por WhatsApp al +57 312 317 4919.'
+                    'Para cualquier asunto relacionado con tus datos puedes escribirnos por WhatsApp al +57 315 629 0330.'
                 ]
             },
             {
@@ -97,7 +97,7 @@ export const policy = {
                 id: 'consultas-y-reclamos',
                 title: 'Cómo ejercerlos',
                 body: [
-                    'Escríbenos por WhatsApp al +57 312 317 4919 indicando tu nombre, el número o correo con el que nos contactaste, qué solicitas y, si es un reclamo, los hechos que lo motivan.',
+                    'Escríbenos por WhatsApp al +57 315 629 0330 indicando tu nombre, el número o correo con el que nos contactaste, qué solicitas y, si es un reclamo, los hechos que lo motivan.',
                     'Consultas: las respondemos en máximo diez (10) días hábiles desde que las recibimos. Si no alcanzamos, te avisamos el motivo y la nueva fecha, que no superará cinco (5) días hábiles adicionales.',
                     'Reclamos (corrección, actualización, supresión o incumplimiento): los atendemos en máximo quince (15) días hábiles, prorrogables por ocho (8) días hábiles más con aviso previo. Si el reclamo está incompleto te pediremos lo que falta dentro de los cinco (5) días siguientes; si no lo recibimos en dos (2) meses, entenderemos que desististe.'
                 ]
@@ -142,7 +142,7 @@ export const policy = {
                 title: 'Data controller',
                 body: [
                     'Bidiex, a software studio operating in Colombia, is responsible for the personal data it receives through this website.',
-                    'For anything related to your data, message us on WhatsApp at +57 312 317 4919.'
+                    'For anything related to your data, message us on WhatsApp at +57 315 629 0330.'
                 ]
             },
             {
@@ -209,7 +209,7 @@ export const policy = {
                 id: 'consultas-y-reclamos',
                 title: 'How to exercise them',
                 body: [
-                    'Message us on WhatsApp at +57 312 317 4919 with your name, the phone number or email you contacted us from, what you are asking for and, for a claim, the facts behind it.',
+                    'Message us on WhatsApp at +57 315 629 0330 with your name, the phone number or email you contacted us from, what you are asking for and, for a claim, the facts behind it.',
                     'Queries: answered within ten (10) business days of receipt. If we need longer, we will tell you why and give a new date no more than five (5) business days later.',
                     'Claims (correction, update, deletion or breach): handled within fifteen (15) business days, extendable by eight (8) more with prior notice. If a claim is incomplete we will ask for what is missing within five (5) days; if we do not hear back within two (2) months, we will treat it as withdrawn.'
                 ]
