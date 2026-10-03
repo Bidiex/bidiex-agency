@@ -51,10 +51,13 @@ const sources = [
             <header class="contact-head">
                 <span class="contact-eyebrow" data-i18n="contact.label">[ Consultas ]</span>
                 <h2 class="gradient-text" data-motion="heading" data-i18n="contact.title">Construyamos algo.</h2>
-                <p data-motion="words" data-i18n="contact.subtitle">Inicia una conversación directamente vía WhatsApp.</p>
+                <p data-motion="words" data-i18n="contact.subtitle">Cuéntanos tu proyecto y te respondemos por correo.</p>
             </header>
 
             <form id="contactForm" class="brief">
+                <!-- Web3Forms honeypot: hidden from people, filled by bots, and
+                     any submission that carries it is dropped as spam. -->
+                <input type="checkbox" name="botcheck" class="brief-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
                 <div class="brief-step">
                     <div class="brief-step__meta" aria-hidden="true">
                         <span class="brief-step__num">01</span>
@@ -182,10 +185,11 @@ const sources = [
 
                     <div class="brief-submit">
                         <button type="submit" class="btn btn-primary ripple form-submit">
-                            <span data-i18n="contact.submit">Enviar por WhatsApp</span>
+                            <span data-i18n="contact.submit">Enviar mensaje</span>
                             <i data-lucide="arrow-up-right"></i>
                         </button>
-                        <p class="brief-submit__note" data-i18n="contact.submit.note">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
+                        <p class="brief-submit__note" data-i18n="contact.submit.note">Te responderemos al correo que nos indiques.</p>
+                        <p class="brief-submit__status" role="status" aria-live="polite" hidden></p>
                     </div>
                 </div>
             </form>

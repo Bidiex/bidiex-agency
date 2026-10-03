@@ -2928,6 +2928,35 @@ section:not(:last-of-type)::after {
     color: var(--text-muted);
 }
 
+.brief-submit__status {
+    max-width: 36ch;
+    margin: 0;
+    font-size: 14px;
+    text-align: right;
+}
+
+.brief-submit__status[data-kind="success"] {
+    color: #4ade80;
+}
+
+.brief-submit__status[data-kind="error"] {
+    color: #f87171;
+}
+
+.form-submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* Spam trap for bots — off-screen rather than display:none, which some bots skip. */
+.brief-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
 @media (max-width: 768px) {
     .brief-step {
         grid-template-columns: 1fr;
@@ -3022,7 +3051,8 @@ section:not(:last-of-type)::after {
         width: 100%;
     }
 
-    .brief-submit__note {
+    .brief-submit__note,
+    .brief-submit__status {
         text-align: center;
     }
 }

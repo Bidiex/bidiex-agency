@@ -248,10 +248,13 @@ const BackToTop = (function() {
     return { init };
 })();
 
-// 8. Contact — WhatsApp URL builder
+// 8. Contact — posts the brief to Web3Forms, which emails it to the Bidiex inbox
 const Contact = (function() {
     const form = document.getElementById('contactForm');
-    const phone = '573156290330';
+    // Web3Forms access keys are public by design: they only let someone send
+    // to the inbox they were created for. Create one at https://web3forms.com.
+    const WEB3FORMS_ACCESS_KEY = 'TU_ACCESS_KEY_AQUI';
+    let resetServiceDrop = () => {};
 
     // The service dropdown on phones: the trigger mirrors the picked tile
     // (icon and i18n key, so a language change relabels it) and toggles the
@@ -262,6 +265,16 @@ const Contact = (function() {
         const trigger = drop.querySelector('.choice-drop__trigger');
         const value = drop.querySelector('[data-choice-drop-value]');
         const icon = drop.querySelector('[data-choice-drop-icon]');
+
+        // form.reset() clears the radios but not this mirror, so a sent brief
+        // puts the trigger back to its placeholder by hand.
+        const blank = { key: value.getAttribute('data-i18n'), icon: icon.innerHTML };
+        resetServiceDrop = () => {
+            drop.classList.remove('has-value');
+            value.setAttribute('data-i18n', blank.key);
+            value.textContent = t(blank.key, value.textContent);
+            icon.innerHTML = blank.icon;
+        };
 
         const setOpen = (open) => {
             drop.classList.toggle('is-open', open);
@@ -295,9 +308,25 @@ const Contact = (function() {
         if (!form) return;
         initServiceDrop();
 
-        form.addEventListener('submit', (e) => {
+        const submitBtn = form.querySelector('.form-submit');
+        const submitLabel = submitBtn.querySelector('[data-i18n]');
+        const note = form.querySelector('.brief-submit__note');
+        const status = form.querySelector('.brief-submit__status');
+
+        // Status messages keep their i18n key, so switching language while
+        // one is on screen relabels it like the rest of the page.
+        const showStatus = (key, fallback, kind) => {
+            status.setAttribute('data-i18n', key);
+            status.textContent = t(key, fallback);
+            status.dataset.kind = kind;
+            status.hidden = false;
+            note.hidden = true;
+        };
+
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+            if (submitBtn.disabled) return;
+
             const name = document.getElementById('name').value.trim();
             const company = document.getElementById('company').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -306,46 +335,65 @@ const Contact = (function() {
             // Get selected radios
             const serviceElement = document.querySelector('input[name="service"]:checked');
             const budgetElement = document.querySelector('input[name="budget"]:checked');
-            
-            // The chip's visible label rather than its value, which is fixed
-            // in Spanish: an English message should name the service in English.
-            const serviceLabel = serviceElement?.closest('.radio-chip')?.querySelector('[data-i18n]');
-            const unspecified = t('contact.unspecified', 'No especificado');
-            const service = serviceLabel ? serviceLabel.textContent.trim() : unspecified;
-            // Label rather than value, so the message quotes the range in the
+            const sourceElement = document.querySelector('input[name="source"]:checked');
+
+            // The email is read by the Bidiex team, so its field names stay in
+            // Spanish whatever language the visitor browsed in. Service and
+            // source use their radio value, which is the Spanish name.
+            const unspecified = 'No especificado';
+            const service = serviceElement?.value ?? unspecified;
+            // Label rather than value, so the email quotes the range in the
             // currency the visitor saw: COP in Spanish, USD in English.
             const budgetLabel = budgetElement?.closest('.radio-chip')?.querySelector('[data-i18n]');
             const budget = budgetLabel ? budgetLabel.textContent.trim() : unspecified;
-            // Optional, so an unanswered source leaves its line out of the message.
-            const sourceElement = document.querySelector('input[name="source"]:checked');
-            const source = sourceElement?.closest('.radio-chip')?.querySelector('[data-i18n]')?.textContent.trim() ?? '';
 
-            let text = '';
-            
-            if (getLang() === 'es') {
-                text = `Hola, mi nombre es ${name}.\n\n` +
-                       (company ? `🏢 *Compañía:* ${company}\n` : '') +
-                       `✉️ *Correo:* ${email}\n` +
-                       `📱 *Teléfono:* ${userPhone}\n\n` +
-                       `✨ *Servicio de interés:* ${service}\n` +
-                       `💰 *Presupuesto mensual:* ${budget}\n\n` +
-                       (project ? `📝 *Sobre el proyecto:*\n${project}\n\n` : '') +
-                       (source ? `🔍 *Nos encontró por:* ${source}` : '');
-            } else {
-                text = `Hello, my name is ${name}.\n\n` +
-                       (company ? `🏢 *Company:* ${company}\n` : '') +
-                       `✉️ *Email:* ${email}\n` +
-                       `📱 *Phone:* ${userPhone}\n\n` +
-                       `✨ *Service of interest:* ${service}\n` +
-                       `💰 *Monthly budget:* ${budget}\n\n` +
-                       (project ? `📝 *About the project:*\n${project}\n\n` : '') +
-                       (source ? `🔍 *Found us through:* ${source}` : '');
+            if (WEB3FORMS_ACCESS_KEY === 'TU_ACCESS_KEY_AQUI') {
+                console.error('[Contact] Falta la access key de Web3Forms en main.js.');
+                showStatus('contact.error', 'No pudimos enviar tu mensaje.', 'error');
+                return;
             }
-            
-            const encodedText = encodeURIComponent(text);
-            const url = `https://api.whatsapp.com/send/?phone=${phone}&text=${encodedText}`;
-            
-            window.open(url, '_blank');
+
+            const data = new FormData();
+            data.append('access_key', WEB3FORMS_ACCESS_KEY);
+            data.append('subject', `Nuevo brief de ${name} — ${service}`);
+            data.append('from_name', 'Bidiex — Web');
+            // Replying to the notification email goes straight to the visitor.
+            data.append('replyto', email);
+            data.append('botcheck', form.elements.botcheck.checked ? 'on' : '');
+            data.append('Nombre', name);
+            data.append('Compañía', company || unspecified);
+            data.append('Correo', email);
+            data.append('Teléfono', `+57 ${userPhone}`);
+            data.append('Servicio', service);
+            data.append('Presupuesto mensual', budget);
+            data.append('Proyecto', project || unspecified);
+            data.append('Nos encontró por', sourceElement?.value ?? unspecified);
+            data.append('Idioma', getLang() === 'es' ? 'Español' : 'Inglés');
+
+            submitBtn.disabled = true;
+            submitLabel.setAttribute('data-i18n', 'contact.sending');
+            submitLabel.textContent = t('contact.sending', 'Enviando...');
+            status.hidden = true;
+
+            try {
+                const res = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: { Accept: 'application/json' },
+                    body: data,
+                });
+                const json = await res.json();
+                if (!json.success) throw new Error(json.message);
+                form.reset();
+                resetServiceDrop();
+                showStatus('contact.success', '¡Gracias! Recibimos tu mensaje.', 'success');
+            } catch (err) {
+                console.error('[Contact] Web3Forms:', err);
+                showStatus('contact.error', 'No pudimos enviar tu mensaje.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitLabel.setAttribute('data-i18n', 'contact.submit');
+                submitLabel.textContent = t('contact.submit', 'Enviar mensaje');
+            }
         });
     };
 

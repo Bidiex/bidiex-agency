@@ -6,22 +6,23 @@
  * under: it asks Colombian mobile numbers and quotes budgets in COP.
  *
  * The policy describes what the site actually does, so it has to change when
- * the site does. Today the form stores nothing: main.js builds a WhatsApp
- * message and the visitor sends it themselves. If the form ever posts to a
- * server, a CRM or an analytics tool, sections 3, 4 and 9 stop being true.
+ * the site does. Today the form posts to Web3Forms, which emails it to the
+ * Bidiex inbox and stores nothing on our side. If the form ever posts to a
+ * different service, a CRM or an analytics tool, sections 3, 4 and 9 stop
+ * being true.
  *
  * Spanish is the governing text. `policyKeys()` flattens both languages into
  * the legal.* keys for the i18n runtime, the same way serviceKeys() does.
  */
 export const policy = {
-    updated: '2026-09-28',
+    updated: '2026-10-02',
     es: {
         doctitle: 'Política de Tratamiento de Datos Personales — Bidiex',
         back: 'Volver al inicio',
         eyebrow: 'Legal',
         title: 'Política de Tratamiento de Datos Personales',
         lead: 'Qué datos nos das cuando nos escribes, para qué los usamos y cómo puedes consultarlos, corregirlos o pedirnos que los borremos.',
-        updated: 'Última actualización: 28 de septiembre de 2026',
+        updated: 'Última actualización: 2 de octubre de 2026',
         intro: 'Al escribirnos desde este sitio aceptas esta política. Te recomendamos leerla antes de enviar el formulario.',
         index: 'Contenido:',
         sections: [
@@ -30,7 +31,7 @@ export const policy = {
                 title: 'Responsable del tratamiento',
                 body: [
                     'Bidiex, estudio de software con operación en Colombia, es responsable del tratamiento de los datos personales que recibe a través de este sitio web.',
-                    'Para cualquier asunto relacionado con tus datos puedes escribirnos por WhatsApp al +57 315 629 0330.'
+                    'Para cualquier asunto relacionado con tus datos puedes escribirnos al correo soportebidiex@gmail.com.'
                 ]
             },
             {
@@ -60,8 +61,8 @@ export const policy = {
                 id: 'recoleccion',
                 title: 'Cómo los recolectamos',
                 body: [
-                    'El formulario no guarda nada en nuestros servidores. Al pulsar «Enviar», tu navegador arma un mensaje con lo que escribiste y abre WhatsApp. El mensaje solo nos llega si tú decides enviarlo.',
-                    'Desde ese momento la conversación y sus datos quedan en WhatsApp, un servicio de Meta Platforms que puede almacenar información fuera de Colombia bajo sus propias condiciones. Al enviar el mensaje autorizas esa transferencia.',
+                    'El sitio no tiene servidor propio ni base de datos. Al pulsar «Enviar», lo que escribiste en el formulario se envía a Web3Forms, un servicio que lo reenvía a nuestro correo electrónico.',
+                    'Web3Forms y nuestro proveedor de correo (Gmail, de Google) pueden procesar y almacenar esa información fuera de Colombia bajo sus propias condiciones. Al enviar el formulario autorizas esa transferencia.',
                     'El sitio guarda en tu navegador el idioma que eliges (español o inglés). Ese dato no te identifica y no sale de tu dispositivo. No usamos cookies de publicidad ni herramientas de analítica.'
                 ]
             },
@@ -97,7 +98,7 @@ export const policy = {
                 id: 'consultas-y-reclamos',
                 title: 'Cómo ejercerlos',
                 body: [
-                    'Escríbenos por WhatsApp al +57 315 629 0330 indicando tu nombre, el número o correo con el que nos contactaste, qué solicitas y, si es un reclamo, los hechos que lo motivan.',
+                    'Escríbenos a soportebidiex@gmail.com indicando tu nombre, el número o correo con el que nos contactaste, qué solicitas y, si es un reclamo, los hechos que lo motivan.',
                     'Consultas: las respondemos en máximo diez (10) días hábiles desde que las recibimos. Si no alcanzamos, te avisamos el motivo y la nueva fecha, que no superará cinco (5) días hábiles adicionales.',
                     'Reclamos (corrección, actualización, supresión o incumplimiento): los atendemos en máximo quince (15) días hábiles, prorrogables por ocho (8) días hábiles más con aviso previo. Si el reclamo está incompleto te pediremos lo que falta dentro de los cinco (5) días siguientes; si no lo recibimos en dos (2) meses, entenderemos que desististe.'
                 ]
@@ -121,7 +122,7 @@ export const policy = {
                 id: 'cambios',
                 title: 'Cambios a esta política',
                 body: [
-                    'Si cambiamos algo importante lo publicaremos en esta página con una nueva fecha de actualización. Esta versión rige desde el 28 de septiembre de 2026.'
+                    'Si cambiamos algo importante lo publicaremos en esta página con una nueva fecha de actualización. Esta versión rige desde el 2 de octubre de 2026.'
                 ]
             }
         ]
@@ -132,7 +133,7 @@ export const policy = {
         eyebrow: 'Legal',
         title: 'Personal Data Processing Policy',
         lead: 'What data you give us when you write to us, what we use it for and how you can review it, correct it or ask us to delete it.',
-        updated: 'Last updated: September 28, 2026',
+        updated: 'Last updated: October 2, 2026',
         intro: 'By writing to us from this site you accept this policy. We recommend reading it before you send the form.',
         index: 'Contents:',
         note: 'This is a translation for convenience. The Spanish version is the one that governs.',
@@ -142,7 +143,7 @@ export const policy = {
                 title: 'Data controller',
                 body: [
                     'Bidiex, a software studio operating in Colombia, is responsible for the personal data it receives through this website.',
-                    'For anything related to your data, message us on WhatsApp at +57 315 629 0330.'
+                    'For anything related to your data, email us at soportebidiex@gmail.com.'
                 ]
             },
             {
@@ -172,8 +173,8 @@ export const policy = {
                 id: 'recoleccion',
                 title: 'How we collect it',
                 body: [
-                    'The form stores nothing on our servers. When you press “Submit”, your browser builds a message from what you typed and opens WhatsApp. The message only reaches us if you choose to send it.',
-                    'From then on the conversation and its data live in WhatsApp, a Meta Platforms service that may store information outside Colombia under its own terms. By sending the message you authorise that transfer.',
+                    'The site has no server or database of its own. When you press “Submit”, what you typed in the form is sent to Web3Forms, a service that forwards it to our email inbox.',
+                    'Web3Forms and our email provider (Gmail, by Google) may process and store that information outside Colombia under their own terms. By submitting the form you authorise that transfer.',
                     'The site saves the language you pick (Spanish or English) in your browser. It does not identify you and never leaves your device. We use no advertising cookies and no analytics tools.'
                 ]
             },
@@ -209,7 +210,7 @@ export const policy = {
                 id: 'consultas-y-reclamos',
                 title: 'How to exercise them',
                 body: [
-                    'Message us on WhatsApp at +57 315 629 0330 with your name, the phone number or email you contacted us from, what you are asking for and, for a claim, the facts behind it.',
+                    'Email us at soportebidiex@gmail.com with your name, the phone number or email you contacted us from, what you are asking for and, for a claim, the facts behind it.',
                     'Queries: answered within ten (10) business days of receipt. If we need longer, we will tell you why and give a new date no more than five (5) business days later.',
                     'Claims (correction, update, deletion or breach): handled within fifteen (15) business days, extendable by eight (8) more with prior notice. If a claim is incomplete we will ask for what is missing within five (5) days; if we do not hear back within two (2) months, we will treat it as withdrawn.'
                 ]
