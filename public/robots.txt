@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bidiex.github.io/bidiex-agency/sitemap.xml
+Sitemap: https://www.bidiex.agency/sitemap.xml
