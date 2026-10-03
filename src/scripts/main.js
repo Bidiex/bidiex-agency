@@ -347,22 +347,26 @@ const Contact = (function() {
             const budgetLabel = budgetElement?.closest('.radio-chip')?.querySelector('[data-i18n]');
             const budget = budgetLabel ? budgetLabel.textContent.trim() : unspecified;
 
-            const data = new FormData();
-            data.append('access_key', WEB3FORMS_ACCESS_KEY);
-            data.append('subject', `Nuevo brief de ${name} — ${service}`);
-            data.append('from_name', 'Bidiex — Web');
-            // Replying to the notification email goes straight to the visitor.
-            data.append('replyto', email);
-            data.append('botcheck', form.elements.botcheck.checked ? 'on' : '');
-            data.append('Nombre', name);
-            data.append('Compañía', company || unspecified);
-            data.append('Correo', email);
-            data.append('Teléfono', `+57 ${userPhone}`);
-            data.append('Servicio', service);
-            data.append('Presupuesto mensual', budget);
-            data.append('Proyecto', project || unspecified);
-            data.append('Nos encontró por', sourceElement?.value ?? unspecified);
-            data.append('Idioma', getLang() === 'es' ? 'Español' : 'Inglés');
+            // Sent as JSON, not FormData: Web3Forms decodes multipart field
+            // names as Latin-1, so "Compañía" arrived as "CompaÃ±Ã­a".
+            const data = {
+                access_key: WEB3FORMS_ACCESS_KEY,
+                subject: `Nuevo brief de ${name} — ${service}`,
+                from_name: 'Bidiex — Web',
+                // Replying to the notification email goes straight to the visitor.
+                replyto: email,
+                'Nombre': name,
+                'Compañía': company || unspecified,
+                'Correo': email,
+                'Teléfono': `+57 ${userPhone}`,
+                'Servicio': service,
+                'Presupuesto mensual': budget,
+                'Proyecto': project || unspecified,
+                'Nos encontró por': sourceElement?.value ?? unspecified,
+                'Idioma': getLang() === 'es' ? 'Español' : 'Inglés',
+            };
+            // Only a bot ticks the hidden honeypot; Web3Forms drops those.
+            if (form.elements.botcheck.checked) data.botcheck = true;
 
             submitBtn.disabled = true;
             submitLabel.setAttribute('data-i18n', 'contact.sending');
@@ -372,8 +376,8 @@ const Contact = (function() {
             try {
                 const res = await fetch('https://api.web3forms.com/submit', {
                     method: 'POST',
-                    headers: { Accept: 'application/json' },
-                    body: data,
+                    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                    body: JSON.stringify(data),
                 });
                 const json = await res.json();
                 if (!json.success) throw new Error(json.message);
