@@ -253,7 +253,7 @@ const Contact = (function() {
     const form = document.getElementById('contactForm');
     // Web3Forms access keys are public by design: they only let someone send
     // to the inbox they were created for. Create one at https://web3forms.com.
-    const WEB3FORMS_ACCESS_KEY = 'TU_ACCESS_KEY_AQUI';
+    const WEB3FORMS_ACCESS_KEY = 'bfff818e-90dd-416b-b407-bb3deaff3aab';
     let resetServiceDrop = () => {};
 
     // The service dropdown on phones: the trigger mirrors the picked tile
@@ -346,12 +346,6 @@ const Contact = (function() {
             // currency the visitor saw: COP in Spanish, USD in English.
             const budgetLabel = budgetElement?.closest('.radio-chip')?.querySelector('[data-i18n]');
             const budget = budgetLabel ? budgetLabel.textContent.trim() : unspecified;
-
-            if (WEB3FORMS_ACCESS_KEY === 'TU_ACCESS_KEY_AQUI') {
-                console.error('[Contact] Falta la access key de Web3Forms en main.js.');
-                showStatus('contact.error', 'No pudimos enviar tu mensaje.', 'error');
-                return;
-            }
 
             const data = new FormData();
             data.append('access_key', WEB3FORMS_ACCESS_KEY);
