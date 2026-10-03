@@ -17,6 +17,7 @@ const services = capabilities.map((c) => ({
     value: c.title, key: `srv.${c.id}.title`, label: c.title, icon: c.icon,
 }));
 
+// Labels are the ES (COP) ones; the EN dictionary quotes the same ranges in USD.
 const budgets = [
     { value: '200k-400k', key: 'contact.budget.opt1', label: '200.000 COP - 400.000 COP' },
     { value: '400k-800k', key: 'contact.budget.opt2', label: '400.000 COP - 800.000 COP' },
@@ -63,15 +64,26 @@ const sources = [
                         <p class="brief-label" id="briefService">
                             <span data-i18n="contact.service">¿Qué servicio te interesa?</span><span class="req" aria-hidden="true">*</span>
                         </p>
-                        <div class="choice-grid choice-grid--3" role="radiogroup" aria-labelledby="briefService">
-                            {services.map((s, i) => (
-                                <label class="radio-chip">
-                                    <input type="radio" name="service" value={s.value} required={i === 0}>
-                                    <span class="radio-chip__icon" aria-hidden="true"><i data-lucide={s.icon}></i></span>
-                                    <span data-i18n={s.key}>{s.label}</span>
-                                    <span class="radio-chip__dot" aria-hidden="true"></span>
-                                </label>
-                            ))}
+                        <!-- On phones the seven tiles fold into a dropdown: the
+                             trigger shows the current pick and opens the same
+                             tiles below it. On desktop the trigger is hidden
+                             and the grid always shows. -->
+                        <div class="choice-drop" data-choice-drop>
+                            <button type="button" class="choice-drop__trigger radio-chip" aria-expanded="false" aria-controls="briefServiceGrid">
+                                <span class="radio-chip__icon" aria-hidden="true" data-choice-drop-icon><i data-lucide="layout-grid"></i></span>
+                                <span class="choice-drop__value" data-choice-drop-value data-i18n="contact.service.pick">Elige un servicio</span>
+                                <span class="choice-drop__chev" aria-hidden="true"><i data-lucide="chevron-down"></i></span>
+                            </button>
+                            <div class="choice-grid choice-grid--3 choice-drop__panel" id="briefServiceGrid" role="radiogroup" aria-labelledby="briefService">
+                                {services.map((s, i) => (
+                                    <label class="radio-chip">
+                                        <input type="radio" name="service" value={s.value} required={i === 0}>
+                                        <span class="radio-chip__icon" aria-hidden="true"><i data-lucide={s.icon}></i></span>
+                                        <span data-i18n={s.key}>{s.label}</span>
+                                        <span class="radio-chip__dot" aria-hidden="true"></span>
+                                    </label>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
