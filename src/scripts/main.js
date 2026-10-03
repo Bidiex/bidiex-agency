@@ -253,8 +253,47 @@ const Contact = (function() {
     const form = document.getElementById('contactForm');
     const phone = '573156290330';
 
+    // The service dropdown on phones: the trigger mirrors the picked tile
+    // (icon and i18n key, so a language change relabels it) and toggles the
+    // panel. On desktop the trigger is hidden and none of this shows.
+    const initServiceDrop = () => {
+        const drop = form.querySelector('[data-choice-drop]');
+        if (!drop) return;
+        const trigger = drop.querySelector('.choice-drop__trigger');
+        const value = drop.querySelector('[data-choice-drop-value]');
+        const icon = drop.querySelector('[data-choice-drop-icon]');
+
+        const setOpen = (open) => {
+            drop.classList.toggle('is-open', open);
+            trigger.setAttribute('aria-expanded', String(open));
+        };
+
+        trigger.addEventListener('click', () => setOpen(!drop.classList.contains('is-open')));
+
+        drop.querySelectorAll('input[name="service"]').forEach((input) => {
+            input.addEventListener('change', () => {
+                const chip = input.closest('.radio-chip');
+                const label = chip.querySelector('[data-i18n]');
+                value.setAttribute('data-i18n', label.getAttribute('data-i18n'));
+                value.textContent = label.textContent;
+                icon.innerHTML = chip.querySelector('.radio-chip__icon').innerHTML;
+                drop.classList.add('has-value');
+                // Close only when the panel was opened as a dropdown, so a
+                // desktop pick does not leave the class behind for later.
+                if (drop.classList.contains('is-open')) {
+                    setOpen(false);
+                    trigger.focus();
+                }
+            });
+            // A required radio hidden in a closed panel cannot show the
+            // browser hint: open the panel so the hint has somewhere to point.
+            input.addEventListener('invalid', () => setOpen(true));
+        });
+    };
+
     const init = () => {
         if (!form) return;
+        initServiceDrop();
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -273,7 +312,10 @@ const Contact = (function() {
             const serviceLabel = serviceElement?.closest('.radio-chip')?.querySelector('[data-i18n]');
             const unspecified = t('contact.unspecified', 'No especificado');
             const service = serviceLabel ? serviceLabel.textContent.trim() : unspecified;
-            const budget = budgetElement ? budgetElement.value : unspecified;
+            // Label rather than value, so the message quotes the range in the
+            // currency the visitor saw: COP in Spanish, USD in English.
+            const budgetLabel = budgetElement?.closest('.radio-chip')?.querySelector('[data-i18n]');
+            const budget = budgetLabel ? budgetLabel.textContent.trim() : unspecified;
             // Optional, so an unanswered source leaves its line out of the message.
             const sourceElement = document.querySelector('input[name="source"]:checked');
             const source = sourceElement?.closest('.radio-chip')?.querySelector('[data-i18n]')?.textContent.trim() ?? '';
