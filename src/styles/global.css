@@ -54,8 +54,8 @@
    ========================================================================== */
 @font-face {
     font-family: 'Ranade';
-    src: url('/bidiex-agency/fonts/Ranade-Variable.woff2') format('woff2-variations'),
-         url('/bidiex-agency/fonts/Ranade-Variable.woff') format('woff-variations');
+    src: url('/fonts/Ranade-Variable.woff2') format('woff2-variations'),
+         url('/fonts/Ranade-Variable.woff') format('woff-variations');
     font-weight: 100 700;
     font-style: normal;
     font-display: swap;
